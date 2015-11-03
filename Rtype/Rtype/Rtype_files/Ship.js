@@ -26,7 +26,6 @@ function Ship(descr) {
     // Set normal drawing scale, and warp state off
     this._scale = 1;
     this._isWarping = false;
-    console.log(this);
 };
 
 Ship.prototype = new Entity();
@@ -46,13 +45,14 @@ Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
 Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
-Ship.prototype.rotation = 0;
+Ship.prototype.rotation = Math.PI/2;
 Ship.prototype.cx = 200;
 Ship.prototype.cy = 200;
 Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
-Ship.prototype.launchVel = 2;
+Ship.prototype.launchVel = 5;
 Ship.prototype.numSubSteps = 1;
+Ship.prototype.power = 0;
 
 // HACKED-IN AUDIO (no preloading)
 Ship.prototype.warpSound = new Audio(
@@ -261,10 +261,13 @@ Ship.prototype.applyAccel = function (accelX, accelY, du) {
 Ship.prototype.maybeFireBullet = function () {
 
     if (keys[this.KEY_FIRE]) {
-    
+        this.power++;
+        console.log(this.power);
+    }
+    else if(this.power>0) {
         var dX = +Math.sin(this.rotation);
         var dY = -Math.cos(this.rotation);
-        var launchDist = this.getRadius() * 1.2;
+        var launchDist = this.getRadius() * 1.2 * this.power;
         
         var relVel = this.launchVel;
         var relVelX = dX * relVel;
@@ -273,8 +276,8 @@ Ship.prototype.maybeFireBullet = function () {
         entityManager.fireBullet(
            this.cx + dX * launchDist, this.cy + dY * launchDist,
            this.velX + relVelX, this.velY + relVelY,
-           this.rotation);
-           
+           this.rotation, this.power);
+        this.power = 0;
     }
     
 };

@@ -27,20 +27,20 @@ var entityManager = {
 
 // "PRIVATE" DATA
 
-_rocks   : [],
+_enemies   : [],
 _bullets : [],
 _ships   : [],
 
-_bShowRocks : true,
+_bShowEnemies : true,
 
 // "PRIVATE" METHODS
 
-_generateRocks : function() {
+_generateEnemies : function() {
     var i,
-        NUM_ROCKS = 4;
+        NUM_ENEMIES = 4;
 
-    for (i = 0; i < NUM_ROCKS; ++i) {
-        this.generateRock();
+    for (i = 0; i < NUM_ENEMIES; ++i) {
+        this.generateEnemy();
     }
 },
 
@@ -87,27 +87,27 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._rocks, this._bullets, this._ships];
+    this._categories = [this._enemies, this._bullets, this._ships];
 },
 
 init: function() {
-    this._generateRocks();
+    this._generateEnemies();
     //this._generateShip();
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation) {
+fireBullet: function(cx, cy, velX, velY, rotation, power) {
     this._bullets.push(new Bullet({
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
-
+        power : power,
         rotation : rotation
     }));
 },
 
-generateRock : function(descr) {
-    this._rocks.push(new Rock(descr));
+generateEnemy : function(descr) {
+    this._enemies.push(new Enemy(descr));
 },
 
 generateShip : function(descr) {
@@ -136,8 +136,8 @@ haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
 },	
 
-toggleRocks: function() {
-    this._bShowRocks = !this._bShowRocks;
+toggleEnemies: function() {
+    this._bShowEnemies = !this._bShowEnemies;
 },
 
 update: function(du) {
@@ -162,7 +162,7 @@ update: function(du) {
         }
     }
     
-    if (this._rocks.length === 0) this._generateRocks();
+    if (this._enemies.length === 0) this._generateEnemies();
 
 },
 
@@ -174,8 +174,8 @@ render: function(ctx) {
 
         var aCategory = this._categories[c];
 
-        if (!this._bShowRocks && 
-            aCategory == this._rocks)
+        if (!this._bShowEnemies && 
+            aCategory == this._enemies)
             continue;
 
         for (var i = 0; i < aCategory.length; ++i) {

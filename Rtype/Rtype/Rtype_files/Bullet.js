@@ -26,7 +26,7 @@ function Bullet(descr) {
     this._bulletProperty = true;
     console.dir(this);
 */
-
+    console.log(this);
 }
 
 Bullet.prototype = new Entity();
@@ -41,8 +41,9 @@ Bullet.prototype.zappedSound = new Audio(
 Bullet.prototype.rotation = 0;
 Bullet.prototype.cx = 200;
 Bullet.prototype.cy = 200;
-Bullet.prototype.velX = 1;
+Bullet.prototype.velX = 2;
 Bullet.prototype.velY = 1;
+Bullet.prototype.power = 1;
 
 // Convert times from milliseconds to "nominal" time units.
 Bullet.prototype.lifeSpan = 3000 / NOMINAL_UPDATE_INTERVAL;
@@ -73,7 +74,6 @@ Bullet.prototype.update = function (du) {
     // Handle collisions
     //
     var hitEntity = this.findHitEntity();
-    console.log(hitEntity);
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
         if (canTakeHit) canTakeHit.call(hitEntity); 
@@ -85,11 +85,11 @@ Bullet.prototype.update = function (du) {
 };
 
 Bullet.prototype.getRadius = function () {
-    return 4;
+    return 4*this.power;
 };
 
 Bullet.prototype.takeBulletHit = function () {
-    this.kill();
+    //this.kill();
     
     // Make a noise when I am zapped by another bullet
     this.zappedSound.play();

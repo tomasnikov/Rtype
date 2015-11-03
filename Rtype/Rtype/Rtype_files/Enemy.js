@@ -1,5 +1,5 @@
 // ====
-// ROCK
+// Enemy
 // ====
 
 "use strict";
@@ -13,53 +13,56 @@
 
 
 // A generic contructor which accepts an arbitrary descriptor object
-function Rock(descr) {
+function Enemy(descr) {
 
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    this.randomisePosition();
+    this.setPosition();
     this.randomiseVelocity();
       
     // Default sprite and scale, if not otherwise specified
-    this.sprite = this.sprite || g_sprites.rock;
+    this.sprite = this.sprite || g_sprites.enemy;
     this.scale  = this.scale  || 1;
 
 /*
     // Diagnostics to check inheritance stuff
-    this._rockProperty = true;
+    this._EnemyProperty = true;
     console.dir(this);
 */
 
 };
 
-Rock.prototype = new Entity();
+Enemy.prototype = new Entity();
 
-Rock.prototype.randomisePosition = function () {
-    // Rock randomisation defaults (if nothing otherwise specified)
-    this.cx = this.cx || Math.random() * g_canvas.width;
-    this.cy = this.cy || Math.random() * g_canvas.height;
+Enemy.prototype.setPosition = function () {
+    // Enemy randomisation defaults (if nothing otherwise specified)
+    this.cx = this.cx || g_canvas.width;
+    this.cy = this.cy || Math.random()*g_canvas.height/2;
     this.rotation = this.rotation || 0;
 };
 
-Rock.prototype.randomiseVelocity = function () {
+Enemy.prototype.randomiseVelocity = function () {
     var MIN_SPEED = 20,
         MAX_SPEED = 70;
 
     var speed = util.randRange(MIN_SPEED, MAX_SPEED) / SECS_TO_NOMINALS;
     var dirn = Math.random() * consts.FULL_CIRCLE;
 
-    this.velX = this.velX || speed * Math.cos(dirn);
-    this.velY = this.velY || speed * Math.sin(dirn);
+    console.log(speed);
+    console.log(dirn);
+
+    this.velX = this.velX || -speed;
+    //this.velY = this.velY || speed;
+    this.velY = 0;
 
     var MIN_ROT_SPEED = 0.5,
         MAX_ROT_SPEED = 2.5;
 
-    this.velRot = this.velRot ||
-        util.randRange(MIN_ROT_SPEED, MAX_ROT_SPEED) / SECS_TO_NOMINALS;
+    this.velRot = this.velRot || 0;
 };
 
-Rock.prototype.update = function (du) {
+Enemy.prototype.update = function (du) {
 
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
@@ -82,38 +85,31 @@ Rock.prototype.update = function (du) {
 
 };
 
-Rock.prototype.getRadius = function () {
+Enemy.prototype.getRadius = function () {
     return this.scale * (this.sprite.width / 2) * 0.9;
 };
 
 // HACKED-IN AUDIO (no preloading)
-Rock.prototype.splitSound = new Audio(
-  "sounds/rockSplit.ogg");
-Rock.prototype.evaporateSound = new Audio(
-  "sounds/rockEvaporate.ogg");
+Enemy.prototype.splitSound = new Audio(
+  "sounds/EnemySplit.ogg");
+Enemy.prototype.evaporateSound = new Audio(
+  "sounds/EnemyEvaporate.ogg");
 
-Rock.prototype.takeBulletHit = function () {
+Enemy.prototype.takeBulletHit = function () {
     this.kill();
-    console.log(this);
-    if (this.scale > 0.25) {
-        this._spawnFragment();
-        this._spawnFragment();
-        
-        this.splitSound.play();
-    } else {
-        this.evaporateSound.play();
-    }
+    this.evaporateSound.play();
+    
 };
 
-Rock.prototype._spawnFragment = function () {
-    entityManager.generateRock({
+Enemy.prototype._spawnFragment = function () {
+    entityManager.generateEnemy({
         cx : this.cx,
         cy : this.cy,
         scale : this.scale /2
     });
 };
 
-Rock.prototype.render = function (ctx) {
+Enemy.prototype.render = function (ctx) {
     var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this.scale;
