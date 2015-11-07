@@ -26,6 +26,7 @@ function Ship(descr) {
     // Set normal drawing scale, and warp state off
     this._scale = 1;
     this._isWarping = false;
+    this.HP = this.fullLife;
 };
 
 Ship.prototype = new Entity();
@@ -53,6 +54,7 @@ Ship.prototype.velY = 0;
 Ship.prototype.launchVel = 5;
 Ship.prototype.numSubSteps = 1;
 Ship.prototype.power = 0;
+Ship.prototype.fullLife = 3;
 
 // HACKED-IN AUDIO (no preloading)
 Ship.prototype.warpSound = new Audio(
@@ -108,7 +110,7 @@ Ship.prototype._moveToASafePlace = function () {
         this.cx = origX + warpDistance * Math.sin(warpDirn);
         this.cy = origY - warpDistance * Math.cos(warpDirn);
         
-        this.wrapPosition();
+        //this.wrapPosition();
         
         // Don't go too near the edges, and don't move into a collision!
         if (!util.isBetween(this.cx, MARGIN, g_canvas.width - MARGIN)) {
@@ -150,7 +152,13 @@ Ship.prototype.update = function (du) {
     this.maybeFireBullet();
 
     if(this.isColliding()) {
-        this.warp();
+        if(this.HP > 0) {
+        this.HP--;
+        entityManager.resetEntities();
+        }
+        else {
+            main.gameOver();
+        }
     }
     else {
         spatialManager.register(this);
@@ -174,7 +182,7 @@ Ship.prototype.computeSubStep = function (du) {
     this.cx = thrust.x;
     this.cy = thrust.y;
     
-    this.wrapPosition();
+    //this.wrapPosition();
     
     if (thrust === 0 || g_allowMixedActions) {
         this.updateRotation(du);
@@ -187,24 +195,25 @@ Ship.prototype.computeGravity = function () {
     return g_useGravity ? NOMINAL_GRAVITY : 0;
 };
 
-var NOMINAL_THRUST = 2;
+var NOMINAL_THRUST = 3;
 var NOMINAL_RETRO  = -0.1;
 
 Ship.prototype.computePosition = function () {
     
     var x = this.cx;
     var y = this.cy;
+    var r = this.getRadius();
     
-    if (keys[this.KEY_THRUST]) {
+    if (keys[this.KEY_THRUST] && y > r) {
         y -= NOMINAL_THRUST;
     }
-    if (keys[this.KEY_RETRO]) {
+    if (keys[this.KEY_RETRO] && y < g_canvas.height - r) {
         y += NOMINAL_THRUST;
     }
-    if (keys[this.KEY_LEFT]) {
+    if (keys[this.KEY_LEFT] && x > r) {
         x -= NOMINAL_THRUST;
     }
-    if (keys[this.KEY_RIGHT]) {
+    if (keys[this.KEY_RIGHT] && x < g_canvas.width - r) {
         x += NOMINAL_THRUST;
     }
     
@@ -259,15 +268,17 @@ Ship.prototype.applyAccel = function (accelX, accelY, du) {
 };
 
 Ship.prototype.maybeFireBullet = function () {
-
     if (keys[this.KEY_FIRE]) {
-        this.power++;
-        console.log(this.power);
+        this.power = this.power<10 ?  this.power + 0.1 : 10;
+        document.getElementById("power").value = this.power;
     }
     else if(this.power>0) {
+        this.power = Math.ceil(this.power);
+        console.log(this.power);
         var dX = +Math.sin(this.rotation);
         var dY = -Math.cos(this.rotation);
-        var launchDist = this.getRadius() * 1.2 * this.power;
+        var launchDist = this.getRadius()  + 4 * this.power;
+        console.log(this.getRadius());
         
         var relVel = this.launchVel;
         var relVelX = dX * relVel;
@@ -278,6 +289,7 @@ Ship.prototype.maybeFireBullet = function () {
            this.velX + relVelX, this.velY + relVelY,
            this.rotation, this.power);
         this.power = 0;
+        document.getElementById("power").value = this.power;
     }
     
 };
@@ -287,7 +299,13 @@ Ship.prototype.getRadius = function () {
 };
 
 Ship.prototype.takeBulletHit = function () {
-    this.warp();
+    if(this.HP > 0) {
+        this.HP--;
+        entityManager.resetEntities();
+    }
+    else {
+        main.gameOver();
+    }
 };
 
 Ship.prototype.reset = function () {
@@ -317,7 +335,7 @@ Ship.prototype.render = function (ctx) {
     var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
-    this.sprite.drawWrappedCentredAt(
+    this.sprite.drawCentredAt(
 	ctx, this.cx, this.cy, this.rotation
     );
     this.sprite.scale = origScale;

@@ -86,7 +86,8 @@ function updateSimulation(du) {
     entityManager.update(du);
 
     // Prevent perpetual firing!
-    eatKey(Ship.prototype.KEY_FIRE);
+    // eatKey(Ship.prototype.KEY_FIRE);
+    //console.log("Ate key");
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
@@ -128,6 +129,7 @@ function processDiagnostics() {
 
     if (eatKey(KEY_0)) entityManager.toggleEnemies();
 
+    /*
     if (eatKey(KEY_1)) entityManager.generateShip({
         cx : g_mouseX,
         cy : g_mouseY,
@@ -143,6 +145,7 @@ function processDiagnostics() {
 
     if (eatKey(KEY_K)) entityManager.killNearestShip(
         g_mouseX, g_mouseY);
+    */
 }
 
 

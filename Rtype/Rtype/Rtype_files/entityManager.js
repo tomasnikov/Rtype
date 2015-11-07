@@ -38,9 +38,12 @@ _bShowEnemies : true,
 _generateEnemies : function() {
     var i,
         NUM_ENEMIES = 4;
-
+    var randomSeed = Math.random();
     for (i = 0; i < NUM_ENEMIES; ++i) {
-        this.generateEnemy();
+        this.generateEnemy({
+            randomSeed: randomSeed,
+            diff: i
+        });
     }
 },
 
@@ -130,6 +133,12 @@ yoinkNearestShip : function(xPos, yPos) {
 
 resetShips: function() {
     this._forEachOf(this._ships, Ship.prototype.reset);
+},
+
+resetEntities: function() {
+    this.resetShips();
+    this._forEachOf(this._enemies, Enemy.prototype.reset);
+    this._forEachOf(this._bullets, Bullet.prototype.reset);
 },
 
 haltShips: function() {

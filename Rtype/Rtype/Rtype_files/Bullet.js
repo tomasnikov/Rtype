@@ -20,13 +20,11 @@ function Bullet(descr) {
 
     // Make a noise when I am created (i.e. fired)
     this.fireSound.play();
-    
 /*
     // Diagnostics to check inheritance stuff
     this._bulletProperty = true;
     console.dir(this);
 */
-    console.log(this);
 }
 
 Bullet.prototype = new Entity();
@@ -64,10 +62,10 @@ Bullet.prototype.update = function (du) {
     this.cy += this.velY * du;
 
     this.rotation += 1 * du;
-    this.rotation = util.wrapRange(this.rotation,
-                                   0, consts.FULL_CIRCLE);
+    //this.rotation = util.wrapRange(this.rotation,
+                                   //0, consts.FULL_CIRCLE);
 
-    this.wrapPosition();
+    //this.wrapPosition();
     
     // TODO? NO, ACTUALLY, I JUST DID THIS BIT FOR YOU! :-)
     //
@@ -75,9 +73,12 @@ Bullet.prototype.update = function (du) {
     //
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
-        var canTakeHit = hitEntity.takeBulletHit;
-        if (canTakeHit) canTakeHit.call(hitEntity); 
-        return entityManager.KILL_ME_NOW;
+        var canTakeHit = hitEntity.takeBulletHit(this.power);
+        if (canTakeHit) {
+            canTakeHit.call(hitEntity);
+        } 
+        this.power -= hitEntity.fullLife - hitEntity.HP;
+        if(this.power<3) return entityManager.KILL_ME_NOW;
     }
     
     spatialManager.register(this);
@@ -85,7 +86,7 @@ Bullet.prototype.update = function (du) {
 };
 
 Bullet.prototype.getRadius = function () {
-    return 4*this.power;
+    return 4 + this.power;
 };
 
 Bullet.prototype.takeBulletHit = function () {
@@ -95,6 +96,10 @@ Bullet.prototype.takeBulletHit = function () {
     this.zappedSound.play();
 };
 
+Bullet.prototype.reset = function() {
+    this.kill();
+}
+
 Bullet.prototype.render = function (ctx) {
 
     var fadeThresh = Bullet.prototype.lifeSpan / 3;
@@ -102,10 +107,16 @@ Bullet.prototype.render = function (ctx) {
     if (this.lifeSpan < fadeThresh) {
         ctx.globalAlpha = this.lifeSpan / fadeThresh;
     }
+    var origScale = g_sprites.bullet.scale;
 
-    g_sprites.bullet.drawWrappedCentredAt(
+
+    // pass my scale into the sprite, for drawing
+    g_sprites.bullet.scale = Math.max(0.2, this.power/20);
+    //g_sprites.bullet.scale = this.getRadius()/10;
+    g_sprites.bullet.drawCentredAt(
         ctx, this.cx, this.cy, this.rotation
     );
+    g_sprites.bullet.scale = origScale;
 
     ctx.globalAlpha = 1;
 };
