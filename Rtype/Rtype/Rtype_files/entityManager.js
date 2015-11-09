@@ -30,6 +30,7 @@ var entityManager = {
 _enemies   : [],
 _bullets : [],
 _ships   : [],
+_environment : [],
 
 _bShowEnemies : true,
 
@@ -45,6 +46,10 @@ _generateEnemies : function() {
             diff: i
         });
     }
+},
+
+_generateEnvironment : function(descr) {
+    this.generateEnvironment();
 },
 
 _findNearestShip : function(posX, posY) {
@@ -90,12 +95,12 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._enemies, this._bullets, this._ships];
+    this._categories = [this._enemies, this._bullets, this._ships, this._environment];
 },
 
 init: function() {
     this._generateEnemies();
-    //this._generateShip();
+    this._generateEnvironment();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation, power) {
@@ -111,6 +116,10 @@ fireBullet: function(cx, cy, velX, velY, rotation, power) {
 
 generateEnemy : function(descr) {
     this._enemies.push(new Enemy(descr));
+},
+
+generateEnvironment : function(descr) {
+    this._environment.push(new Environment(descr));
 },
 
 generateShip : function(descr) {
@@ -139,6 +148,7 @@ resetEntities: function() {
     this.resetShips();
     this._forEachOf(this._enemies, Enemy.prototype.reset);
     this._forEachOf(this._bullets, Bullet.prototype.reset);
+    this._forEachOf(this._environment, Environment.prototype.reset);
 },
 
 haltShips: function() {
@@ -176,7 +186,6 @@ update: function(du) {
 },
 
 render: function(ctx) {
-
     var debugX = 10, debugY = 100;
 
     for (var c = 0; c < this._categories.length; ++c) {

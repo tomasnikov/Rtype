@@ -33,8 +33,6 @@ _entities : [],
 
 getNewSpatialID : function() {
 
-    // TODO: YOUR STUFF HERE!
-
     return this._nextSpatialID++;
 
 },
@@ -50,16 +48,12 @@ register: function(entity) {
         radius: radius,
         entity: entity
     };
-    // TODO: YOUR STUFF HERE!
-
 },
 
 unregister: function(entity) {
     var spatialID = entity.getSpatialID();
     delete this._entities[spatialID]; 
     
-    // TODO: YOUR STUFF HERE!
-
 },
 
 findEntityInRange: function(posX, posY, radius) {
@@ -72,8 +66,6 @@ findEntityInRange: function(posX, posY, radius) {
             return e.entity;
         }
     }
-    // TODO: YOUR STUFF HERE!
-
 },
 
 render: function(ctx) {
@@ -81,6 +73,24 @@ render: function(ctx) {
     ctx.strokeStyle = "red";
     for (var ID in this._entities) {
         var e = this._entities[ID];
+        if(e.entity.layout) {
+            for(var i = 0; i < e.entity.layout.length; i++) {
+                for(var j = 0; j<e.entity.layout[i].length; j++) {
+                    if(i<3 && e.entity.layout[i][j]!=0) {
+                        util.strokeCircle(ctx,
+                         e.posX + e.entity.sprite.width/2 + j*e.entity.sprite.width,
+                         e.entity.sprite.height/2 + i*e.entity.sprite.height,
+                         e.radius);
+                    }
+                    else if(e.entity.layout[i][j]!=0){
+                        util.strokeCircle(ctx,
+                         e.posX + e.entity.sprite.width/2 + j*e.entity.sprite.width,
+                         g_canvas.height + e.entity.sprite.height/2 -(e.entity.layout.length-i)*e.entity.sprite.height,
+                         e.radius);
+                    }
+                }
+            }
+        }
         util.strokeCircle(ctx, e.posX, e.posY, e.radius);
     }
     ctx.strokeStyle = oldStyle;

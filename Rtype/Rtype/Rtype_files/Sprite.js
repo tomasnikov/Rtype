@@ -14,12 +14,13 @@
 
 // Construct a "sprite" from the given `image`,
 //
-function Sprite(image) {
+function Sprite(image, scale) {
     this.image = image;
 
     this.width = image.width;
     this.height = image.height;
-    this.scale = 1;
+    this.scale = scale;
+    console.log(this);
 }
 
 Sprite.prototype.drawAt = function (ctx, x, y) {

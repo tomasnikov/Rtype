@@ -20,7 +20,7 @@ function Enemy(descr) {
       
     // Default sprite and scale, if not otherwise specified
     this.sprite = this.sprite || g_sprites.enemy;
-    this.scale  = this.scale  || 1;
+    this.scale  = this.scale  || this.sprite.scale;
     this.diff = 2*this.getRadius()*1.1*this.diff;
 
     this.setPosition();
@@ -77,7 +77,6 @@ Enemy.prototype.randomiseRange = function() {
     var botMax = g_canvas.height - this.getRadius() - this.cy;
     var topMax = -this.getRadius() + this.cy;
     this.range = Math.abs(this.randomSeed*Math.min(botMax, topMax));
-    console.log(this);
 }
 
 Enemy.prototype.update = function (du) {
@@ -151,9 +150,7 @@ Enemy.prototype._spawnFragment = function () {
 };
 
 Enemy.prototype.render = function (ctx) {
-    var origScale = this.sprite.scale;
-    // pass my scale into the sprite, for drawing
-    this.sprite.scale = this.scale;
+    
     this.sprite.drawCentredAt(
         ctx, this.cx, this.cy, this.rotation
     );
