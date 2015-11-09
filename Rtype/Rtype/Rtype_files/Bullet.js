@@ -36,7 +36,7 @@ Bullet.prototype.zappedSound = new Audio(
     "sounds/bulletZapped.ogg");
     
 // Initial, inheritable, default values
-Bullet.prototype.rotation = 0;
+Bullet.prototype.rotation = Math.PI;
 Bullet.prototype.cx = 200;
 Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 2;
@@ -60,12 +60,6 @@ Bullet.prototype.update = function (du) {
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;
-
-    this.rotation += 1 * du;
-    //this.rotation = util.wrapRange(this.rotation,
-                                   //0, consts.FULL_CIRCLE);
-
-    //this.wrapPosition();
     
     // TODO? NO, ACTUALLY, I JUST DID THIS BIT FOR YOU! :-)
     //

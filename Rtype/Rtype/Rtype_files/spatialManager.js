@@ -61,7 +61,7 @@ findEntityInRange: function(posX, posY, radius) {
         var e = this._entities[ID];
         var distBetweenEntities = util.wrappedDistSq(e.posX, e.posY, posX, posY);
         var minDist = util.square(e.radius + radius);
-        //console.log(distBetweenEntities, minDist);
+
         if(distBetweenEntities < minDist && distBetweenEntities!==0) {
             return e.entity;
         }
@@ -74,19 +74,23 @@ render: function(ctx) {
     for (var ID in this._entities) {
         var e = this._entities[ID];
         if(e.entity.layout) {
-            for(var i = 0; i < e.entity.layout.length; i++) {
-                for(var j = 0; j<e.entity.layout[i].length; j++) {
-                    if(i<3 && e.entity.layout[i][j]!=0) {
-                        util.strokeCircle(ctx,
+            for(var i = 0; i < e.entity.layout.top.length; i++) {
+                for(var j = 0; j<e.entity.layout.top[i].length; j++) {
+                    if(e.entity.layout.top[i][j]!=0) {
+                        util.strokeRectangle(ctx,
                          e.posX + e.entity.sprite.width/2 + j*e.entity.sprite.width,
                          e.entity.sprite.height/2 + i*e.entity.sprite.height,
-                         e.radius);
+                         e.radius, e.radius);
                     }
-                    else if(e.entity.layout[i][j]!=0){
-                        util.strokeCircle(ctx,
+                }
+            }
+            for(var i = 0; i < e.entity.layout.bottom.length; i++) {
+                for(var j = 0; j<e.entity.layout.bottom[i].length; j++) {
+                    if(e.entity.layout.bottom[i][j]!=0) {
+                        util.strokeRectangle(ctx,
                          e.posX + e.entity.sprite.width/2 + j*e.entity.sprite.width,
-                         g_canvas.height + e.entity.sprite.height/2 -(e.entity.layout.length-i)*e.entity.sprite.height,
-                         e.radius);
+                         g_canvas.height + e.entity.sprite.height/2 -(e.entity.layout.bottom.length-i)*e.entity.sprite.height,
+                         e.radius, e.radius);
                     }
                 }
             }

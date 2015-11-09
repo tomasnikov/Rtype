@@ -188,6 +188,8 @@ update: function(du) {
 render: function(ctx) {
     var debugX = 10, debugY = 100;
 
+    ctx.drawImage(g_images['space'], this._environment[0].imageCx, -300);
+
     for (var c = 0; c < this._categories.length; ++c) {
 
         var aCategory = this._categories[c];

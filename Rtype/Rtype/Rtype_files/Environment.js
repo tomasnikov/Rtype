@@ -11,19 +11,26 @@
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-var levelOne = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0],
-    [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-];
+var levelOne = {
+    top: [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0],
+        [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+
+
+    bottom: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ]
+
+};
 
 
 // A generic contructor which accepts an arbitrary descriptor object
 function Environment(descr) {
-
+    console.log("halló");
     // Common inherited setup logic from Entity
     this.setup(descr);
 
@@ -31,9 +38,9 @@ function Environment(descr) {
     // Default sprite and scale, if not otherwise specified
     this.sprite = this.sprite || g_sprites.environment;
     this.scale  = this.scale  || this.sprite.scale;
-    this.diff = 2*this.getRadius()*1.1*this.diff;
 
     this.cx = 0;
+    this.imageCx = 0;
     this.cy = 0;
 
     console.log(this);
@@ -43,32 +50,19 @@ function Environment(descr) {
 
 Environment.prototype = new Entity();
 
-Environment.prototype.getRadius = function() {
-    return 30;
-}
-
 Environment.prototype.update = function (du) {
-    for(var i = 0; i < this.layout.length; i++) {
-        for(var j = 0; j<this.layout[i].length; j++) {
-                  
-        }
-    }
-    
+
     spatialManager.unregister(this);   
-    this.cx -= du/2;
+    this.cx -= du;
+    this.imageCx -= du/1.5;
     
-    // TODO: YOUR STUFF HERE! --- (Re-)Register
-    for(var i = 0; i < this.layout.length; i++) {
-        for(var j = 0; j<this.layout[i].length; j++) {
-               
-        }
-    }
+
     spatialManager.register(this);      
 
 };
 
 Environment.prototype.getRadius = function () {
-    return this.scale * (this.sprite.width / 2) * 0.9;
+    return this.sprite.width/2;
 };
 
 Environment.prototype.takeBulletHit = function (power) {
@@ -83,6 +77,7 @@ Environment.prototype.takeBulletHit = function (power) {
 
 Environment.prototype.reset = function() {
     this.cx = 0;
+    this.imageCx = 0;
 }
 
 
@@ -91,20 +86,22 @@ Environment.prototype.render = function (ctx) {
     ctx.fillStyle = "blue";
     var width = this.sprite.width;
     var height = this.sprite.height;
-    for(var i = 0; i < this.layout.length; i++) {
-        for(var j = 0; j<this.layout[i].length; j++) {
-            if(i<3 && this.layout[i][j]!=0) {
+    for(var i = 0; i < this.layout.top.length; i++) {
+        for(var j = 0; j<this.layout.top[i].length; j++) {
+            if(this.layout.top[i][j]!=0) {
                 this.sprite.drawCentredAt(ctx, this.cx + width/2 + j*width, height/2 + i*height); 
-                
-                //ctx.fillRect(this.cx + j*width + 2, i*height, width, height);
-            }
-            else if(this.layout[i][j]!=0) {
-                this.sprite.drawCentredAt(ctx, this.cx + width/2 + j*width, g_canvas.height + height/2 -(this.layout.length-i)*height);
-                
-                //ctx.fillRect(this.cx + j*width + 2, g_canvas.height - i*height, width, height);
-            }            
+            }         
         }
     }
+
+    for(var i = 0; i < this.layout.bottom.length; i++) {
+        for(var j = 0; j<this.layout.bottom[i].length; j++) {
+            if(this.layout.bottom[i][j]!=0) {
+                this.sprite.drawCentredAt(ctx, this.cx + width/2 + j*width, g_canvas.height + height/2 -(this.layout.bottom.length-i)*height);
+            }         
+        }
+    } 
+
     ctx.restore();
 
     

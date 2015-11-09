@@ -20,7 +20,6 @@ function Sprite(image, scale) {
     this.width = image.width;
     this.height = image.height;
     this.scale = scale;
-    console.log(this);
 }
 
 Sprite.prototype.drawAt = function (ctx, x, y) {
