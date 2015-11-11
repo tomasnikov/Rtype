@@ -77,7 +77,7 @@ collisionWithEnvironment: function(posX, posY, radius, entity){
     var height = entity.brickHeight;
     var environmentdu = entity.cx
     var arrayCoordX = Math.floor((-environmentdu+posX)/width); //index of brick in environment to check
-    var posCoordX = Math.floor((posX)/width); //index of brick in environment to check
+    var posCoordX = Math.floor((posX)/width); 
 
     console.log(arrayCoordX)
     //var arrayCoordY = Math.floor(posY/height);
@@ -85,7 +85,7 @@ collisionWithEnvironment: function(posX, posY, radius, entity){
         for(var j = -1; j < 2; j++){
             if(arrayCoordX == 0){j=0;}
             var brickcy = i*height + height/2;
-            var brickcx = (posCoordX+j)*width + width/2;
+            var brickcx = (arrayCoordX+j)*width + environmentdu + width/2;
             if(entity.layout.top[i][arrayCoordX+j] != 0 
                 && util.squareCircleCollision(brickcx, brickcy, width, height, posX, posY, radius)){
                 console.log('top; ' + (arrayCoordX))
@@ -97,8 +97,8 @@ collisionWithEnvironment: function(posX, posY, radius, entity){
     for(var i = 0; i < entity.layout.bottom.length; i++){
         for(var j = -1; j < 2; j++){
             if(arrayCoordX == 0){j=0;}
-            var brickcy = g_canvas.height - i*height - height/2;
-            var brickcx = (posCoordX+j)*width + width/2;
+            var brickcy = g_canvas.height - (2-i)*height - height/2;
+            var brickcx = (arrayCoordX+j)*width+ environmentdu + width/2;
             if(entity.layout.bottom[i][arrayCoordX+j] != 0 
                 && util.squareCircleCollision(brickcx, brickcy, width, height, posX, posY, radius)){
                 console.log('bottom; ' + (arrayCoordX))
