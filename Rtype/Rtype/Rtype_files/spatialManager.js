@@ -63,7 +63,7 @@ findEntityInRange: function(posX, posY, radius) {
         var minDist = util.square(e.radius + radius);
         if(e.entity.layout){
             if (this.collisionWithEnvironment(posX, posY, radius, e.entity)){
-                //return e.entity;
+                return e.entity;
                 console.log("collision!")
             }
         }
@@ -79,7 +79,6 @@ collisionWithEnvironment: function(posX, posY, radius, entity){
     var arrayCoordX = Math.floor((-environmentdu+posX)/width); //index of brick in environment to check
     var posCoordX = Math.floor((posX)/width); 
 
-    console.log(arrayCoordX)
     //var arrayCoordY = Math.floor(posY/height);
     for(var i = 0; i < entity.layout.top.length; i++){
         for(var j = -1; j < 2; j++){
@@ -88,7 +87,6 @@ collisionWithEnvironment: function(posX, posY, radius, entity){
             var brickcx = (arrayCoordX+j)*width + environmentdu + width/2;
             if(entity.layout.top[i][arrayCoordX+j] != 0 
                 && util.squareCircleCollision(brickcx, brickcy, width, height, posX, posY, radius)){
-                console.log('top; ' + (arrayCoordX))
                 return true
                 
             }
@@ -101,7 +99,6 @@ collisionWithEnvironment: function(posX, posY, radius, entity){
             var brickcx = (arrayCoordX+j)*width+ environmentdu + width/2;
             if(entity.layout.bottom[i][arrayCoordX+j] != 0 
                 && util.squareCircleCollision(brickcx, brickcy, width, height, posX, posY, radius)){
-                console.log('bottom; ' + (arrayCoordX))
                 return true
                 
             }

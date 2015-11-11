@@ -66,12 +66,21 @@ Bullet.prototype.update = function (du) {
     // Handle collisions
     //
     var hitEntity = this.findHitEntity();
+    console.log(hitEntity);
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit(this.power);
         if (canTakeHit) {
             canTakeHit.call(hitEntity);
         } 
-        this.power -= hitEntity.fullLife - hitEntity.HP;
+        console.log(this.power);
+        if(hitEntity.fullLife) {
+           this.power -= hitEntity.fullLife - hitEntity.HP; 
+        }
+        else {
+            this.power = 0;
+        }
+        
+        console.log(this.power);
         if(this.power<3) return entityManager.KILL_ME_NOW;
     }
     
