@@ -27,12 +27,9 @@ function Enemy(descr) {
     this.randomiseVelocity();
     this.randomiseRange();
     this.setHP();
+    this.points = 50;
 
-/*
-    // Diagnostics to check inheritance stuff
-    this._EnemyProperty = true;
-    console.dir(this);
-*/
+    console.log(this);
 
 };
 
@@ -84,6 +81,11 @@ Enemy.prototype.update = function (du) {
     //this.velY = Math.cos(this.degree)*10;
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
+
+    if(this.isColliding()) {
+        this.kill();
+    }
+
     if(this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
@@ -133,9 +135,6 @@ Enemy.prototype.takeBulletHit = function (power) {
     if(this.HP <= 0) {
         this.kill();
         this.evaporateSound.play();
-        var points = parseInt(document.getElementById("points").innerHTML);
-        points += 50;
-        document.getElementById("points").innerHTML = points;
     }
     return power-origHP;    
 };

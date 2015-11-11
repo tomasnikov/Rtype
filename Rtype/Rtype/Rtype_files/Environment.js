@@ -64,8 +64,8 @@ Environment.prototype.update = function (du) {
         this.scrollSpeed = 0;
     }
 
-    this.cx -= du;
-    this.imageCx -= du/1.5;
+    this.cx -= this.scrollSpeed;
+    this.imageCx -= this.scrollSpeed/1.5;
     
 
     spatialManager.register(this);      
