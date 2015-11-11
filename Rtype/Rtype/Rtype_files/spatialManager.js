@@ -75,28 +75,35 @@ findEntityInRange: function(posX, posY, radius) {
 collisionWithEnvironment: function(posX, posY, radius, entity){
     var width = entity.brickWidth;
     var height = entity.brickHeight;
-    var arrayCoordX = Math.floor(posX/width);
-    var arrayCoordY = Math.floor(posY/height);
+    var environmentdu = entity.cx
+    var arrayCoordX = Math.floor((-environmentdu+posX)/width); //index of brick in environment to check
+    var posCoordX = Math.floor((posX)/width); //index of brick in environment to check
+
+    console.log(arrayCoordX)
+    //var arrayCoordY = Math.floor(posY/height);
     for(var i = 0; i < entity.layout.top.length; i++){
         for(var j = -1; j < 2; j++){
             if(arrayCoordX == 0){j=0;}
-            var brickcy = i*entity.brickHeight + entity.brickHeight/2;
-            var brickcx = (arrayCoordX+j)*entity.brickWidth + entity.brickWidth/2;
+            var brickcy = i*height + height/2;
+            var brickcx = (posCoordX+j)*width + width/2;
             if(entity.layout.top[i][arrayCoordX+j] != 0 
-                && util.squareCircleCollision(brickcx, brickcy, entity.brickWidth, entity.brickHeight, posX, posY, radius)){
+                && util.squareCircleCollision(brickcx, brickcy, width, height, posX, posY, radius)){
+                console.log('top; ' + (arrayCoordX))
                 return true
-                console.log()
+                
             }
         }
     }
     for(var i = 0; i < entity.layout.bottom.length; i++){
         for(var j = -1; j < 2; j++){
             if(arrayCoordX == 0){j=0;}
-            var brickcy = i*entity.brickHeight// + entity.brickHeight/2;
-            var brickcx = (arrayCoordX+j)*entity.brickWidth + entity.brickWidth/2;
+            var brickcy = g_canvas.height - i*height - height/2;
+            var brickcx = (posCoordX+j)*width + width/2;
             if(entity.layout.bottom[i][arrayCoordX+j] != 0 
-                && util.squareCircleCollision(brickcx, brickcy, entity.brickWidth, entity.brickHeight, posX, posY, radius)){
+                && util.squareCircleCollision(brickcx, brickcy, width, height, posX, posY, radius)){
+                console.log('bottom; ' + (arrayCoordX))
                 return true
+                
             }
         }
     }
