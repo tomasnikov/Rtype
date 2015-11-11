@@ -56,7 +56,7 @@ Bullet.prototype.update = function (du) {
     //console.log(this);
 
     this.lifeSpan -= du;
-    if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;
+    if (this.lifeSpan < 0 || this.cx > g_canvas.width) return entityManager.KILL_ME_NOW;
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;

@@ -45,7 +45,8 @@ function Environment(descr) {
     this.brickWidth = this.sprite.width;
     this.brickHeight = this.sprite.height;
 
-    console.log(this);
+    this.scrollSpeed = this.brickWidth/(g_canvas.width/10);
+    console.log(g_canvas.width/this.brickWidth);
 
 
 };
@@ -54,7 +55,15 @@ Environment.prototype = new Entity();
 
 Environment.prototype.update = function (du) {
 
-    spatialManager.unregister(this);   
+
+    spatialManager.unregister(this);
+
+    var maxScrolled = this.brickWidth*(this.layout.top[0].length-Math.ceil(g_canvas.width/this.brickWidth));
+
+    if(this.cx <= -maxScrolled) {
+        this.scrollSpeed = 0;
+    }
+
     this.cx -= du;
     this.imageCx -= du/1.5;
     

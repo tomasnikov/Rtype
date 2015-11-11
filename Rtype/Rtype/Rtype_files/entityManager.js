@@ -29,8 +29,8 @@ var entityManager = {
 
 _enemies   : [],
 _bullets : [],
-_ships   : [],
 _environment : [],
+_ships   : [],
 
 _bShowEnemies : true,
 
@@ -95,7 +95,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._enemies, this._bullets, this._ships, this._environment];
+    this._categories = [this._enemies, this._bullets, this._environment, this._ships];
 },
 
 init: function() {
@@ -187,7 +187,6 @@ update: function(du) {
 
 render: function(ctx) {
     var debugX = 10, debugY = 100;
-
     ctx.drawImage(g_images['space'], this._environment[0].imageCx, -300);
 
     for (var c = 0; c < this._categories.length; ++c) {
@@ -199,7 +198,6 @@ render: function(ctx) {
             continue;
 
         for (var i = 0; i < aCategory.length; ++i) {
-
             aCategory[i].render(ctx);
             //debug.text(".", debugX + i * 10, debugY);
 

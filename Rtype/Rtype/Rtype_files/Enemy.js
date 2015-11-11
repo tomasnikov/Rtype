@@ -131,8 +131,11 @@ Enemy.prototype.takeBulletHit = function (power) {
     var origHP = this.hp;
     this.HP = this.HP - power > 0 ? this.HP - power : 0;
     if(this.HP <= 0) {
-       this.kill();
-    this.evaporateSound.play(); 
+        this.kill();
+        this.evaporateSound.play();
+        var points = parseInt(document.getElementById("points").innerHTML);
+        points += 50;
+        document.getElementById("points").innerHTML = points;
     }
     return power-origHP;    
 };
