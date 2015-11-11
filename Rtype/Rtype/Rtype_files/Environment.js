@@ -30,7 +30,6 @@ var levelOne = {
 
 // A generic contructor which accepts an arbitrary descriptor object
 function Environment(descr) {
-    console.log("halló");
     // Common inherited setup logic from Entity
     this.setup(descr);
 
@@ -42,6 +41,9 @@ function Environment(descr) {
     this.cx = 0;
     this.imageCx = 0;
     this.cy = 0;
+
+    this.brickWidth = this.sprite.width;
+    this.brickHeight = this.sprite.height;
 
     console.log(this);
 
@@ -70,7 +72,7 @@ Environment.prototype.takeBulletHit = function (power) {
     this.HP = this.HP - power > 0 ? this.HP - power : 0;
     if(this.HP <= 0) {
        this.kill();
-    this.evaporateSound.play(); 
+    //this.evaporateSound.play(); 
     }
     return power-origHP;    
 };

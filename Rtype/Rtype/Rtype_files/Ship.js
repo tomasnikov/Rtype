@@ -163,8 +163,6 @@ Ship.prototype.update = function (du) {
     else {
         spatialManager.register(this);
     }
-    // TODO: YOUR STUFF HERE! --- Warp if isColliding, otherwise Register
-
 };
 
 Ship.prototype.computeSubStep = function (du) {
@@ -274,11 +272,9 @@ Ship.prototype.maybeFireBullet = function () {
     }
     else if(this.power>0) {
         this.power = Math.ceil(this.power);
-        console.log(this.power);
         var dX = +Math.sin(this.rotation);
         var dY = -Math.cos(this.rotation);
         var launchDist = this.getRadius()  + 4 * this.power;
-        console.log(this.getRadius());
         
         var relVel = this.launchVel;
         var relVelX = dX * relVel;

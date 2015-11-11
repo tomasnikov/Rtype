@@ -76,7 +76,17 @@ wrappedDistSq: function(x1, y1, x2, y2, xWrap, yWrap) {
     }
     return this.square(dx) + this.square(dy);
 },
-
+squareCircleCollision: function(x,y,w,h,p,q,r){
+    var dist = {
+        x : Math.abs(x - p),
+        y : Math.abs(y - q)
+    }
+    if(dist.x > w/2+r){return false;}
+    if(dist.y > h/2+r){return false;}
+    if(dist.x <= w/2){return true;}
+    if(dist.y <= h/2){return true;}
+    return this.distSq(dist.x, dist.y, w/2, h/2) <= this.square(r); 
+},
 
 // CANVAS OPS
 // ==========
