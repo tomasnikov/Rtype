@@ -4,7 +4,8 @@ var g_doClear = true;
 var g_doBox = false;
 var g_undoBox = false;
 var g_doFlipFlop = false;
-var g_doRender = true;
+var g_doRenderSimulation = false;
+var g_doRenderMenu = true; //if false: render simlation, if true: render menu
 
 var g_frameCounter = 1;
 
@@ -40,7 +41,12 @@ function render(ctx) {
     
     // The core rendering of the actual game / simulation
     //
-    if (g_doRender) renderSimulation(ctx);
+    if(g_doRenderMenu) {
+        renderMenu(ctx)
+    }
+    else { 
+        renderSimulation(ctx);
+    }
     
     
     // This flip-flip mechanism illustrates the pattern of alternation

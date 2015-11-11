@@ -78,7 +78,9 @@ function gatherInputs() {
 
 
 // GAME-SPECIFIC UPDATE LOGIC
-
+function updateMenu(du) {
+    mainMenu.update(du);
+}
 function updateSimulation(du) {
     
     processDiagnostics();
@@ -104,6 +106,7 @@ var KEY_SPATIAL = keyCode('X');
 
 var KEY_HALT  = keyCode('H');
 var KEY_RESET = keyCode('R');
+var KEY_PLAY = keyCode('7');
 
 var KEY_0 = keyCode('0');
 
@@ -128,6 +131,7 @@ function processDiagnostics() {
     if (eatKey(KEY_RESET)) entityManager.resetShips();
 
     if (eatKey(KEY_0)) entityManager.toggleEnemies();
+    if (eatKey(KEY_PLAY)) g_doRenderMenu = !g_doRenderMenu;
 
     /*
     if (eatKey(KEY_1)) entityManager.generateShip({
@@ -162,9 +166,10 @@ function processDiagnostics() {
 
 
 // GAME-SPECIFIC RENDERING
-
+function renderMenu(ctx){
+    mainMenu.render(ctx)
+}
 function renderSimulation(ctx) {
-
     entityManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
@@ -186,7 +191,7 @@ function requestPreloads() {
         environment : "Sprites/goldBrick.png",
         bullet : "Sprites/Spaceship_art_pack_larger/Blue/bullet.png",
         space : "space.jpg"
-    };
+    }
 
     imagesPreload(requiredImages, g_images, preloadDone);
 }

@@ -74,9 +74,13 @@ main._isGameOver = false;
 
 main.gameOver = function () {
     this._isGameOver = true;
+    g_doRenderMenu = true
     console.log("gameOver: quitting...");
 };
-
+main.toggleMenu = function(){
+    g_updateMenu = !g_updateMenu;
+    g_doRenderMenu = !g_doRenderMenu;
+}
 // Simple voluntary quit mechanism
 //
 var KEY_QUIT = 'Q'.charCodeAt(0);

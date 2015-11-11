@@ -16,7 +16,7 @@ var g_prevUpdateDu = null;
 // Track odds and evens for diagnostic / illustrative purposes
 //
 var g_isUpdateOdd = false;
-
+var g_updateMenu = true;
 
 function update(dt) {
     
@@ -40,7 +40,8 @@ function update(dt) {
     //
     var du = (dt / NOMINAL_UPDATE_INTERVAL);
     
-    updateSimulation(du);
+    if(g_updateMenu) updateMenu(du);
+    else updateSimulation(du);
     
     g_prevUpdateDt = original_dt;
     g_prevUpdateDu = du;
