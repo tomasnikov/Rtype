@@ -55,6 +55,7 @@ Ship.prototype.launchVel = 5;
 Ship.prototype.numSubSteps = 1;
 Ship.prototype.power = 0;
 Ship.prototype.fullLife = 3;
+Ship.prototype.points = 0;
 
 // HACKED-IN AUDIO (no preloading)
 Ship.prototype.warpSound = new Audio(
@@ -335,4 +336,19 @@ Ship.prototype.render = function (ctx) {
 	ctx, this.cx, this.cy, this.rotation
     );
     this.sprite.scale = origScale;
+
+    for(var i = 0; i<this.HP; i++) {
+        this.sprite.drawCentredAt(
+            ctx, (i+1)*(this.getRadius()*1.5), this.getRadius(), 0
+        );
+    }
+
+    ctx.save();
+    ctx.font = "30px Arial black";
+    ctx.fillStyle = "black";
+    ctx.fillText("Points: " + this.points, 30, g_canvas.height - 30);
+    ctx.restore();
+    
+
+   
 };

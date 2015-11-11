@@ -173,6 +173,13 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
+                if(aCategory[i].points) {
+                    for(var j = 0; j<this._ships.length; j++) {
+                        this._ships[j].points += aCategory[i].points;
+                        console.log(this._ships[j].points);
+                    }
+                }
+                
                 aCategory.splice(i,1);
             }
             else {
