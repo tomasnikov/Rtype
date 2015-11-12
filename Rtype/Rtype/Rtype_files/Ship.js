@@ -24,7 +24,7 @@ function Ship(descr) {
     this.sprite = this.sprite || g_sprites.ship;
     
     // Set normal drawing scale, and warp state off
-    this._scale = 1;
+    this._scale = 0.1;
     this._isWarping = false;
     this.HP = this.fullLife;
 };
@@ -292,7 +292,7 @@ Ship.prototype.maybeFireBullet = function () {
 };
 
 Ship.prototype.getRadius = function () {
-    return (this.sprite.width / 2) * 0.9;
+    return (this.sprite.width / 2)*this._scale * 0.9;
 };
 
 Ship.prototype.takeBulletHit = function () {
@@ -346,7 +346,7 @@ Ship.prototype.render = function (ctx) {
     ctx.save();
     ctx.font = "30px Arial black";
     ctx.fillStyle = "black";
-    ctx.fillText("Points: " + this.points, 30, g_canvas.height - 30);
+    ctx.fillText("Points: " + this.points, 120, g_canvas.height - 30);
     ctx.restore();
     
 
