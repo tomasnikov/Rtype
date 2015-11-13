@@ -49,6 +49,7 @@ var g_ctx = g_canvas.getContext("2d");
 function createInitialShips() {
 
     entityManager.generateShip({
+        type: "Ship",
         cx : 100,
         cy : 300
     });
@@ -186,7 +187,6 @@ function requestPreloads() {
 
     var requiredImages = {
         ship   : "Sprites/Spaceship_art_pack_larger/Blue/Small_ship_blue/1.png",
-        ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
         enemy   : "Sprites/copterAlien.gif",
         environment : "Sprites/goldBrick.png",
         bullet : "Sprites/Spaceship_art_pack_larger/Blue/bullet.png",
@@ -201,8 +201,7 @@ var g_sprites = {};
 function preloadDone() {
 
     g_sprites.ship  = new Sprite(g_images.ship, 0.1);
-    g_sprites.ship2 = new Sprite(g_images.ship2);
-    g_sprites.enemy  = new Sprite(g_images.enemy, 0.5);
+    g_sprites.enemy  = new Sprite(g_images.enemy, 0.33);
     g_sprites.environment = new Sprite(g_images.environment, 1);
     g_sprites.bullet = new Sprite(g_images.bullet, 1);
 

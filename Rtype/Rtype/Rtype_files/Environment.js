@@ -17,14 +17,11 @@ var levelOne = {
         [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0],
         [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
     ],
-
-
     bottom: [
         [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
         [0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ]
-
 };
 
 
@@ -45,8 +42,7 @@ function Environment(descr) {
     this.brickWidth = this.sprite.width;
     this.brickHeight = this.sprite.height;
 
-    this.scrollSpeed = this.brickWidth/(g_canvas.width/10);
-    console.log(g_canvas.width/this.brickWidth);
+    this.scrollSpeed = this.brickWidth/(g_canvas.width/20);
 
 
 };
@@ -89,6 +85,7 @@ Environment.prototype.takeBulletHit = function (power) {
 Environment.prototype.reset = function() {
     this.cx = 0;
     this.imageCx = 0;
+
 }
 
 

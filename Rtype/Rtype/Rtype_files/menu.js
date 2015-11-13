@@ -47,8 +47,7 @@ var mainMenu = {
 		var controlstext = this.controlstext;
 		rtypetext.color = "white",
 		playtext.color = "white",
-		controlstext.color = "white",
-		console.log(g_mouseX)
+		controlstext.color = "white"
 		if(g_mouseX < playtext.cx+playtext.width 
 			&& g_mouseX > playtext.cx-playtext.width
 			&& g_mouseY < playtext.cy+playtext.height
