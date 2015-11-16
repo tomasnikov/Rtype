@@ -73,8 +73,10 @@ main._iterCore = function (dt) {
 main._isGameOver = false;
 
 main.gameOver = function () {
-    this._isGameOver = true;
-    g_doRenderMenu = true
+    //this._isGameOver = true;
+    //g_doRenderMenu = true
+    //g_updateMenu = true
+    this.toggleMenu()
     console.log("gameOver: quitting...");
 };
 main.toggleMenu = function(){

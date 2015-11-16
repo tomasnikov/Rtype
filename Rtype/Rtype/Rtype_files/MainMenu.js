@@ -4,7 +4,7 @@ function MainMenu() {
 		sprite: g_sprites.logo,
 		text: "R-Type",
 		color:"white",
-		cx: g_canvas.width/2,
+		cx: -300,//g_canvas.width/2,
 		cy: 150,
 		height: 30,
 		width: 100
@@ -27,7 +27,7 @@ function MainMenu() {
 	}
 	this.showLevelSelector = false
 	this.showControls = false
-
+	this.dislplaySelection = false
 	this.levelSelector = []
 	var gap = 20;
 	this.levelSelector[0] = {
@@ -43,7 +43,7 @@ function MainMenu() {
 			text: (i).toString(),
 			color: "white",
 			cx: g_canvas.width/2 - (g_levelManager.nrLevels*gap/2) + (i*gap),
-			cy: 400,
+			cy: 420,
 			width: gap-g_ctx.measureText((i+1).toString()).width - 5,
 			height: 20
 		}
@@ -106,13 +106,17 @@ MainMenu.prototype.renderlevelSelector = function(ctx){
 		var levelSelector = this.levelSelector[i];
 		ctx.fillStyle = levelSelector.color
 		ctx.fillText(levelSelector.text , levelSelector.cx, levelSelector.cy)
+		if(i > 0){
+			ctx.strokeStyle = levelSelector.color
+			ctx.strokeRect(levelSelector.cx - levelSelector.width/2-4 , levelSelector.cy - levelSelector.height, levelSelector.width+8, levelSelector.height +8)
+		}
 	}
 	ctx.restore();
 }
 MainMenu.prototype.renderControls = function(ctx){
 	ctx.save();
 	ctx.fillStyle = "white";
-	ctx.font = "20px Arial"
+	ctx.font = "20px Lucida Console"
 	ctx.textAlign = "center";
 	ctx.fillText("Spacebar: shoot", g_canvas.width/2,380);
 	ctx.fillText("Up: W", g_canvas.width/2,400);
@@ -140,6 +144,14 @@ MainMenu.prototype.update = function(du){
 		&& g_mouseY > controlstext.cy-controlstext.height){
 		this.controlstext.color = "blue";
 	}
+	//move logo:
+	if(this.rtypetext.cx <= g_canvas.width/2){
+		this.rtypetext.cx += 10;
+		if(this.rtypetext.cx >= g_canvas.width/2){
+			this.dislplaySelection = true
+		}
+	}
+
 	if(this.showLevelSelector){
 		this.updateLevelSelector()
 	}
@@ -158,16 +170,18 @@ MainMenu.prototype.render = function(ctx){
 	rtypetext.sprite.drawCentredAt(
     	ctx, rtypetext.cx, rtypetext.cy, 0
    	);
-	ctx.font = playtext.height + "px Arial"
-	ctx.fillStyle = playtext.color;
-	ctx.fillText(playtext.text, playtext.cx,playtext.cy);
-	ctx.fillStyle = controlstext.color;
-	ctx.fillText(controlstext.text,controlstext.cx, controlstext.cy);
-	if(this.showLevelSelector){
-		this.renderlevelSelector(ctx);
-	}
-	if(this.showControls){
-		this.renderControls(ctx);
+   	if(this.dislplaySelection){
+		ctx.font = playtext.height + "px Lucida Console"
+		ctx.fillStyle = playtext.color;
+		ctx.fillText(playtext.text, playtext.cx,playtext.cy);
+		ctx.fillStyle = controlstext.color;
+		ctx.fillText(controlstext.text,controlstext.cx, controlstext.cy);
+		if(this.showLevelSelector){
+			this.renderlevelSelector(ctx);
+		}
+		if(this.showControls){
+			this.renderControls(ctx);
+		}
 	}
 	ctx.restore();
 }

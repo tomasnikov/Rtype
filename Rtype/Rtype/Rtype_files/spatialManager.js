@@ -117,9 +117,9 @@ computeNextEnemyMove: function(posX, posY, radius, velX, velY) {
         var collidesBottom2 = this.collisionWithEnvironment(possPos[7][0], possPos[7][1], radius, environment);
         var collidesTopTop = this.collisionWithEnvironment(possPos[8][0], possPos[8][1], radius, environment);
         var collidesBottomBottom = this.collisionWithEnvironment(possPos[9][0], possPos[9][1], radius, environment);
-        console.log("top", collidesTop0, collidesTop1, collidesTop2);
-        console.log("front", collidesFront1, collidesFront2);
-        console.log("bottom", collidesBottom0, collidesBottom1, collidesBottom2);
+        //console.log("top", collidesTop0, collidesTop1, collidesTop2);
+        //console.log("front", collidesFront1, collidesFront2);
+        //console.log("bottom", collidesBottom0, collidesBottom1, collidesBottom2);
 
         if(collidesFront1 == "top" 
             || collidesFront2 == "top" 
@@ -144,7 +144,7 @@ computeNextEnemyMove: function(posX, posY, radius, velX, velY) {
     }
     if(ship) {
         var distY = ship.cy - posY;
-        console.log("dist", distY);
+        //console.log("dist", distY);
         if(distY>radius && !isNegative) {
             return velY*-0.75;
         }
@@ -168,7 +168,7 @@ collisionWithEnvironment: function(posX, posY, radius, entity){
     //var arrayCoordY = Math.floor(posY/height);
     for(var i = 0; i < entity.layout.top.length; i++){
         for(var j = -1; j < 2; j++){
-            if(arrayCoordX == 0){j=0;}
+            if(arrayCoordX == 0 && j==-1){j=0;}
             var brickcy = i*height + height/2;
             var brickcx = (arrayCoordX+j)*width + environmentdu + width/2;
             if(entity.layout.top[i][arrayCoordX+j] != 0 
@@ -180,7 +180,7 @@ collisionWithEnvironment: function(posX, posY, radius, entity){
     }
     for(var i = 0; i < entity.layout.bottom.length; i++){
         for(var j = -1; j < 2; j++){
-            if(arrayCoordX == 0){j=0;}
+            if(arrayCoordX == 0 && j==-1){j=0;}
             var brickcy = g_canvas.height - (2-i)*height - height/2;
             var brickcx = (arrayCoordX+j)*width+ environmentdu + width/2;
             if(entity.layout.bottom[i][arrayCoordX+j] != 0 
