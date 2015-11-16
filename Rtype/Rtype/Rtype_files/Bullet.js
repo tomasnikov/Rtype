@@ -20,11 +20,7 @@ function Bullet(descr) {
 
     // Make a noise when I am created (i.e. fired)
     this.fireSound.play();
-/*
-    // Diagnostics to check inheritance stuff
-    this._bulletProperty = true;
-    console.dir(this);
-*/
+    console.log(this);
 }
 
 Bullet.prototype = new Entity();
@@ -57,14 +53,12 @@ Bullet.prototype.update = function (du) {
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;
-    
-    // TODO? NO, ACTUALLY, I JUST DID THIS BIT FOR YOU! :-)
-    //
+
     // Handle collisions
     //
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
-        var canTakeHit = hitEntity.takeBulletHit(this.power);
+        var canTakeHit = hitEntity.takeBulletHit(this.power, this.firedFrom);
         if (canTakeHit) {
             canTakeHit.call(hitEntity);
         } 
@@ -74,7 +68,7 @@ Bullet.prototype.update = function (du) {
         else {
             this.power = 0;
         }
-                if(this.power<3) return entityManager.KILL_ME_NOW;
+        if(this.power<=0) return entityManager.KILL_ME_NOW;
     }
     
     spatialManager.register(this);
@@ -89,7 +83,7 @@ Bullet.prototype.takeBulletHit = function () {
     //this.kill();
     
     // Make a noise when I am zapped by another bullet
-    this.zappedSound.play();
+    //this.zappedSound.play();
 };
 
 Bullet.prototype.reset = function() {

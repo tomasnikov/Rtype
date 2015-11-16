@@ -284,7 +284,7 @@ Ship.prototype.maybeFireBullet = function () {
         entityManager.fireBullet(
            this.cx + dX * launchDist, this.cy + dY * launchDist,
            this.velX + relVelX, this.velY + relVelY,
-           this.rotation, this.power);
+           this.rotation, this.power, "Ship");
         this.power = 0;
         document.getElementById("power").value = this.power;
     }

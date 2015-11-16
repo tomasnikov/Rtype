@@ -45,6 +45,7 @@ function Environment(descr) {
     this.brickHeight = this.sprite.height;
 
     this.scrollSpeed = this.brickWidth/(g_canvas.width/20);
+    this.origScrollSpeed = this.scrollSpeed;
 
 
 };
@@ -87,6 +88,7 @@ Environment.prototype.takeBulletHit = function (power) {
 Environment.prototype.reset = function() {
     this.cx = 0;
     this.imageCx = 0;
+    this.scrollSpeed = this.origScrollSpeed;
 
 }
 

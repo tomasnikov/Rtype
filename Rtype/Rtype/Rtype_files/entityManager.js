@@ -42,13 +42,16 @@ _generateEnemies : function() {
     var i,
         NUM_ENEMIES = 4;
     var randomSeed = Math.random();
-    for (i = 0; i < NUM_ENEMIES; ++i) {
-        this.generateEnemy({
-            type: "Enemy",
-            randomSeed: randomSeed,
-            diff: i
-        });
+    if(!g_isUpdatePaused){
+        for (i = 0; i < NUM_ENEMIES; ++i) {
+            this.generateEnemy({
+                type: "Enemy",
+                randomSeed: randomSeed,
+                diff: i
+            });
+        } 
     }
+    
 },
 
 _generateEnvironment : function() {
@@ -108,18 +111,40 @@ init: function() {
     this._generateEnvironment();
     setInterval(function() {
         entityManager._generateEnemies();
-}, 3000);
+},  5000);
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation, power) {
+fireBullet: function(cx, cy, velX, velY, rotation, power, firedFrom) {
     this._bullets.push(new Bullet({
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
         power : power,
-        rotation : rotation
+        rotation : rotation,
+        firedFrom : firedFrom
     }));
+},
+
+fireBulletAtShip: function(cx, cy, velX, velY, rotation, firedFrom) {
+    //console.log(cx, cy, velX, velY, rotation);
+    for(var i = 0; i<this._ships.length; i++) {
+        var distX = cx - this._ships[i].cx;
+        var distY = cy - this._ships[i].cy;
+        var rot = Math.tan(distY/distX);
+        rotation = rotation + rot;
+        var relVelX = velX;
+        var relVelY = -distY/(2*SECS_TO_NOMINALS);
+        this._bullets.push(new Bullet({
+            cx   : cx,
+            cy   : cy,
+            velX : relVelX,
+            velY : relVelY,
+            power : 1,
+            rotation : rotation,
+            firedFrom : firedFrom
+        }));
+    }
 },
 
 generateEnemy : function(descr) {

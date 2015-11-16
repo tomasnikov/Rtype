@@ -32,6 +32,8 @@ function Enemy(descr) {
 
 Enemy.prototype = new Entity();
 
+Enemy.prototype.launchVel = 3;
+
 Enemy.prototype.setHP = function() {
     this.fullLife = Math.ceil(Math.random()*3);
     this.HP = this.fullLife;
@@ -59,7 +61,8 @@ Enemy.prototype.randomiseVelocity = function () {
 
     this.velX = this.velX || -150/SECS_TO_NOMINALS;
     //this.velY = this.velY || speed;
-    this.velY = this.velX;
+    this.velY = this.velX*0.5;
+    this.origVelY = this.velY;
 
     var MIN_ROT_SPEED = 0.5,
         MAX_ROT_SPEED = 2.5;
@@ -79,7 +82,8 @@ Enemy.prototype.update = function (du) {
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
 
-    if(this.isColliding()) {
+    var collided = this.isColliding();
+    if(collided && collided.firedFrom != "Enemy") {
         this.kill();
     }
 
@@ -94,14 +98,21 @@ Enemy.prototype.update = function (du) {
         this.velY = 0;
     }
     else if(this.velY === 0) {
-        this.velY = this.velX;
+        this.velY = this.origVelY;
     }
     else {
         //console.log(spatialManager.computeNextEnemyMove(this.cx, this.cy, this.getRadius(), this.velX, this.velY));
-        this.velY = spatialManager.computeNextEnemyMove(this.cx, this.cy, this.getRadius(), this.velX, this.velY);
+        this.velY = spatialManager.computeNextEnemyMove(this.cx, this.cy, this.getRadius(), this.origVelY, this.velY);
     }
+    //console.log(this.velY);
 
     this.cx += this.velX * du;
+
+    if(this.cx < g_canvas.width && this.cx > 0) {
+       this.maybeFireBullet(); 
+    }
+    
+
     /*
     if(Math.abs(this.cy - this.origCy) > this.range) {
         this.velY = -this.velY;
@@ -126,23 +137,31 @@ Enemy.prototype.update = function (du) {
 };
 
 Enemy.prototype.getRadius = function () {
-    return this.scale * (this.sprite.width / 2) * 0.6;
+    return this.scale * (this.sprite.width / 2) * 0.7;
 };
 
-// HACKED-IN AUDIO (no preloading)
-Enemy.prototype.splitSound = new Audio(
-  "sounds/EnemySplit.ogg");
-Enemy.prototype.evaporateSound = new Audio(
-  "sounds/EnemyEvaporate.ogg");
-
-Enemy.prototype.takeBulletHit = function (power) {
-    var origHP = this.hp;
-    this.HP = this.HP - power > 0 ? this.HP - power : 0;
-    if(this.HP <= 0) {
-        this.kill(this.points);
-        this.evaporateSound.play();
+Enemy.prototype.maybeFireBullet = function() {
+    var shouldFireBullet = Math.random();
+    if(shouldFireBullet<0.002) {
+        var launchDist = this.getRadius();
+        entityManager.fireBulletAtShip(
+           this.cx + launchDist, this.cy,
+           this.velX - this.launchVel, this.velY,
+           -Math.PI/2, "Enemy");
     }
-    return power-origHP;    
+};
+
+Enemy.prototype.takeBulletHit = function (power, firedFrom) {
+    if(firedFrom === "Ship") {
+        console.log("got here");
+        var origHP = this.hp;
+        this.HP = this.HP - power > 0 ? this.HP - power : 0;
+        if(this.HP <= 0) {
+            this.kill(this.points);
+        }
+        return power-origHP;  
+    }
+      
 };
 
 Enemy.prototype.reset = function() {
