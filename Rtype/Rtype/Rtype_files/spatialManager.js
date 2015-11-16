@@ -127,28 +127,47 @@ computeNextEnemyMove: function(posX, posY, radius, origVelY, velY) {
             || collidesBottom1 
             || collidesBottom2);
     }
+
+    var movement = {
+        velY: velY,
+        timeMoving: 0
+    };
+    var secToNom = SECS_TO_NOMINALS;
+
     if(ship) {
         var distY = posY-ship.cy;
         var minDist = 0;
         //Enemy is below ship and going up
         if(distY>minDist && !isGoingDown && shouldGoUp) {
-            return velY;
+            return movement;
         }
         //Enemy is above ship and going down
         else if(distY<-minDist && isGoingDown && shouldGoDown) {
-            return velY;
+            return movement;
         }
         //Enemy is below ship and going down
         else if(distY>minDist && isGoingDown && shouldGoDown) {
-            return velY*-1;
+            movement.velY = velY*-1;
+            movement.timeMoving = 0.5*secToNom;
+            return movement;
         }
         //Enemy is above ship and going up
         else if(distY<-minDist&& !isGoingDown && shouldGoUp) {
-            return velY*-1;
+            movement.velY = velY*-1;
+            movement.timeMoving = 0.5*secToNom;
+            return movement;
         }
     }
     console.log(shouldGoDown);
-    return isGoingDown && shouldGoDown ? velY : velY*-1;
+    if(isGoingDown && shouldGoDown) {
+        return movement;
+    }
+    else {
+        movement.velY = velY*-1;
+        movement.timeMoving = 0.5*secToNom;
+        return movement;
+    }
+    //return isGoingDown && shouldGoDown ? velY : velY*-1;
     
 
 },

@@ -33,6 +33,7 @@ function Enemy(descr) {
 Enemy.prototype = new Entity();
 
 Enemy.prototype.launchVel = 3;
+Enemy.prototype.moving = 0;
 
 Enemy.prototype.setHP = function() {
     this.fullLife = Math.ceil(Math.random()*3);
@@ -100,11 +101,14 @@ Enemy.prototype.update = function (du) {
     else if(this.velY === 0) {
         this.velY = this.origVelY;
     }
-    else {
-        //console.log(spatialManager.computeNextEnemyMove(this.cx, this.cy, this.getRadius(), this.velX, this.velY));
-        this.velY = spatialManager.computeNextEnemyMove(this.cx, this.cy, this.getRadius(), this.origVelY, this.velY);
+    else if(this.moving<=0) {
+        var movement = spatialManager.computeNextEnemyMove(this.cx, this.cy, this.getRadius(), this.origVelY, this.velY);
+        this.velY = movement.velY;
+        this.moving = movement.timeMoving;
     }
-    //console.log(this.velY);
+    else {
+        this.moving -= du;
+    }
 
     this.cx += this.velX * du;
 
@@ -112,15 +116,8 @@ Enemy.prototype.update = function (du) {
        this.maybeFireBullet(); 
     }
     
-
-    /*
-    if(Math.abs(this.cy - this.origCy) > this.range) {
-        this.velY = -this.velY;
-        this.origCy = this.cy;
-    }
-    */
-
     this.cy += this.velY * du;
+    
     if(this.cx<-this.getRadius()) {
         this.kill();
     }
