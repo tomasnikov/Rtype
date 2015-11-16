@@ -34,6 +34,8 @@ _ships   : [],
 
 _bShowEnemies : true,
 
+currentLevel: 1,
+
 // "PRIVATE" METHODS
 
 _generateEnemies : function() {
@@ -42,14 +44,17 @@ _generateEnemies : function() {
     var randomSeed = Math.random();
     for (i = 0; i < NUM_ENEMIES; ++i) {
         this.generateEnemy({
+            type: "Enemy",
             randomSeed: randomSeed,
             diff: i
         });
     }
 },
 
-_generateEnvironment : function(descr) {
-    this.generateEnvironment();
+_generateEnvironment : function() {
+    this.generateEnvironment({
+        type: "Environment"
+    });
 },
 
 _findNearestShip : function(posX, posY) {
@@ -101,6 +106,9 @@ deferredSetup : function () {
 init: function() {
     this._generateEnemies();
     this._generateEnvironment();
+    setInterval(function() {
+        entityManager._generateEnemies();
+}, 3000);
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation, power) {
@@ -173,13 +181,13 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
-                if(aCategory[i].points) {
-                    for(var j = 0; j<this._ships.length; j++) {
-                        this._ships[j].points += aCategory[i].points;
-                        console.log(this._ships[j].points);
-                    }
-                }
                 
+                aCategory.splice(i,1);
+            }
+            else if(aCategory[i].points && status === aCategory[i].points) {
+                for(var j = 0; j<this._ships.length; j++) {
+                    this._ships[j].points += aCategory[i].points;
+                }
                 aCategory.splice(i,1);
             }
             else {

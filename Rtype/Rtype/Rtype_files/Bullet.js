@@ -43,8 +43,6 @@ Bullet.prototype.velX = 2;
 Bullet.prototype.velY = 1;
 Bullet.prototype.power = 1;
 
-// Convert times from milliseconds to "nominal" time units.
-Bullet.prototype.lifeSpan = 3000 / NOMINAL_UPDATE_INTERVAL;
 
 Bullet.prototype.update = function (du) {
 
@@ -55,8 +53,7 @@ Bullet.prototype.update = function (du) {
     }
     //console.log(this);
 
-    this.lifeSpan -= du;
-    if (this.lifeSpan < 0 || this.cx > g_canvas.width) return entityManager.KILL_ME_NOW;
+    if (this.cx > g_canvas.width) return entityManager.KILL_ME_NOW;
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;
@@ -101,11 +98,7 @@ Bullet.prototype.reset = function() {
 
 Bullet.prototype.render = function (ctx) {
 
-    var fadeThresh = Bullet.prototype.lifeSpan / 3;
 
-    if (this.lifeSpan < fadeThresh) {
-        ctx.globalAlpha = this.lifeSpan / fadeThresh;
-    }
     var origScale = g_sprites.bullet.scale;
 
 
@@ -117,5 +110,4 @@ Bullet.prototype.render = function (ctx) {
     );
     g_sprites.bullet.scale = origScale;
 
-    ctx.globalAlpha = 1;
 };

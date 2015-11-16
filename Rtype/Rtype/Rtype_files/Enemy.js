@@ -21,16 +21,13 @@ function Enemy(descr) {
     // Default sprite and scale, if not otherwise specified
     this.sprite = this.sprite || g_sprites.enemy;
     this.scale  = this.scale  || this.sprite.scale;
-    this.diff = 2*this.getRadius()*1.1*this.diff;
+    this.diff = 2*this.getRadius()*1.3*this.diff;
 
     this.setPosition();
     this.randomiseVelocity();
     this.randomiseRange();
     this.setHP();
     this.points = 50;
-
-    console.log(this);
-
 };
 
 Enemy.prototype = new Entity();
@@ -46,7 +43,7 @@ Enemy.prototype.setPosition = function () {
     this.cx = this.cx || g_canvas.width-radius + this.diff;
     var minBottom = radius + 50;
     var maxTop = g_canvas.height - radius - 50;
-    this.cy = this.cy || util.randRangeFromSeed(minBottom, maxTop, this.randomSeed);;
+    this.cy = this.cy || g_canvas.height/2 || util.randRangeFromSeed(minBottom, maxTop, this.randomSeed);;
     this.rotation = this.rotation || 0;
     this.degree = this.degree || 0;
     this.origCx = this.cx;
@@ -60,7 +57,7 @@ Enemy.prototype.randomiseVelocity = function () {
     var speed = util.randRangeFromSeed(MIN_SPEED, MAX_SPEED, this.randomSeed) / SECS_TO_NOMINALS;
     var dirn = Math.random() * consts.FULL_CIRCLE;
 
-    this.velX = this.velX || -speed;
+    this.velX = this.velX || -150/SECS_TO_NOMINALS;
     //this.velY = this.velY || speed;
     this.velY = this.velX;
 
@@ -73,7 +70,7 @@ Enemy.prototype.randomiseVelocity = function () {
 Enemy.prototype.randomiseRange = function() {
     var botMax = g_canvas.height - this.getRadius() - this.cy;
     var topMax = -this.getRadius() + this.cy;
-    this.range = Math.abs(this.randomSeed*Math.min(botMax, topMax));
+    this.range = 1 || Math.abs(this.randomSeed*Math.min(botMax, topMax));
 }
 
 Enemy.prototype.update = function (du) {
@@ -87,6 +84,9 @@ Enemy.prototype.update = function (du) {
     }
 
     if(this._isDeadNow) {
+        if(this._givePoints==this.points) {
+            return this.points;
+        }
         return entityManager.KILL_ME_NOW;
     }
 
@@ -96,12 +96,18 @@ Enemy.prototype.update = function (du) {
     else if(this.velY === 0) {
         this.velY = this.velX;
     }
+    else {
+        //console.log(spatialManager.computeNextEnemyMove(this.cx, this.cy, this.getRadius(), this.velX, this.velY));
+        this.velY = spatialManager.computeNextEnemyMove(this.cx, this.cy, this.getRadius(), this.velX, this.velY);
+    }
 
     this.cx += this.velX * du;
+    /*
     if(Math.abs(this.cy - this.origCy) > this.range) {
         this.velY = -this.velY;
         this.origCy = this.cy;
     }
+    */
 
     this.cy += this.velY * du;
     if(this.cx<-this.getRadius()) {
@@ -120,7 +126,7 @@ Enemy.prototype.update = function (du) {
 };
 
 Enemy.prototype.getRadius = function () {
-    return this.scale * (this.sprite.width / 2) * 0.9;
+    return this.scale * (this.sprite.width / 2) * 0.6;
 };
 
 // HACKED-IN AUDIO (no preloading)
@@ -133,7 +139,7 @@ Enemy.prototype.takeBulletHit = function (power) {
     var origHP = this.hp;
     this.HP = this.HP - power > 0 ? this.HP - power : 0;
     if(this.HP <= 0) {
-        this.kill();
+        this.kill(this.points);
         this.evaporateSound.play();
     }
     return power-origHP;    

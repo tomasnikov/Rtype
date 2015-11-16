@@ -63,8 +63,11 @@ Entity.prototype.getSpatialID = function () {
     return this._spatialID;
 };
 
-Entity.prototype.kill = function () {
+Entity.prototype.kill = function (points) {
     this._isDeadNow = true;
+    if(points) {
+        this._givePoints = points;
+    }
 };
 
 Entity.prototype.findHitEntity = function () {
