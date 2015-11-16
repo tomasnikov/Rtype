@@ -80,7 +80,7 @@ function gatherInputs() {
 
 // GAME-SPECIFIC UPDATE LOGIC
 function updateMenu(du) {
-    mainMenu.update(du);
+    g_menu.update(du);
 }
 function updateSimulation(du) {
     
@@ -168,7 +168,7 @@ function processDiagnostics() {
 
 // GAME-SPECIFIC RENDERING
 function renderMenu(ctx){
-    mainMenu.render(ctx)
+    g_menu.render(ctx)
 }
 function renderSimulation(ctx) {
     entityManager.render(ctx);
@@ -197,7 +197,8 @@ function requestPreloads() {
 }
 
 var g_sprites = {};
-
+var g_menu
+var g_levelManager
 function preloadDone() {
 
     g_sprites.ship  = new Sprite(g_images.ship, 0.1);
@@ -209,7 +210,9 @@ function preloadDone() {
 
     //entityManager.init();
     createInitialShips();
+        g_levelManager = new LevelManager();
 
+    g_menu = new MainMenu();
     main.init();
 }
 

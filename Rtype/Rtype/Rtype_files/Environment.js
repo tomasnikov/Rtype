@@ -30,7 +30,7 @@ function Environment(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    this.layout = levelManager.getEnvironment()//levelOne;
+    this.layout = g_levelManager.getEnvironment()//levelOne;
     // Default sprite and scale, if not otherwise specified
     this.sprite = this.sprite || g_sprites.environment;
     this.scale  = this.scale  || this.sprite.scale;
