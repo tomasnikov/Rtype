@@ -1,15 +1,7 @@
 function LevelManager() {
 	this.level = 1
-	this.nrLevels = 4
-}
-LevelManager.prototype.setLevel = function(newLevel){
-	this.level = newLevel;
-}
-LevelManager.prototype.increaseLevel = function(){
-	this.level++;
-}
-LevelManager.prototype.getEnvironment = function(){
-	var top= [
+	
+	this.top= [
 		[
 		    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		    [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0],
@@ -31,7 +23,7 @@ LevelManager.prototype.getEnvironment = function(){
 	        [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
 	    ]
     ]
-    var bottom = [
+    this.bottom = [
 		[
 		  	[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
     		[0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0],
@@ -53,9 +45,26 @@ LevelManager.prototype.getEnvironment = function(){
 	        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 	    ]
     ]
-    return {top: top[this.level], bottom: bottom[this.level]};
+    this.environmentSprites = [
+		g_sprites.environment1,
+		g_sprites.environment2,
+		g_sprites.environment1,
+		g_sprites.environment2,
+	]
+    this.nrLevels = this.top.length
 }
-
+LevelManager.prototype.setLevel = function(newLevel){
+	this.level = newLevel;
+}
+LevelManager.prototype.increaseLevel = function(){
+	this.level++;
+}
+LevelManager.prototype.getEnvironment = function(){ 
+    return {top: this.top[this.level], bottom: this.bottom[this.level]};
+}
+LevelManager.prototype.getEnvironmentSprite = function(){
+	return this.environmentSprites[this.level];
+}
 /*levelManager = {
 	level: 1,
 	nrLevels: 4,

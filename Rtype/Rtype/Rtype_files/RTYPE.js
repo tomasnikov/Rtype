@@ -188,9 +188,12 @@ function requestPreloads() {
     var requiredImages = {
         ship   : "Sprites/Spaceship_art_pack_larger/Blue/Small_ship_blue/1.png",
         enemy   : "Sprites/copterAlien.gif",
-        environment : "Sprites/goldBrick.png",
+        environment1 : "Sprites/environment1.png",
+        environment2 : "Sprites/environment2.png",
         bullet : "Sprites/Spaceship_art_pack_larger/Blue/bullet.png",
-        space : "space.jpg"
+        space : "space.jpg",
+        logo : "Sprites/r-type-logo.png"
+
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -203,9 +206,10 @@ function preloadDone() {
 
     g_sprites.ship  = new Sprite(g_images.ship, 0.1);
     g_sprites.enemy  = new Sprite(g_images.enemy, 0.33);
-    g_sprites.environment = new Sprite(g_images.environment, 1);
+    g_sprites.environment1 = new Sprite(g_images.environment1, 1);
+    g_sprites.environment2 = new Sprite(g_images.environment2, 1);
     g_sprites.bullet = new Sprite(g_images.bullet, 1);
-
+    g_sprites.logo = new Sprite(g_images.logo, 1)
     g_sprites.bullet.scale = 0.25;
 
     //entityManager.init();

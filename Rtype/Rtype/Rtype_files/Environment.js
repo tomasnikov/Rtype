@@ -32,7 +32,9 @@ function Environment(descr) {
 
     this.layout = g_levelManager.getEnvironment()//levelOne;
     // Default sprite and scale, if not otherwise specified
-    this.sprite = this.sprite || g_sprites.environment;
+    //this.sprite = this.sprite || g_sprites.environment;
+    this.sprite = this.sprite || g_levelManager.getEnvironmentSprite();
+    console.log(this.sprite)
     this.scale  = this.scale  || this.sprite.scale;
 
     this.cx = 0;

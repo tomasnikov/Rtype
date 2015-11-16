@@ -1,11 +1,11 @@
 function MainMenu() {
 	//sprite: g_sprites.logo,
 	this.rtypetext = {
-		//sprite: g_sprites.logo,
+		sprite: g_sprites.logo,
 		text: "R-Type",
 		color:"white",
 		cx: g_canvas.width/2,
-		cy: 200,
+		cy: 150,
 		height: 30,
 		width: 100
 	}
@@ -30,9 +30,17 @@ function MainMenu() {
 
 	this.levelSelector = []
 	var gap = 20;
-	for(var i = 0; i < g_levelManager.nrLevels; i++){
+	this.levelSelector[0] = {
+		text: "Select Level:",
+		color: "white",
+		cx: g_canvas.width/2,
+		cy: 375,
+		width: 100,
+		height: 20
+	}
+	for(var i = 1; i < g_levelManager.nrLevels+1; i++){
 		var levelObject = {
-			text: (i+1).toString(),
+			text: (i).toString(),
 			color: "white",
 			cx: g_canvas.width/2 - (g_levelManager.nrLevels*gap/2) + (i*gap),
 			cy: 400,
@@ -63,13 +71,13 @@ MainMenu.prototype.click = function(xPos, yPos){
 		this.showControls = true;
 	}
 	if(this.showLevelSelector){
-		for(var i = 0; i < this.levelSelector.length; i++){
+		for(var i = 1; i < this.levelSelector.length; i++){
 			var levelSelector = this.levelSelector[i];
 			if(xPos < levelSelector.cx + levelSelector.width 
 				&& xPos> levelSelector.cx - levelSelector.width
 				&& yPos < levelSelector.cy + levelSelector.height
 				&& yPos > levelSelector.cy - levelSelector.height){
-				this.playGame(i);
+				this.playGame(i-1);
 			}
 		}
 	}
@@ -80,7 +88,7 @@ MainMenu.prototype.playGame = function(level){
 	main.toggleMenu();
 }
 MainMenu.prototype.updateLevelSelector = function(){
-	for(var i = 0; i < this.levelSelector.length; i++){
+	for(var i = 1; i < this.levelSelector.length; i++){
 		this.levelSelector[i].color = "white";
 		var levelSelector = this.levelSelector[i];
 		if(g_mouseX < levelSelector.cx + levelSelector.width
@@ -144,12 +152,12 @@ MainMenu.prototype.render = function(ctx){
 	var controlstext = this.controlstext;
 	util.clearCanvas(ctx)
 	ctx.textAlign = "center";
-	ctx.font = rtypetext.height + "px Arial";
-	ctx.fillStyle = this.rtypetext.color;
-	ctx.fillText(rtypetext.text ,rtypetext.cx ,rtypetext.cy);
-	//this.sprite.drawCentredAt(
-       //	ctx, rtypetext.cx, rtypetext.cy, 0
-   	//);
+	//ctx.font = rtypetext.height + "px Arial";
+	//ctx.fillStyle = this.rtypetext.color;
+	//ctx.fillText(rtypetext.text ,rtypetext.cx ,rtypetext.cy);
+	rtypetext.sprite.drawCentredAt(
+    	ctx, rtypetext.cx, rtypetext.cy, 0
+   	);
 	ctx.font = playtext.height + "px Arial"
 	ctx.fillStyle = playtext.color;
 	ctx.fillText(playtext.text, playtext.cx,playtext.cy);
