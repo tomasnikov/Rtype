@@ -125,13 +125,8 @@ var mainMenu = {
 		var playtext = this.playtext;
 		var rtypetext = this.rtypetext;
 		var controlstext = this.controlstext;
-<<<<<<< HEAD
 		rtypetext.color = "white"
 		playtext.color = "white"
-=======
-		rtypetext.color = "white",
-		playtext.color = "white",
->>>>>>> bb3200abdfdfca3a6b6035756028e16b5541c110
 		controlstext.color = "white"
 		if(g_mouseX < playtext.cx+playtext.width 
 			&& g_mouseX > playtext.cx-playtext.width

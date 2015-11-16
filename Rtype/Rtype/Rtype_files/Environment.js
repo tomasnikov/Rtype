@@ -10,7 +10,7 @@
 0        1         2         3         4         5         6         7         8
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
-
+/*
 var levelOne = {
     top: [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -23,14 +23,14 @@ var levelOne = {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ]
 };
-
+*/
 
 // A generic contructor which accepts an arbitrary descriptor object
 function Environment(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    this.layout = levelOne;
+    this.layout = levelManager.getEnvironment()//levelOne;
     // Default sprite and scale, if not otherwise specified
     this.sprite = this.sprite || g_sprites.environment;
     this.scale  = this.scale  || this.sprite.scale;
