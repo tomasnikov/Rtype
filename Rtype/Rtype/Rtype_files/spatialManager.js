@@ -158,7 +158,6 @@ computeNextEnemyMove: function(posX, posY, radius, origVelY, velY) {
             return movement;
         }
     }
-    console.log(shouldGoDown);
     if(isGoingDown && shouldGoDown) {
         return movement;
     }

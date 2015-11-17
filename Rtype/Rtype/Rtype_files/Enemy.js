@@ -34,6 +34,7 @@ Enemy.prototype = new Entity();
 
 Enemy.prototype.launchVel = 3;
 Enemy.prototype.moving = 0;
+Enemy.prototype.type = "Enemy";
 
 Enemy.prototype.setHP = function() {
     this.fullLife = Math.ceil(Math.random()*3);
@@ -60,7 +61,7 @@ Enemy.prototype.randomiseVelocity = function () {
     var speed = util.randRangeFromSeed(MIN_SPEED, MAX_SPEED, this.randomSeed) / SECS_TO_NOMINALS;
     var dirn = Math.random() * consts.FULL_CIRCLE;
 
-    this.velX = this.velX || -150/SECS_TO_NOMINALS;
+    this.velX = this.velX || -170/SECS_TO_NOMINALS;
     //this.velY = this.velY || speed;
     this.velY = this.velX*0.5;
     this.origVelY = this.velY;
@@ -89,6 +90,7 @@ Enemy.prototype.update = function (du) {
     }
 
     if(this._isDeadNow) {
+        this.explode(0.75);
         if(this._givePoints==this.points) {
             return this.points;
         }
@@ -117,7 +119,7 @@ Enemy.prototype.update = function (du) {
     }
     
     this.cy += this.velY * du;
-    
+
     if(this.cx<-this.getRadius()) {
         this.kill();
     }
@@ -150,7 +152,6 @@ Enemy.prototype.maybeFireBullet = function() {
 
 Enemy.prototype.takeBulletHit = function (power, firedFrom) {
     if(firedFrom === "Ship") {
-        console.log("got here");
         var origHP = this.hp;
         this.HP = this.HP - power > 0 ? this.HP - power : 0;
         if(this.HP <= 0) {
@@ -161,9 +162,22 @@ Enemy.prototype.takeBulletHit = function (power, firedFrom) {
       
 };
 
+Enemy.prototype.explode = function(time) {
+    explosionManager.generateEnemyExplosion({
+        cx: this.cx,
+        cy: this.cy,
+        radius: this.getRadius(),
+        lifeTime: time
+    });
+}
+
+Enemy.prototype.halt = function() {
+    this.kill();
+};
+
 Enemy.prototype.reset = function() {
     this.kill();
-}
+};
 
 Enemy.prototype._spawnFragment = function () {
     entityManager.generateEnemy({
@@ -172,6 +186,7 @@ Enemy.prototype._spawnFragment = function () {
         scale : this.scale /2
     });
 };
+
 
 Enemy.prototype.render = function (ctx) {
     

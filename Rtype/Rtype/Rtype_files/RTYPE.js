@@ -88,6 +88,8 @@ function updateSimulation(du) {
     
     entityManager.update(du);
 
+    explosionManager.update(du);
+
     // Prevent perpetual firing!
     // eatKey(Ship.prototype.KEY_FIRE);
     //console.log("Ate key");
@@ -172,6 +174,8 @@ function renderMenu(ctx){
 }
 function renderSimulation(ctx) {
     entityManager.render(ctx);
+
+    explosionManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
 }

@@ -19,8 +19,7 @@ function Bullet(descr) {
     this.setup(descr);
 
     // Make a noise when I am created (i.e. fired)
-    this.fireSound.play();
-    console.log(this);
+    //this.fireSound.play();
 }
 
 Bullet.prototype = new Entity();
@@ -38,6 +37,7 @@ Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 2;
 Bullet.prototype.velY = 1;
 Bullet.prototype.power = 1;
+Bullet.prototype.type = "Bullet";
 
 
 Bullet.prototype.update = function (du) {
@@ -61,19 +61,31 @@ Bullet.prototype.update = function (du) {
         var canTakeHit = hitEntity.takeBulletHit(this.power, this.firedFrom);
         if (canTakeHit) {
             canTakeHit.call(hitEntity);
-        } 
+        }
         if(hitEntity.fullLife) {
            this.power -= hitEntity.fullLife - hitEntity.HP; 
         }
-        else {
+        else if(hitEntity.type != "Bullet" && hitEntity.type != "Enemy") {
+            this.explode(0.5);
             this.power = 0;
         }
-        if(this.power<=0) return entityManager.KILL_ME_NOW;
+        if(this.power<=0) {
+            return entityManager.KILL_ME_NOW;
+        } 
     }
     
     spatialManager.register(this);
 
 };
+
+Bullet.prototype.explode = function(time) {
+    explosionManager.generateBulletExplosion({
+        cx: this.cx,
+        cy: this.cy,
+        radius: this.getRadius(),
+        lifeTime: time
+    });
+}
 
 Bullet.prototype.getRadius = function () {
     return 4 + this.power;
@@ -84,6 +96,10 @@ Bullet.prototype.takeBulletHit = function () {
     
     // Make a noise when I am zapped by another bullet
     //this.zappedSound.play();
+};
+
+Bullet.prototype.halt = function() {
+    this.kill();
 };
 
 Bullet.prototype.reset = function() {

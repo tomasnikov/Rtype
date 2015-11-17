@@ -34,7 +34,6 @@ function Environment(descr) {
     // Default sprite and scale, if not otherwise specified
     //this.sprite = this.sprite || g_sprites.environment;
     this.sprite = this.sprite || g_levelManager.getEnvironmentSprite();
-    console.log(this.sprite)
     this.scale  = this.scale  || this.sprite.scale;
 
     this.cx = 0;
@@ -52,6 +51,8 @@ function Environment(descr) {
 
 Environment.prototype = new Entity();
 
+Environment.prototype.type = "Environment";
+
 Environment.prototype.update = function (du) {
 
 
@@ -62,6 +63,8 @@ Environment.prototype.update = function (du) {
     if(this.cx <= -maxScrolled) {
         this.scrollSpeed = 0;
     }
+
+    explosionManager.backSpeed = this.scrollSpeed;
 
     this.cx -= this.scrollSpeed;
     this.imageCx -= this.scrollSpeed/1.5;
@@ -85,13 +88,16 @@ Environment.prototype.takeBulletHit = function (power) {
     return power-origHP;    
 };
 
+Environment.prototype.halt = function() {
+    this.scrollSpeed = 0;
+};
+
 Environment.prototype.reset = function() {
     this.cx = 0;
     this.imageCx = 0;
     this.scrollSpeed = this.origScrollSpeed;
 
-}
-
+};
 
 Environment.prototype.render = function (ctx) {
     ctx.save();
@@ -115,6 +121,5 @@ Environment.prototype.render = function (ctx) {
     } 
 
     ctx.restore();
-
     
 };

@@ -56,106 +56,41 @@ Ship.prototype.numSubSteps = 1;
 Ship.prototype.power = 0;
 Ship.prototype.fullLife = 3;
 Ship.prototype.points = 0;
+Ship.prototype.isAlive = true;
+Ship.prototype.lastBullet = 0;
 
 // HACKED-IN AUDIO (no preloading)
 Ship.prototype.warpSound = new Audio(
     "sounds/shipWarp.ogg");
-
-Ship.prototype.warp = function () {
-
-    this._isWarping = true;
-    this._scaleDirn = -1;
-    this.warpSound.play();
-    
-    // Unregister me from my old posistion
-    // ...so that I can't be collided with while warping
-    spatialManager.unregister(this);
-};
-
-Ship.prototype._updateWarp = function (du) {
-
-    var SHRINK_RATE = 3 / SECS_TO_NOMINALS;
-    this._scale += this._scaleDirn * SHRINK_RATE * du;
-    
-    if (this._scale < 0.2) {
-    
-        this._moveToASafePlace();
-        this.halt();
-        this._scaleDirn = 1;
-        
-    } else if (this._scale > 1) {
-    
-        this._scale = 1;
-        this._isWarping = false;
-        
-        // Reregister me from my old posistion
-        // ...so that I can be collided with again
-        spatialManager.register(this);
-        
-    }
-};
-
-Ship.prototype._moveToASafePlace = function () {
-
-    // Move to a safe place some suitable distance away
-    var origX = this.cx,
-        origY = this.cy,
-        MARGIN = 40,
-        isSafePlace = false;
-
-    for (var attempts = 0; attempts < 100; ++attempts) {
-    
-        var warpDistance = 100 + Math.random() * g_canvas.width /2;
-        var warpDirn = Math.random() * consts.FULL_CIRCLE;
-        
-        this.cx = origX + warpDistance * Math.sin(warpDirn);
-        this.cy = origY - warpDistance * Math.cos(warpDirn);
-        
-        //this.wrapPosition();
-        
-        // Don't go too near the edges, and don't move into a collision!
-        if (!util.isBetween(this.cx, MARGIN, g_canvas.width - MARGIN)) {
-            isSafePlace = false;
-        } else if (!util.isBetween(this.cy, MARGIN, g_canvas.height - MARGIN)) {
-            isSafePlace = false;
-        } else {
-            isSafePlace = !this.isColliding();
-        }
-
-        // Get out as soon as we find a safe place
-        if (isSafePlace) break;
-        
-    }
-};
     
 Ship.prototype.update = function (du) {
-
-    // Handle warping
-    if (this._isWarping) {
-        this._updateWarp(du);
-        return;
-    }
     
     spatialManager.unregister(this);
     if(this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
-    // TODO: YOUR STUFF HERE! --- Unregister and check for death
 
     // Perform movement substeps
     var steps = this.numSubSteps;
     var dStep = du / steps;
-    for (var i = 0; i < steps; ++i) {
-        this.computeSubStep(dStep);
+    if(this.isAlive) {
+        for (var i = 0; i < steps; ++i) {
+            this.computeSubStep(dStep);
+        }
+        if(this.lastBullet<=0) {
+          this.maybeFireBullet();
+        }
+        
+    }
+    if(this.lastBullet>0) {
+        this.lastBullet -= du;
     }
 
-    // Handle firing
-    this.maybeFireBullet();
-
-    if(this.isColliding()) {
+    if(this.isColliding() && this.isAlive) {
         if(this.HP > 0) {
         this.HP--;
-        entityManager.resetEntities();
+        //entityManager.resetEntities();
+        this.bufferAfterDeath();
         }
         else {
             main.gameOver();
@@ -287,6 +222,8 @@ Ship.prototype.maybeFireBullet = function () {
            this.rotation, this.power, "Ship");
         this.power = 0;
         document.getElementById("power").value = this.power;
+
+        this.lastBullet = 0.3*SECS_TO_NOMINALS;
     }
     
 };
@@ -298,18 +235,44 @@ Ship.prototype.getRadius = function () {
 Ship.prototype.takeBulletHit = function () {
     if(this.HP > 0) {
         this.HP--;
-        entityManager.resetEntities();
+        this.bufferAfterDeath();
+        //entityManager.resetEntities();
     }
     else {
-        main.gameOver();
+        //main.gameOver();
     }
 };
 
+Ship.prototype.explode = function(time) {
+    explosionManager.generateBulletExplosion({
+        cx: this.cx,
+        cy: this.cy,
+        radius: this.getRadius(),
+        lifeTime: time
+    });
+}
+
+Ship.prototype.bufferAfterDeath = function() {
+    this.explode(2);
+    this.isAlive = false;
+    var ship = this;
+    var time = 2*1000;
+    entityManager.haltEntities();
+    explosionManager.generateShipExplosion();
+    setTimeout(function(){
+        entityManager.resetEntities();
+    }, time)
+};
+
 Ship.prototype.reset = function () {
+    
     this.setPos(this.reset_cx, this.reset_cy);
     this.rotation = this.reset_rotation;
-    
     this.halt();
+    this.isAlive = true;
+    this.power = 0;
+    
+    
 };
 
 Ship.prototype.halt = function () {

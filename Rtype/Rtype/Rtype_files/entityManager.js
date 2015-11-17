@@ -42,10 +42,16 @@ _generateEnemies : function() {
     var i,
         NUM_ENEMIES = 4;
     var randomSeed = Math.random();
-    if(!g_isUpdatePaused){
+
+    var isShipAlive = false;
+    for(var j = 0; j<this._ships.length; j++) {
+        if(this._ships[j].isAlive) {
+            isShipAlive = true;
+        }
+    }
+    if(!g_isUpdatePaused && isShipAlive){
         for (i = 0; i < NUM_ENEMIES; ++i) {
             this.generateEnemy({
-                type: "Enemy",
                 randomSeed: randomSeed,
                 diff: i
             });
@@ -55,9 +61,7 @@ _generateEnemies : function() {
 },
 
 _generateEnvironment : function() {
-    this.generateEnvironment({
-        type: "Environment"
-    });
+    this.generateEnvironment();
 },
 
 _findNearestShip : function(posX, posY) {
@@ -111,7 +115,7 @@ init: function() {
     this._generateEnvironment();
     setInterval(function() {
         entityManager._generateEnemies();
-},  5000);
+},  3000);
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation, power, firedFrom) {
@@ -175,6 +179,7 @@ yoinkNearestShip : function(xPos, yPos) {
 
 resetShips: function() {
     this._forEachOf(this._ships, Ship.prototype.reset);
+    
 },
 
 resetEntities: function() {
@@ -186,7 +191,14 @@ resetEntities: function() {
 
 haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
-},	
+},
+
+haltEntities: function() {
+    this.haltShips();
+    this._forEachOf(this._enemies, Enemy.prototype.halt);
+    this._forEachOf(this._bullets, Bullet.prototype.halt);
+    this._forEachOf(this._environment, Environment.prototype.halt);
+},
 
 toggleEnemies: function() {
     this._bShowEnemies = !this._bShowEnemies;
@@ -221,7 +233,7 @@ update: function(du) {
         }
     }
     
-    if (this._enemies.length === 0) this._generateEnemies();
+    //if (this._enemies.length === 0) this._generateEnemies();
 
 },
 

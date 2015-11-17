@@ -1,5 +1,5 @@
 function LevelManager() {
-	this.level = 1
+	this.level = 1,
 	
 	this.top= [
 		[
