@@ -49,6 +49,7 @@ function MainMenu() {
 		}
 		this.levelSelector[i] = levelObject;
 	}
+	this.gamesPlayed = 0;
 }
 	//levelSelector: this.initLevelSelector(),
 MainMenu.prototype.click = function(xPos, yPos){
@@ -86,14 +87,12 @@ MainMenu.prototype.playGame = function(level){
 	g_levelManager.level = level;
 	if(this.gamesPlayed == 0){
 		createInitialShips();
-
 		entityManager.init()
 	}
 	else{
 		entityManager.init()
 		//entityManager.restart()
 		createInitialShips();
-
 	}
 	this.gamesPlayed++
 	g_isUpdatePaused = false;
