@@ -90,9 +90,9 @@ MainMenu.prototype.playGame = function(level){
 		entityManager.init()
 	}
 	else{
-		entityManager.init()
+		entityManager.resetEntities()
 		//entityManager.restart()
-		createInitialShips();
+		//createInitialShips();
 	}
 	this.gamesPlayed++
 	g_isUpdatePaused = false;

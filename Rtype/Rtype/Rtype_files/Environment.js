@@ -96,6 +96,8 @@ Environment.prototype.reset = function() {
     this.cx = 0;
     this.imageCx = 0;
     this.scrollSpeed = this.origScrollSpeed;
+    this.layout = g_levelManager.getEnvironment()
+    this.sprite = g_levelManager.getEnvironmentSprite();
 
 };
 

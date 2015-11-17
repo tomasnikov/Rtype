@@ -94,6 +94,7 @@ Ship.prototype.update = function (du) {
         this.bufferAfterDeath();
         }
         else {
+            this.HP--;
             main.gameOver();
         }
     }
@@ -285,8 +286,10 @@ Ship.prototype.reset = function () {
     this.halt();
     this.isAlive = true;
     this.power = 0;
-    
-    
+    if(this.HP < 0){
+        this.HP = 3
+        this.points = 0
+    }
 };
 
 Ship.prototype.halt = function () {
@@ -317,14 +320,14 @@ Ship.prototype.render = function (ctx) {
     var width = g_sprites.ship[0].width;
     var height = g_sprites.ship[0].height;
     //console.log(this.sprite[2])
-    console.log(this.spriteSelection)
+    //console.log(this.spriteSelection)
     this.sprite[Math.floor(this.spriteSelection)].drawCentredAt(
         ctx, this.cx - width/2, this.cy - height/2, 0
     );
     //------------------
     for(var i = 0; i<this.HP; i++) {
         this.sprite[2].drawCentredAt(
-            ctx, (i+1)*(this.getRadius()*1.5), this.getRadius(), 0
+            ctx, (i+1)*(this.getRadius()*2), this.getRadius(), 0
         );
     }
     
