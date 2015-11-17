@@ -190,8 +190,8 @@ var g_images = {};
 function requestPreloads() {
 
     var requiredImages = {
-        ship   : "Sprites/Spaceship_art_pack_larger/Blue/Small_ship_blue/1.png",
-        enemy   : "Sprites/copterAlien.gif",
+        ship   : /*"Sprites/r-typesheet42.gif",*/"Sprites/Spaceship_art_pack_larger/Blue/Small_ship_blue/1.png",
+        enemy   : "Sprites/r-typesheet5.gif",//"Sprites/copterAlien.gif",
         environment1 : "Sprites/environment1.png",
         environment2 : "Sprites/environment2.png",
         bullet : "Sprites/Spaceship_art_pack_larger/Blue/bullet.png",
@@ -206,20 +206,27 @@ function requestPreloads() {
 var g_sprites = {};
 var g_menu
 var g_levelManager
+function uploadEnemySpritesheet(){
+    g_sprites.enemy = []
+    var xDim = Math.floor(g_images.enemy.width / 16) //width / nr pictures
+    for(var i = 0; i < 8; i++){ // 8 because there are 8 "poses we need"
+        g_sprites.enemy.push(new SpriteSheet(g_images.enemy, 1, i*xDim, 0, xDim, 36));
+    }
+}
 function preloadDone() {
 
     g_sprites.ship  = new Sprite(g_images.ship, 0.1);
-    g_sprites.enemy  = new Sprite(g_images.enemy, 0.33);
+    //g_sprites.enemy  = new Sprite(g_images.enemy, 0.33);
+    //uploadShipSpritesheet();
+    uploadEnemySpritesheet();
     g_sprites.environment1 = new Sprite(g_images.environment1, 1);
     g_sprites.environment2 = new Sprite(g_images.environment2, 1);
     g_sprites.bullet = new Sprite(g_images.bullet, 1);
     g_sprites.logo = new Sprite(g_images.logo, 1)
     g_sprites.bullet.scale = 0.25;
-
     //entityManager.init();
-    createInitialShips();
-        g_levelManager = new LevelManager();
-
+    //createInitialShips();
+    g_levelManager = new LevelManager();
     g_menu = new MainMenu();
     main.init();
 }
