@@ -20,14 +20,15 @@ function Enemy(descr) {
       
     // Default sprite and scale, if not otherwise specified
     this.sprite = this.sprite || g_sprites.enemy;
-    this.scale  = this.scale  || this.sprite.scale;
+    this.scale  = this.scale  || this.sprite[0].scale;
     this.diff = 2*this.getRadius()*1.3*this.diff;
-
     this.setPosition();
     this.randomiseVelocity();
     this.randomiseRange();
     this.setHP();
     this.points = 50;
+    this.spritecnt = 0;
+    this.shouldIterSprite = 4;
 };
 
 Enemy.prototype = new Entity();
@@ -132,7 +133,13 @@ Enemy.prototype.update = function (du) {
     
     // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
-
+    if(this.shouldIterSprite == 0){
+        this.nextSprite();
+        this.shouldIterSprite = 4;
+    }
+    else{
+        this.shouldIterSprite--;
+    }
 };
 
 Enemy.prototype.getRadius = function () {
@@ -179,18 +186,20 @@ Enemy.prototype.reset = function() {
     this.kill();
 };
 
-Enemy.prototype._spawnFragment = function () {
-    entityManager.generateEnemy({
-        cx : this.cx,
-        cy : this.cy,
-        scale : this.scale /2
-    });
-};
+Enemy.prototype.nextSprite = function (){
+    if(this.spritecnt + 1 == this.sprite.length){
+        this.spritecnt =0
+    }
+    else{
+        this.spritecnt++
+    }
 
+}
 
 Enemy.prototype.render = function (ctx) {
-    
-    this.sprite.drawCentredAt(
-        ctx, this.cx, this.cy, this.rotation
+var width = g_sprites.enemy[0].width;
+    var height = g_sprites.enemy[0].height;
+    this.sprite[this.spritecnt].drawCentredAt(
+        ctx, this.cx - width/2, this.cy - height/2, 0
     );
 };
