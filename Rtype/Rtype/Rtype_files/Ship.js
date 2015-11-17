@@ -27,6 +27,7 @@ function Ship(descr) {
     this._scale = 1;
     this._isWarping = false;
     this.HP = this.fullLife;
+    this.spriteSelection = 2
 };
 
 Ship.prototype = new Entity();
@@ -99,6 +100,14 @@ Ship.prototype.update = function (du) {
     else {
         spatialManager.register(this);
     }
+    if(!keys[this.KEY_THRUST] && !keys[this.KEY_RETRO] && this.spriteSelection != 2){
+        if(this.spriteSelection < 2){
+            this.spriteSelection += 0.1
+        }
+        else{
+            this.spriteSelection -= 0.1
+        }
+    }
 };
 
 Ship.prototype.computeSubStep = function (du) {
@@ -140,9 +149,15 @@ Ship.prototype.computePosition = function () {
     
     if (keys[this.KEY_THRUST] && y > r) {
         y -= NOMINAL_THRUST;
+        if(this.spriteSelection+1 < this.sprite.length){
+            this.spriteSelection+= 0.1;
+        }
     }
     if (keys[this.KEY_RETRO] && y < g_canvas.height - r) {
         y += NOMINAL_THRUST;
+        if(this.spriteSelection-1 >= 0){
+            this.spriteSelection-= 0.1;
+        }
     }
     if (keys[this.KEY_LEFT] && x > r) {
         x -= NOMINAL_THRUST;
@@ -302,7 +317,8 @@ Ship.prototype.render = function (ctx) {
     var width = g_sprites.ship[0].width;
     var height = g_sprites.ship[0].height;
     //console.log(this.sprite[2])
-    this.sprite[2].drawCentredAt(
+    console.log(this.spriteSelection)
+    this.sprite[Math.floor(this.spriteSelection)].drawCentredAt(
         ctx, this.cx - width/2, this.cy - height/2, 0
     );
     //------------------
