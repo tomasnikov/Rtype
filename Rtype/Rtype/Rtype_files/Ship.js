@@ -244,7 +244,7 @@ Ship.prototype.takeBulletHit = function () {
 };
 
 Ship.prototype.explode = function(time) {
-    explosionManager.generateBulletExplosion({
+    explosionManager.generateShipExplosion({
         cx: this.cx,
         cy: this.cy,
         radius: this.getRadius(),
@@ -258,7 +258,6 @@ Ship.prototype.bufferAfterDeath = function() {
     var ship = this;
     var time = 2*1000;
     entityManager.haltEntities();
-    explosionManager.generateShipExplosion();
     setTimeout(function(){
         entityManager.resetEntities();
     }, time)

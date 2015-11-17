@@ -166,7 +166,7 @@ Enemy.prototype.explode = function(time) {
     explosionManager.generateEnemyExplosion({
         cx: this.cx,
         cy: this.cy,
-        radius: this.getRadius(),
+        radius: this.getRadius()/3,
         lifeTime: time
     });
 }

@@ -8,7 +8,15 @@ backSpeed: 0,
 
 
 generateShipExplosion: function(descr) {
+	descr.radius *= 0.25;
 	this._explosions.push(new Explosion(descr));
+	descr.cx += 20;
+	descr.cy += 5;
+	setTimeout(this._explosions.push(new Explosion(descr)), 500);
+	descr.cx -= 40;
+	descr.cy -= 15
+	setTimeout(this._explosions.push(new Explosion(descr)), 900);
+	
 },
 
 generateEnemyExplosion: function(descr) {
