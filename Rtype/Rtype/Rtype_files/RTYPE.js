@@ -190,7 +190,7 @@ var g_images = {};
 function requestPreloads() {
 
     var requiredImages = {
-        ship   : /*"Sprites/r-typesheet42.gif",*/"Sprites/Spaceship_art_pack_larger/Blue/Small_ship_blue/1.png",
+        ship   : "Sprites/r-typesheet42.gif",//"Sprites/Spaceship_art_pack_larger/Blue/Small_ship_blue/1.png",
         enemy   : "Sprites/r-typesheet5.gif",//"Sprites/copterAlien.gif",
         environment1 : "Sprites/environment1.png",
         environment2 : "Sprites/environment2.png",
@@ -213,11 +213,19 @@ function uploadEnemySpritesheet(){
         g_sprites.enemy.push(new SpriteSheet(g_images.enemy, 1, i*xDim, 0, xDim, 36));
     }
 }
+function uploadShipSpritesheet(){
+    g_sprites.ship = [];
+    var xDim = Math.floor(g_images.ship.width / 5)
+    var height = g_images.ship.height / 5
+    for(var i = 0; i < 5; i++){
+        g_sprites.ship.push(new SpriteSheet(g_images.ship, 1, i*xDim, 0 ,xDim, height))
+    }
+    console.log(g_sprites.ship)
+}
 function preloadDone() {
-
-    g_sprites.ship  = new Sprite(g_images.ship, 0.1);
+    //g_sprites.ship  = new Sprite(g_images.ship, 0.1);
     //g_sprites.enemy  = new Sprite(g_images.enemy, 0.33);
-    //uploadShipSpritesheet();
+    uploadShipSpritesheet();
     uploadEnemySpritesheet();
     g_sprites.environment1 = new Sprite(g_images.environment1, 1);
     g_sprites.environment2 = new Sprite(g_images.environment2, 1);

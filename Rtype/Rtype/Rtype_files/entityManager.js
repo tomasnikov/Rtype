@@ -42,7 +42,6 @@ _generateEnemies : function() {
     var i,
         NUM_ENEMIES = 4;
     var randomSeed = Math.random();
-    console.log(this)
     var isShipAlive = false;
     for(var j = 0; j<this._ships.length; j++) {
         if(this._ships[j].isAlive) {

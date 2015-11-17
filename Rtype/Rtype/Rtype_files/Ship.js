@@ -24,7 +24,7 @@ function Ship(descr) {
     this.sprite = this.sprite || g_sprites.ship;
     
     // Set normal drawing scale, and warp state off
-    this._scale = 0.1;
+    this._scale = 1;
     this._isWarping = false;
     this.HP = this.fullLife;
 };
@@ -229,7 +229,7 @@ Ship.prototype.maybeFireBullet = function () {
 };
 
 Ship.prototype.getRadius = function () {
-    return (this.sprite.width / 2)*this._scale * 0.9;
+    return (this.sprite[2].width / 2)*this._scale * 0.9;
 };
 
 Ship.prototype.takeBulletHit = function () {
@@ -291,26 +291,31 @@ Ship.prototype.updateRotation = function (du) {
 };
 
 Ship.prototype.render = function (ctx) {
-    var origScale = this.sprite.scale;
+    //var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
-    this.sprite.scale = this._scale;
-    this.sprite.drawCentredAt(
-	ctx, this.cx, this.cy, this.rotation
+    //this.sprite.scale = this._scale;
+    //this.sprite.drawCentredAt(
+	//ctx, this.cx, this.cy, this.rotation
+    //);
+    //this.sprite.scale = origScale;
+    //------------------
+    var width = g_sprites.ship[0].width;
+    var height = g_sprites.ship[0].height;
+    //console.log(this.sprite[2])
+    this.sprite[2].drawCentredAt(
+        ctx, this.cx - width/2, this.cy - height/2, 0
     );
-    this.sprite.scale = origScale;
-
+    //------------------
     for(var i = 0; i<this.HP; i++) {
-        this.sprite.drawCentredAt(
+        this.sprite[2].drawCentredAt(
             ctx, (i+1)*(this.getRadius()*1.5), this.getRadius(), 0
         );
     }
-
+    
     ctx.save();
     ctx.font = "30px Arial black";
     ctx.fillStyle = "black";
     ctx.fillText("Points: " + this.points, 120, g_canvas.height - 30);
     ctx.restore();
     
-
-   
 };
