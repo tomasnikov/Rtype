@@ -46,12 +46,15 @@ function Environment(descr) {
     this.scrollSpeed = this.brickWidth/(g_canvas.width/20);
     this.origScrollSpeed = this.scrollSpeed;
 
+    this.spawnEnemyTimer *= SECS_TO_NOMINALS;
+    this.origEnemyTimer = this.spawnEnemyTimer;
 
 };
 
 Environment.prototype = new Entity();
 
 Environment.prototype.type = "Environment";
+Environment.prototype.spawnEnemyTimer = 2;
 
 Environment.prototype.update = function (du) {
 
@@ -60,11 +63,23 @@ Environment.prototype.update = function (du) {
 
     var maxScrolled = this.brickWidth*(this.layout.top[0].length-Math.ceil(g_canvas.width/this.brickWidth));
 
-    if(this.cx <= -maxScrolled) {
+    if(this.cx <= -maxScrolled && this.scrollSpeed) {
         this.scrollSpeed = 0;
+        entityManager.generateBoss(g_levelManager.getBossDetails());
+        //g_levelManager.increaseLevel();
     }
 
     explosionManager.backSpeed = this.scrollSpeed;
+
+    if(this.scrollSpeed) {
+        this.spawnEnemyTimer -= du;
+    }
+    
+
+    if(this.spawnEnemyTimer <= 0) {
+        entityManager._generateEnemies();
+        this.spawnEnemyTimer = this.origEnemyTimer;
+    }
 
     this.cx -= this.scrollSpeed;
     this.imageCx -= this.scrollSpeed/1.5;

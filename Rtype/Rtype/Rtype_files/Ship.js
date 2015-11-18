@@ -255,7 +255,8 @@ Ship.prototype.takeBulletHit = function () {
         //entityManager.resetEntities();
     }
     else {
-        //main.gameOver();
+        this.HP--;
+        main.gameOver();
     }
 };
 

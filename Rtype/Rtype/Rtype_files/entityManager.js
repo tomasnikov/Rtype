@@ -112,9 +112,6 @@ deferredSetup : function () {
 init: function() {
     this._generateEnemies();
     this._generateEnvironment();
-    setInterval(function() {
-        entityManager._generateEnemies();
-},  3000);
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation, power, firedFrom) {
@@ -148,6 +145,11 @@ fireBulletAtShip: function(cx, cy, velX, velY, rotation, firedFrom) {
             firedFrom : firedFrom
         }));
     }
+},
+
+generateBoss: function(descr) {
+    console.log(descr);
+    this._enemies.push(new Enemy(descr));
 },
 
 generateEnemy : function(descr) {

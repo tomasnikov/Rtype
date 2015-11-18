@@ -17,18 +17,25 @@ function Enemy(descr) {
 
     // Common inherited setup logic from Entity
     this.setup(descr);
-      
+
     // Default sprite and scale, if not otherwise specified
     this.sprite = this.sprite || g_sprites.enemy;
     this.scale  = this.scale  || this.sprite[0].scale;
     this.diff = 2*this.getRadius()*1.3*this.diff;
     this.setPosition();
     this.randomiseVelocity();
-    this.randomiseRange();
-    this.setHP();
+    
+    this.HP = this.fullLife;
+
     this.points = 50;
     this.spritecnt = 0;
     this.shouldIterSprite = 4;
+
+
+    if(this.isBoss) {
+        this.shootTimer *= SECS_TO_NOMINALS;
+        this.origShootTimer = this.shootTimer;
+    }
 };
 
 Enemy.prototype = new Entity();
@@ -36,11 +43,8 @@ Enemy.prototype = new Entity();
 Enemy.prototype.launchVel = 3;
 Enemy.prototype.moving = 0;
 Enemy.prototype.type = "Enemy";
-
-Enemy.prototype.setHP = function() {
-    this.fullLife = Math.ceil(Math.random()*3);
-    this.HP = this.fullLife;
-}
+Enemy.prototype.fullLife = 1;
+Enemy.prototype.bulletChance = 0.002;
 
 Enemy.prototype.setPosition = function () {
     // Enemy randomisation defaults (if nothing otherwise specified)
@@ -73,16 +77,9 @@ Enemy.prototype.randomiseVelocity = function () {
     this.velRot = this.velRot || 0;
 };
 
-Enemy.prototype.randomiseRange = function() {
-    var botMax = g_canvas.height - this.getRadius() - this.cy;
-    var topMax = -this.getRadius() + this.cy;
-    this.range = 1 || Math.abs(this.randomSeed*Math.min(botMax, topMax));
-}
 
 Enemy.prototype.update = function (du) {
-    //this.degree += Math.PI/24;
-    //this.velY = Math.cos(this.degree)*10;
-    // TODO: YOUR STUFF HERE! --- Unregister and check for death
+
     spatialManager.unregister(this);
 
     var collided = this.isColliding();
@@ -113,7 +110,15 @@ Enemy.prototype.update = function (du) {
         this.moving -= du;
     }
 
+    if(this.isBoss && this.cx < g_canvas.width-this.getRadius()) {
+        this.velX = 0;
+    }
+
     this.cx += this.velX * du;
+
+    if(this.isBoss) {
+        this.shootTimer -= du;
+    }
 
     if(this.cx < g_canvas.width && this.cx > 0) {
        this.maybeFireBullet(); 
@@ -126,13 +131,9 @@ Enemy.prototype.update = function (du) {
     }
 
     this.rotation += 1 * this.velRot;
-    this.rotation = util.wrapRange(this.rotation,
-                                   0, consts.FULL_CIRCLE);
 
-    //this.wrapPosition();
-    
-    // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
+
     if(this.shouldIterSprite == 0){
         this.nextSprite();
         this.shouldIterSprite = 4;
@@ -148,14 +149,26 @@ Enemy.prototype.getRadius = function () {
 
 Enemy.prototype.maybeFireBullet = function() {
     var shouldFireBullet = Math.random();
-    if(shouldFireBullet<0.002) {
-        var launchDist = this.getRadius();
-        entityManager.fireBulletAtShip(
-           this.cx + launchDist, this.cy,
-           this.velX - this.launchVel, this.velY,
-           -Math.PI/2, "Enemy");
+    if(this.isBoss) {
+        if(this.shootTimer<=0) {
+            console.log(this.shootTimer);
+            this.fireBullet();
+            this.shootTimer = this.origShootTimer;  
+        }
+        
+    }
+    else if(shouldFireBullet<this.bulletChance) {
+        this.fireBullet();
     }
 };
+
+Enemy.prototype.fireBullet = function() {
+    var launchDist = this.getRadius();
+        entityManager.fireBulletAtShip(
+           this.cx - launchDist, this.cy,
+           this.velX - this.launchVel, this.velY,
+           -Math.PI/2, "Enemy");
+}
 
 Enemy.prototype.takeBulletHit = function (power, firedFrom) {
     if(firedFrom === "Ship") {
@@ -163,6 +176,9 @@ Enemy.prototype.takeBulletHit = function (power, firedFrom) {
         this.HP = this.HP - power > 0 ? this.HP - power : 0;
         if(this.HP <= 0) {
             this.kill(this.points);
+            if(this.isBoss) {
+                g_levelManager.increaseLevel();
+            }
         }
         return power-origHP;  
     }
