@@ -97,15 +97,28 @@ function LevelManager() {
     	}
     ]
     this.enemies = [
-    	[g_sprites.enemy1, g_sprites.enemy4],
-    	[g_sprites.enemy1, g_sprites.enemy2],
-    	[g_sprites.enemy4, g_sprites.enemy5],
-    	[g_sprites.enemy2, g_sprites.enemy5]
+    	
+            {
+                sprite: [g_sprites.enemy1, g_sprites.enemy4],
+                numEnemies: [4,4]
+            },
+            {
+                sprite: [g_sprites.enemy1, g_sprites.enemy2],
+                 numEnemies: [4,1]
+            },
+            {
+                sprite: [g_sprites.enemy4, g_sprites.enemy5],
+                numEnemies: [4,6]
+            },
+    	    {
+                sprite: [g_sprites.enemy2, g_sprites.enemy5],
+                numEnemies: [1,6]
+            }
+        
     ]
 }
 LevelManager.prototype.getEnemyDescr = function() {
-	var rand = Math.floor(Math.random() * 2)
-	return this.enemies[this.level][rand];
+	return this.enemies[this.level];
 }
 LevelManager.prototype.setLevel = function(newLevel){
 	this.level = newLevel;

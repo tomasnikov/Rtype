@@ -76,7 +76,14 @@ Environment.prototype.update = function (du) {
     
 
     if(this.spawnEnemyTimer <= 0) {
-        entityManager._generateEnemies(1, g_levelManager.getEnemyDescr());
+        var rand = Math.floor(Math.random() * 2)
+        var enemyDescr = g_levelManager.getEnemyDescr()
+        console.log(enemyDescr)
+        console.log(enemyDescr.numEnemies)
+        console.log(enemyDescr.sprite)
+        console.log(enemyDescr.numEnemies[rand])
+        console.log(enemyDescr.sprite[rand])
+        entityManager._generateEnemies(g_levelManager.getEnemyDescr().numEnemies[rand], g_levelManager.getEnemyDescr().sprite[rand]);
         this.spawnEnemyTimer = this.origEnemyTimer;
     }
 
