@@ -68,7 +68,6 @@ Environment.prototype.update = function (du) {
         entityManager.generateBoss(g_levelManager.getBossDetails());
         //g_levelManager.increaseLevel();
     }
-
     explosionManager.backSpeed = this.scrollSpeed;
 
     if(this.scrollSpeed) {
@@ -77,7 +76,7 @@ Environment.prototype.update = function (du) {
     
 
     if(this.spawnEnemyTimer <= 0) {
-        entityManager._generateEnemies();
+        entityManager._generateEnemies(1, g_levelManager.getEnemyDescr());
         this.spawnEnemyTimer = this.origEnemyTimer;
     }
 

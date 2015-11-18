@@ -38,9 +38,8 @@ currentLevel: 1,
 
 // "PRIVATE" METHODS
 
-_generateEnemies : function() {
-    var i,
-        NUM_ENEMIES = 4;
+_generateEnemies : function(NUM_ENEMIES , sprite) {
+    var i;
     var randomSeed = Math.random();
     var isShipAlive = false;
     for(var j = 0; j<this._ships.length; j++) {
@@ -52,7 +51,8 @@ _generateEnemies : function() {
         for (i = 0; i < NUM_ENEMIES; ++i) {
             this.generateEnemy({
                 randomSeed: randomSeed,
-                diff: i
+                diff: i,
+                sprite: sprite
             });
         } 
     }

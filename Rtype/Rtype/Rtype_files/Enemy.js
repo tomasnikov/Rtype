@@ -19,7 +19,7 @@ function Enemy(descr) {
     this.setup(descr);
 
     // Default sprite and scale, if not otherwise specified
-    this.sprite = this.sprite || g_sprites.enemy;
+    this.sprite = this.sprite || g_sprites.enemy1;
     this.scale  = this.scale  || this.sprite[0].scale;
     this.diff = 2*this.getRadius()*1.3*this.diff;
     this.setPosition();
@@ -214,8 +214,8 @@ Enemy.prototype.nextSprite = function (){
 }
 
 Enemy.prototype.render = function (ctx) {
-var width = g_sprites.enemy[0].width;
-    var height = g_sprites.enemy[0].height;
+    var width = this.sprite[0].width;
+    var height = this.sprite[0].height;
     this.sprite[this.spritecnt].drawCentredAt(
         ctx, this.cx - width/2, this.cy - height/2, 0
     );

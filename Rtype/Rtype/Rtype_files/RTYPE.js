@@ -191,8 +191,11 @@ function requestPreloads() {
 
     var requiredImages = {
         ship   : "Sprites/r-typesheet42.gif",//"Sprites/Spaceship_art_pack_larger/Blue/Small_ship_blue/1.png",
-        enemy   : "Sprites/r-typesheet11.gif", 
-        //enemy   : "Sprites/r-typesheet5.gif",  //"Sprites/copterAlien.gif",
+        enemy2   : "Sprites/r-typesheet11.gif", 
+        enemy1   : "Sprites/r-typesheet5.gif",  
+        enemy3   : "Sprites/copterAlien.gif",
+        enemy4   : "Sprites/r-typesheet8.gif",
+        enemy5   : "Sprites/r-typesheet16.gif",
         boss :    "Sprites/r-typesheet9.gif",
         environment1 : "Sprites/environment1.png",
         environment2 : "Sprites/environment2.png",
@@ -208,11 +211,44 @@ function requestPreloads() {
 var g_sprites = {};
 var g_menu
 var g_levelManager
+function uploadEnemy1Spritesheet(){
+    g_sprites.enemy1 = []
+    var xDim = Math.floor(g_images.enemy1.width / 16) //width / nr pictures
+    for(var i = 0; i < 8; i++){ // 8 because there are 8 "poses we need"
+        g_sprites.enemy1.push(new SpriteSheet(g_images.enemy1, 1, i*xDim, 0, xDim, g_images.enemy1.height));
+    }
+}
 function uploadEnemy2Spritesheet(){
-    g_sprites.enemy = []
-    var xDim = Math.floor(g_images.enemy.width / 6) //width / nr pictures
+    g_sprites.enemy2 = []
+    var xDim = Math.floor(g_images.enemy2.width / 6) //width / nr pictures
     for(var i = 0; i < 3; i++){ // 5 because there are 5 "poses we need"
-        g_sprites.enemy.push(new SpriteSheet(g_images.enemy, 1, i*xDim, 0, xDim, g_images.enemy.height));
+        g_sprites.enemy2.push(new SpriteSheet(g_images.enemy2, 1, i*xDim, 0, xDim, g_images.enemy2.height));
+    }
+}
+function uploadEnemy3Spritesheet(){
+    g_sprites.enemy3 = []
+    var xDim = Math.floor(g_images.enemy3.width) //width / nr pictures
+    for(var i = 0; i < 1; i++){ // 5 because there are 5 "poses we need"
+        g_sprites.enemy3.push(new SpriteSheet(g_images.enemy3, 1, i*xDim, 0, xDim, g_images.enemy2.height));
+    }
+}
+function uploadEnemy4Spritesheet(){
+    g_sprites.enemy4 = []
+    var xDim = Math.floor(g_images.enemy4.width / 8) //width / nr pictures
+    for(var i = 0; i < 2; i++){
+        for(var j = 0; j < 8; j++){
+            g_sprites.enemy4.push(new SpriteSheet(g_images.enemy4, 1, j*xDim, i*g_images.enemy4.height/2, xDim, g_images.enemy4.height/2));
+        }
+    }
+}
+function uploadEnemy5Spritesheet(){
+    g_sprites.enemy5 = []
+    // some magic numbers(because of how the spritesheet is set up):
+    var yDim = 11
+    var xDim = 17//Math.floor(g_images.enemy5.width / 8) //width / nr pictures
+    var height = 11;
+    for(var i = 0; i < 2; i++){
+        g_sprites.enemy5.push(new SpriteSheet(g_images.enemy5, 1, 270 + i* xDim, yDim, xDim, height));
     }
 }
 function uploadBossSpritesheet(){
@@ -222,13 +258,7 @@ function uploadBossSpritesheet(){
         g_sprites.boss.push(new SpriteSheet(g_images.boss, 1, i*xDim, 0, xDim, 58));
     }
 }
-function uploadEnemy1Spritesheet(){
-    g_sprites.enemy = []
-    var xDim = Math.floor(g_images.enemy.width / 16) //width / nr pictures
-    for(var i = 0; i < 8; i++){ // 8 because there are 8 "poses we need"
-        g_sprites.enemy.push(new SpriteSheet(g_images.enemy, 1, i*xDim, 0, xDim, g_images.enemy.height));
-    }
-}
+
 function uploadShipSpritesheet(){
     g_sprites.ship = [];
     var xDim = Math.floor(g_images.ship.width / 5)
@@ -242,8 +272,11 @@ function preloadDone() {
     //g_sprites.ship  = new Sprite(g_images.ship, 0.1);
     //g_sprites.enemy  = new Sprite(g_images.enemy, 0.33);
     uploadShipSpritesheet();
-    //uploadEnemy1Spritesheet();
+    uploadEnemy1Spritesheet();
     uploadEnemy2Spritesheet();
+    uploadEnemy3Spritesheet();
+    uploadEnemy4Spritesheet();
+    uploadEnemy5Spritesheet();
     uploadBossSpritesheet();
     g_sprites.environment1 = new Sprite(g_images.environment1, 1);
     g_sprites.environment2 = new Sprite(g_images.environment2, 1);

@@ -59,7 +59,7 @@ function LevelManager() {
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
-    		scale: 3,
+    		//scale: 3,
     		fullLife: 15,
     		shootTimer: 0.2,
     		shouldIterSprite: 30,
@@ -96,6 +96,16 @@ function LevelManager() {
     		shouldIterSpriteOrig: 30
     	}
     ]
+    this.enemies = [
+    	[g_sprites.enemy1, g_sprites.enemy4],
+    	[g_sprites.enemy1, g_sprites.enemy2],
+    	[g_sprites.enemy4, g_sprites.enemy5],
+    	[g_sprites.enemy2, g_sprites.enemy5]
+    ]
+}
+LevelManager.prototype.getEnemyDescr = function() {
+	var rand = Math.floor(Math.random() * 2)
+	return this.enemies[this.level][rand];
 }
 LevelManager.prototype.setLevel = function(newLevel){
 	this.level = newLevel;
