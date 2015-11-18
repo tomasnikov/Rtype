@@ -346,7 +346,7 @@ Ship.prototype.explode = function(time) {
 }
 
 Ship.prototype.bufferAfterDeath = function() {
-    this.explode(2);
+    this.explode(0.4);
     this.isAlive = false;
     var ship = this;
     var time = 2*1000;

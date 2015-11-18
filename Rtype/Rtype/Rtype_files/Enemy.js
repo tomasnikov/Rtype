@@ -89,7 +89,7 @@ Enemy.prototype.update = function (du) {
     }
 
     if(this._isDeadNow) {
-        this.explode(0.75);
+        this.explode(0.4);
         if(this._givePoints==this.points) {
             return this.points;
         }

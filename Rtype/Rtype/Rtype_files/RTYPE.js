@@ -200,6 +200,7 @@ function requestPreloads() {
         enemy3   : "Sprites/copterAlien.gif",
         enemy4   : "Sprites/r-typesheet8.gif",
         enemy5   : "Sprites/r-typesheet16.gif",
+        explosion : "Sprites/r-typesheet44.gif",
         boss :    "Sprites/r-typesheet9.gif",
         environment1 : "Sprites/environment1.png",
         environment2 : "Sprites/environment2.png",
@@ -272,6 +273,15 @@ function uploadShipSpritesheet(){
     }
     console.log(g_sprites.ship)
 }
+function uploadExplosions(){
+    g_sprites.explosion = []
+    var xDim = Math.floor(g_images.explosion.width / 10) //width / nr pictures
+    var height = 60
+    var yDim = 37
+    for(var i = 0; i < 5; i++){ // 5 because there are 5 "poses we need"
+        g_sprites.explosion.push(new SpriteSheet(g_images.explosion, 1, i*xDim, yDim, xDim, height));
+    }
+}
 function preloadDone() {
     //g_sprites.ship  = new Sprite(g_images.ship, 0.1);
     //g_sprites.enemy  = new Sprite(g_images.enemy, 0.33);
@@ -281,6 +291,7 @@ function preloadDone() {
     uploadEnemy3Spritesheet();
     uploadEnemy4Spritesheet();
     uploadEnemy5Spritesheet();
+    uploadExplosions();
     uploadBossSpritesheet();
     g_sprites.environment1 = new Sprite(g_images.environment1, 1);
     g_sprites.environment2 = new Sprite(g_images.environment2, 1);
