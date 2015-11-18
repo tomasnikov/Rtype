@@ -189,7 +189,7 @@ resetEntities: function() {
     this._forEachOf(this._bullets, Bullet.prototype.reset);
     this._forEachOf(this._environment, Environment.prototype.reset);
 
-    powerupManager.resetEntities();
+    powerupManager.resetPowerups();
 },
 
 haltShips: function() {

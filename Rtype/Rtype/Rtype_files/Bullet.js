@@ -64,8 +64,6 @@ Bullet.prototype.update = function (du) {
             canTakeHit.call(hitEntity);
         }*/
         if(hitEntity.fullLife && this.firedFrom != "Enemy") {
-           console.log(hitEntity);
-           console.log(this);
            this.power -= hitEntity.fullLife - hitEntity.HP; 
         }
         else if(hitEntity.type != "Bullet" && hitEntity.type != "Enemy") {
