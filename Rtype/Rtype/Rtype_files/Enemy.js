@@ -152,7 +152,6 @@ Enemy.prototype.maybeFireBullet = function() {
     var shouldFireBullet = Math.random();
     if(this.isBoss) {
         if(this.shootTimer<=0) {
-            console.log(this.shootTimer);
             this.fireBullet();
             this.shootTimer = this.origShootTimer;  
         }
@@ -173,7 +172,8 @@ Enemy.prototype.fireBullet = function() {
 
 Enemy.prototype.takeBulletHit = function (power, firedFrom) {
     if(firedFrom === "Ship") {
-        var origHP = this.hp;
+        console.log(this);
+        var origHP = this.HP;
         this.HP = this.HP - power > 0 ? this.HP - power : 0;
         if(this.HP <= 0) {
             this.kill(this.points);
@@ -181,6 +181,21 @@ Enemy.prototype.takeBulletHit = function (power, firedFrom) {
                 g_levelManager.increaseLevel();
             }
         }
+        var random = Math.random();
+        if(random<0.1 && !this.isBoss) {
+            var randomType = Math.random();
+            var type;
+            if(randomType < 0.05) type = 1;
+            else if(randomType < 0.4) type = 2;
+            else if(randomType < 0.75) type = 3;
+            else type = 0;
+            powerupManager.generatePowerup({
+            cx: this.cx,
+            cy: this.cy,
+            type: type
+        });
+        }
+        
         return power-origHP;  
     }
       

@@ -20,6 +20,7 @@ function Bullet(descr) {
 
     // Make a noise when I am created (i.e. fired)
     //this.fireSound.play();
+
 }
 
 Bullet.prototype = new Entity();
@@ -59,10 +60,12 @@ Bullet.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit(this.power, this.firedFrom);
-        if (canTakeHit) {
+        /*if (canTakeHit) {
             canTakeHit.call(hitEntity);
-        }
-        if(hitEntity.fullLife) {
+        }*/
+        if(hitEntity.fullLife && this.firedFrom != "Enemy") {
+           console.log(hitEntity);
+           console.log(this);
            this.power -= hitEntity.fullLife - hitEntity.HP; 
         }
         else if(hitEntity.type != "Bullet" && hitEntity.type != "Enemy") {

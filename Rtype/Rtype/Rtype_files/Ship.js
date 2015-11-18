@@ -59,6 +59,7 @@ Ship.prototype.fullLife = 3;
 Ship.prototype.points = 0;
 Ship.prototype.isAlive = true;
 Ship.prototype.lastBullet = 0;
+Ship.prototype.powerupTime = 0;
 
 // HACKED-IN AUDIO (no preloading)
 Ship.prototype.warpSound = new Audio(
@@ -87,7 +88,7 @@ Ship.prototype.update = function (du) {
         this.lastBullet -= du;
     }
 
-    if(this.isColliding() && this.isAlive) {
+    if(this.isColliding() && this.isAlive && !this.shield) {
         if(this.HP > 0) {
         this.HP--;
         //entityManager.resetEntities();
@@ -101,6 +102,23 @@ Ship.prototype.update = function (du) {
     else {
         spatialManager.register(this);
     }
+
+    if(powerupManager) {
+        var collidesWithPowerup = powerupManager.collidesWithPowerup(this.cx, this.cy, this.getRadius());
+        if(collidesWithPowerup) {
+            this.setPowerup(collidesWithPowerup.type);
+        } 
+    }
+
+    if(this.powerupTime) {
+        this.powerupTime -= du;
+    }
+
+    if(this.powerupTime<0) {
+        this.resetPowerups();
+    }
+    
+
     if(!keys[this.KEY_THRUST] && !keys[this.KEY_RETRO] && this.spriteSelection != 2){
         if(this.spriteSelection < 2){
             this.spriteSelection += 0.1
@@ -109,6 +127,51 @@ Ship.prototype.update = function (du) {
             this.spriteSelection -= 0.1
         }
     }
+};
+
+Ship.prototype.setPowerup = function(type) {
+    var POWERUP_SMALLER_SHIP = 0;
+    var POWERUP_EXTRA_LIFE = 1;
+    var POWERUP_SHIELD = 2;
+    var POWERUP_MULTI_SHOT = 3;
+
+    switch(type) {
+        case POWERUP_SMALLER_SHIP:
+            this._scale *= 0.5;
+            for(var i = 0; i < g_sprites.ship.length; i++) {
+                g_sprites.ship[i].width *= 0.5;
+                g_sprites.ship[i].height *= 0.5;
+            }
+            this.smallShip = true;
+            break;
+        case POWERUP_EXTRA_LIFE:
+            this.HP++;
+            break;
+        case POWERUP_SHIELD:
+            this.shield = true;
+            break;
+        case POWERUP_MULTI_SHOT:
+            this.multipleShots = true;
+            break;
+    }
+
+    this.powerupTime = 3*SECS_TO_NOMINALS;
+};
+
+Ship.prototype.resetPowerups = function() {
+    this.shield = false;
+    this.multipleShots = false;
+
+    if(this.smallShip) {
+        this._scale *= 2;
+        for(var i = 0; i < g_sprites.ship.length; i++) {
+            g_sprites.ship[i].width *= 2;
+            g_sprites.ship[i].height *= 2;
+        } 
+    }
+    this.smallShip = false;   
+
+    this.powerupTime = 0;
 };
 
 Ship.prototype.computeSubStep = function (du) {
@@ -224,18 +287,14 @@ Ship.prototype.maybeFireBullet = function () {
     }
     else if(this.power>0) {
         this.power = Math.ceil(this.power);
-        var dX = +Math.sin(this.rotation);
-        var dY = -Math.cos(this.rotation);
-        var launchDist = this.getRadius()  + 4 * this.power;
-        
-        var relVel = this.launchVel;
-        var relVelX = dX * relVel;
-        var relVelY = dY * relVel;
+            
+        this.fireBullet(this.rotation, 0);
 
-        entityManager.fireBullet(
-           this.cx + dX * launchDist, this.cy + dY * launchDist,
-           this.velX + relVelX, this.velY + relVelY,
-           this.rotation, this.power, "Ship");
+        if(this.multipleShots) {
+            this.fireBullet(this.rotation + Math.PI/4, 20);
+            this.fireBullet(this.rotation - Math.PI/4, 20);
+        }
+
         this.power = 0;
         document.getElementById("power").value = this.power;
 
@@ -244,19 +303,36 @@ Ship.prototype.maybeFireBullet = function () {
     
 };
 
+Ship.prototype.fireBullet = function(rotation, extraDist) {
+    var dX = +Math.sin(rotation);
+    var dY = -Math.cos(rotation);
+    var launchDist = this.getRadius()  + 4 * this.power + extraDist;
+    
+    var relVel = this.launchVel;
+    var relVelX = dX * relVel;
+    var relVelY = dY * relVel;
+
+    entityManager.fireBullet(
+       this.cx + dX * launchDist, this.cy + dY * launchDist,
+       this.velX + relVelX, this.velY + relVelY,
+       rotation, this.power, "Ship");
+};
+
 Ship.prototype.getRadius = function () {
     return (this.sprite[2].width / 2)*this._scale * 0.9;
 };
 
 Ship.prototype.takeBulletHit = function () {
-    if(this.HP > 0) {
-        this.HP--;
-        this.bufferAfterDeath();
-        //entityManager.resetEntities();
-    }
-    else {
-        this.HP--;
-        main.gameOver();
+    if(!this.shield) {
+        if(this.HP > 0) {
+            this.HP--;
+            this.bufferAfterDeath();
+            //entityManager.resetEntities();
+        }
+        else {
+            this.HP--;
+            main.gameOver();
+        }  
     }
 };
 
@@ -317,7 +393,14 @@ Ship.prototype.render = function (ctx) {
 	//ctx, this.cx, this.cy, this.rotation
     //);
     //this.sprite.scale = origScale;
-    //------------------
+    //------------------+
+    if(this.shield) {
+        ctx.save();
+        ctx.strokeStyle = "white";
+        util.strokeCircle(ctx, this.cx, this.cy, this.getRadius()*1.1);
+        ctx.restore();
+    }
+
     var width = g_sprites.ship[0].width;
     var height = g_sprites.ship[0].height;
     //console.log(this.sprite[2])
@@ -325,6 +408,7 @@ Ship.prototype.render = function (ctx) {
     this.sprite[Math.floor(this.spriteSelection)].drawCentredAt(
         ctx, this.cx - width/2, this.cy - height/2, 0
     );
+
     //------------------
     for(var i = 0; i<this.HP; i++) {
         this.sprite[2].drawCentredAt(
