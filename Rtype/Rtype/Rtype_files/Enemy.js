@@ -29,7 +29,7 @@ function Enemy(descr) {
 
     this.points = 50;
     this.spritecnt = 0;
-    this.shouldIterSprite = 4;
+    
 
 
     if(this.isBoss) {
@@ -39,7 +39,8 @@ function Enemy(descr) {
 };
 
 Enemy.prototype = new Entity();
-
+Enemy.prototype.shouldIterSprite = 4;
+Enemy.prototype.shouldIterSpriteOrig = 4;
 Enemy.prototype.launchVel = 3;
 Enemy.prototype.moving = 0;
 Enemy.prototype.type = "Enemy";
@@ -136,7 +137,7 @@ Enemy.prototype.update = function (du) {
 
     if(this.shouldIterSprite == 0){
         this.nextSprite();
-        this.shouldIterSprite = 4;
+        this.shouldIterSprite = this.shouldIterSpriteOrig;
     }
     else{
         this.shouldIterSprite--;

@@ -55,38 +55,45 @@ function LevelManager() {
 
     this.bosses = [
     	{
-    		sprite: g_sprites.enemy,
+    		sprite: g_sprites.boss,
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
     		scale: 3,
     		fullLife: 15,
-    		shootTimer: 0.2
-
+    		shootTimer: 0.2,
+    		shouldIterSprite: 30,
+    		shouldIterSpriteOrig: 30
     	},
     	{
-    		sprite: g_sprites.enemy,
+    		sprite: g_sprites.boss,
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
     		fullLife: 20,
-    		shootTimer: 0.15
+    		shootTimer: 0.15,
+    		shouldIterSprite: 30,
+    		shouldIterSpriteOrig: 30
     	},
     	{
-    		sprite: g_sprites.enemy,
+    		sprite: g_sprites.boss,
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
     		fullLife: 25,
-    		shootTimer: 0.1
+    		shootTimer: 0.1,
+    		shouldIterSprite: 30,
+    		shouldIterSpriteOrig: 30
     	},
     	{
-    		sprite: g_sprites.enemy,
+    		sprite: g_sprites.boss,
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
     		fullLife: 30,
-    		shootTimer: 0.05
+    		shootTimer: 0.05,
+    		shouldIterSprite: 30,
+    		shouldIterSpriteOrig: 30
     	}
     ]
 }

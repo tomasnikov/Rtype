@@ -191,7 +191,9 @@ function requestPreloads() {
 
     var requiredImages = {
         ship   : "Sprites/r-typesheet42.gif",//"Sprites/Spaceship_art_pack_larger/Blue/Small_ship_blue/1.png",
-        enemy   : "Sprites/r-typesheet5.gif",//"Sprites/copterAlien.gif",
+        enemy   : "Sprites/r-typesheet11.gif", 
+        //enemy   : "Sprites/r-typesheet5.gif",  //"Sprites/copterAlien.gif",
+        boss :    "Sprites/r-typesheet9.gif",
         environment1 : "Sprites/environment1.png",
         environment2 : "Sprites/environment2.png",
         bullet : "Sprites/Spaceship_art_pack_larger/Blue/bullet.png",
@@ -206,11 +208,25 @@ function requestPreloads() {
 var g_sprites = {};
 var g_menu
 var g_levelManager
-function uploadEnemySpritesheet(){
+function uploadEnemy2Spritesheet(){
+    g_sprites.enemy = []
+    var xDim = Math.floor(g_images.enemy.width / 6) //width / nr pictures
+    for(var i = 0; i < 3; i++){ // 5 because there are 5 "poses we need"
+        g_sprites.enemy.push(new SpriteSheet(g_images.enemy, 1, i*xDim, 0, xDim, g_images.enemy.height));
+    }
+}
+function uploadBossSpritesheet(){
+    g_sprites.boss = []
+    var xDim = Math.floor(g_images.boss.width / 6) //width / nr pictures
+    for(var i = 0; i < 3; i++){ // 5 because there are 5 "poses we need"
+        g_sprites.boss.push(new SpriteSheet(g_images.boss, 1, i*xDim, 0, xDim, 58));
+    }
+}
+function uploadEnemy1Spritesheet(){
     g_sprites.enemy = []
     var xDim = Math.floor(g_images.enemy.width / 16) //width / nr pictures
     for(var i = 0; i < 8; i++){ // 8 because there are 8 "poses we need"
-        g_sprites.enemy.push(new SpriteSheet(g_images.enemy, 1, i*xDim, 0, xDim, 36));
+        g_sprites.enemy.push(new SpriteSheet(g_images.enemy, 1, i*xDim, 0, xDim, g_images.enemy.height));
     }
 }
 function uploadShipSpritesheet(){
@@ -226,7 +242,9 @@ function preloadDone() {
     //g_sprites.ship  = new Sprite(g_images.ship, 0.1);
     //g_sprites.enemy  = new Sprite(g_images.enemy, 0.33);
     uploadShipSpritesheet();
-    uploadEnemySpritesheet();
+    //uploadEnemy1Spritesheet();
+    uploadEnemy2Spritesheet();
+    uploadBossSpritesheet();
     g_sprites.environment1 = new Sprite(g_images.environment1, 1);
     g_sprites.environment2 = new Sprite(g_images.environment2, 1);
     g_sprites.bullet = new Sprite(g_images.bullet, 1);
