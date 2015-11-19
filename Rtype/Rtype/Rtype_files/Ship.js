@@ -96,6 +96,7 @@ Ship.prototype.update = function (du) {
         }
         else {
             this.HP--;
+            this.power = 0;
             main.gameOver();
         }
     }
@@ -271,6 +272,7 @@ Ship.prototype.takeBulletHit = function () {
         }
         else {
             this.HP--;
+            this.power = 0;
             main.gameOver();
         }  
     }
@@ -307,6 +309,7 @@ Ship.prototype.reset = function () {
         this.HP = 3
         this.points = 0
     }
+    document.getElementById("power").value = this.power;
 };
 
 Ship.prototype.halt = function () {

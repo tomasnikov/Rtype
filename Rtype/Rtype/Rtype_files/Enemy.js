@@ -72,6 +72,9 @@ Enemy.prototype.update = function (du) {
 
     var collided = this.isColliding();
     if(collided && collided.firedFrom != "Enemy") {
+        if(this.boss) {
+            console.log("collided");
+        }
         this.kill();
     }
 

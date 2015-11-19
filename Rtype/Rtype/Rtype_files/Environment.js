@@ -63,7 +63,6 @@ Environment.prototype.update = function (du) {
 
 
     spatialManager.unregister(this);
-    console.log(g_levelManager.level);
 
     if(this.cx <= -this.maxScrolled && this.scrollSpeed) {
         this.scrollSpeed = 0;
