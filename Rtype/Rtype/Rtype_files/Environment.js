@@ -65,8 +65,8 @@ Environment.prototype.update = function (du) {
 
     if(this.cx <= -maxScrolled && this.scrollSpeed) {
         this.scrollSpeed = 0;
+        console.log("generate boss");
         entityManager.generateBoss(g_levelManager.getBossDetails());
-        //g_levelManager.increaseLevel();
     }
     explosionManager.backSpeed = this.scrollSpeed;
 
@@ -78,12 +78,7 @@ Environment.prototype.update = function (du) {
     if(this.spawnEnemyTimer <= 0) {
         var rand = Math.floor(Math.random() * 2)
         var enemyDescr = g_levelManager.getEnemyDescr()
-        console.log(enemyDescr)
-        console.log(enemyDescr.numEnemies)
-        console.log(enemyDescr.sprite)
-        console.log(enemyDescr.numEnemies[rand])
-        console.log(enemyDescr.sprite[rand])
-        entityManager._generateEnemies(g_levelManager.getEnemyDescr().numEnemies[rand], g_levelManager.getEnemyDescr().sprite[rand]);
+        entityManager._generateEnemies(enemyDescr.numEnemies[rand], enemyDescr.sprite[rand], enemyDescr.fullLife[rand]);
         this.spawnEnemyTimer = this.origEnemyTimer;
     }
 

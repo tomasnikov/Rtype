@@ -23,7 +23,7 @@ function Enemy(descr) {
     this.scale  = this.scale  || this.sprite[0].scale;
     this.diff = 2*this.getRadius()*1.3*this.diff;
     this.setPosition();
-    this.randomiseVelocity();
+    this.setVelocity();
     
     this.HP = this.fullLife;
 
@@ -35,6 +35,7 @@ function Enemy(descr) {
     if(this.isBoss) {
         this.shootTimer *= SECS_TO_NOMINALS;
         this.origShootTimer = this.shootTimer;
+        console.log(this);
     }
 };
 
@@ -48,32 +49,21 @@ Enemy.prototype.fullLife = 1;
 Enemy.prototype.bulletChance = 0.002;
 
 Enemy.prototype.setPosition = function () {
-    // Enemy randomisation defaults (if nothing otherwise specified)
     var radius = this.getRadius();
     this.cx = this.cx || g_canvas.width-radius + this.diff;
     var minBottom = radius + 50;
     var maxTop = g_canvas.height - radius - 50;
-    this.cy = this.cy || g_canvas.height/2 || util.randRangeFromSeed(minBottom, maxTop, this.randomSeed);;
+    this.cy = this.cy || g_canvas.height/2;
     this.rotation = this.rotation || 0;
-    this.degree = this.degree || 0;
     this.origCx = this.cx;
     this.origCy = this.cy;
 };
 
-Enemy.prototype.randomiseVelocity = function () {
-    var MIN_SPEED = 50,
-        MAX_SPEED = 100;
+Enemy.prototype.setVelocity = function () {
 
-    var speed = util.randRangeFromSeed(MIN_SPEED, MAX_SPEED, this.randomSeed) / SECS_TO_NOMINALS;
-    var dirn = Math.random() * consts.FULL_CIRCLE;
-
-    this.velX = this.velX || -170/SECS_TO_NOMINALS;
-    //this.velY = this.velY || speed;
+    this.velX = this.velX || -225/SECS_TO_NOMINALS;
     this.velY = this.velX*0.5;
     this.origVelY = this.velY;
-
-    var MIN_ROT_SPEED = 0.5,
-        MAX_ROT_SPEED = 2.5;
 
     this.velRot = this.velRot || 0;
 };
@@ -172,7 +162,6 @@ Enemy.prototype.fireBullet = function() {
 
 Enemy.prototype.takeBulletHit = function (power, firedFrom) {
     if(firedFrom === "Ship") {
-        console.log(this);
         var origHP = this.HP;
         this.HP = this.HP - power > 0 ? this.HP - power : 0;
         if(this.HP <= 0) {
@@ -182,12 +171,16 @@ Enemy.prototype.takeBulletHit = function (power, firedFrom) {
             }
         }
         var random = Math.random();
-        if(random<0.1 && !this.isBoss) {
+        if(random<0.1 && !this.isBoss && this._isDeadNow) {
             var randomType = Math.random();
             var type;
+            //HP++
             if(randomType < 0.05) type = 1;
+            //Forcefield
             else if(randomType < 0.4) type = 2;
+            //Multishot
             else if(randomType < 0.75) type = 3;
+            //Small ship
             else type = 0;
             powerupManager.generatePowerup({
             cx: this.cx,

@@ -9,8 +9,9 @@ function LevelManager() {
 		],
 	    [
 	    	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-	        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]
 		],
 	    [
 	    	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -30,8 +31,8 @@ function LevelManager() {
     		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  
 		],
 	    [
-	        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0],
+		    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
 		    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 		],
 	    [
@@ -59,7 +60,7 @@ function LevelManager() {
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
-    		//scale: 3,
+    		diff: 0,
     		fullLife: 15,
     		shootTimer: 0.2,
     		shouldIterSprite: 30,
@@ -70,6 +71,7 @@ function LevelManager() {
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
+            diff: 0,
     		fullLife: 20,
     		shootTimer: 0.15,
     		shouldIterSprite: 30,
@@ -80,6 +82,7 @@ function LevelManager() {
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
+            diff: 0,
     		fullLife: 25,
     		shootTimer: 0.1,
     		shouldIterSprite: 30,
@@ -90,6 +93,7 @@ function LevelManager() {
     		isBoss: true,
     		cx: g_canvas.width,
     		cy: g_canvas.height/2,
+            diff: 0,
     		fullLife: 30,
     		shootTimer: 0.05,
     		shouldIterSprite: 30,
@@ -100,19 +104,23 @@ function LevelManager() {
     	
             {
                 sprite: [g_sprites.enemy1, g_sprites.enemy4],
-                numEnemies: [4,4]
+                numEnemies: [4,4],
+                fullLife: [1,2]
             },
             {
                 sprite: [g_sprites.enemy1, g_sprites.enemy2],
-                 numEnemies: [4,1]
+                 numEnemies: [4,1],
+                 fullLife: [1,3]
             },
             {
                 sprite: [g_sprites.enemy4, g_sprites.enemy5],
-                numEnemies: [4,6]
+                numEnemies: [4,6],
+                fullLife: [2,1]
             },
     	    {
                 sprite: [g_sprites.enemy2, g_sprites.enemy5],
-                numEnemies: [1,6]
+                numEnemies: [1,6],
+                fullLife: [3,1]
             }
         
     ]
@@ -135,8 +143,6 @@ LevelManager.prototype.getEnvironmentSprite = function(){
 }
 
 LevelManager.prototype.getBossDetails = function() {
-	console.log(this.level);
-	console.log(this.bosses);
 
 	var boss = this.bosses[this.level];
 	

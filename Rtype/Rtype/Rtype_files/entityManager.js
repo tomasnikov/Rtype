@@ -38,9 +38,8 @@ currentLevel: 1,
 
 // "PRIVATE" METHODS
 
-_generateEnemies : function(NUM_ENEMIES , sprite) {
+_generateEnemies : function(NUM_ENEMIES , sprite, fullLife) {
     var i;
-    var randomSeed = Math.random();
     var isShipAlive = false;
     for(var j = 0; j<this._ships.length; j++) {
         if(this._ships[j].isAlive) {
@@ -50,9 +49,9 @@ _generateEnemies : function(NUM_ENEMIES , sprite) {
     if(!g_isUpdatePaused && isShipAlive){
         for (i = 0; i < NUM_ENEMIES; ++i) {
             this.generateEnemy({
-                randomSeed: randomSeed,
                 diff: i,
-                sprite: sprite
+                sprite: sprite,
+                fullLife: fullLife
             });
         } 
     }
@@ -63,48 +62,14 @@ _generateEnvironment : function() {
     this.generateEnvironment();
 },
 
-_findNearestShip : function(posX, posY) {
-    var closestShip = null,
-        closestIndex = -1,
-        closestSq = 1000 * 1000;
-
-    for (var i = 0; i < this._ships.length; ++i) {
-
-        var thisShip = this._ships[i];
-        var shipPos = thisShip.getPos();
-        var distSq = util.wrappedDistSq(
-            shipPos.posX, shipPos.posY, 
-            posX, posY,
-            g_canvas.width, g_canvas.height);
-
-        if (distSq < closestSq) {
-            closestShip = thisShip;
-            closestIndex = i;
-            closestSq = distSq;
-        }
-    }
-    return {
-        theShip : closestShip,
-        theIndex: closestIndex
-    };
-},
-
 _forEachOf: function(aCategory, fn) {
     for (var i = 0; i < aCategory.length; ++i) {
         fn.call(aCategory[i]);
     }
 },
 
-// PUBLIC METHODS
-
-// A special return value, used by other objects,
-// to request the blessed release of death!
-//
 KILL_ME_NOW : -1,
 
-// Some things must be deferred until after initial construction
-// i.e. thing which need `this` to be defined.
-//
 deferredSetup : function () {
     this._categories = [this._enemies, this._bullets, this._environment, this._ships];
 },
@@ -162,20 +127,6 @@ generateEnvironment : function(descr) {
 
 generateShip : function(descr) {
     this._ships.push(new Ship(descr));
-},
-
-killNearestShip : function(xPos, yPos) {
-    var theShip = this._findNearestShip(xPos, yPos).theShip;
-    if (theShip) {
-        theShip.kill();
-    }
-},
-
-yoinkNearestShip : function(xPos, yPos) {
-    var theShip = this._findNearestShip(xPos, yPos).theShip;
-    if (theShip) {
-        theShip.setPos(xPos, yPos);
-    }
 },
 
 resetShips: function() {

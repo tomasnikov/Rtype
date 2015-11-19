@@ -26,10 +26,9 @@ function Explosion(descr) {
     
     // I am not dead yet!
     this._isDeadNow = false;
-    this.sprite = g_sprites.explosion
-    this.spriteIter = 0
-    console.log(g_sprites.explosion)
-    console.log(this.sprite)
+    this.sprite = g_sprites.explosion;
+    this.spriteIter = 0;
+
 };
 
 Explosion.prototype.lifeTime = 0.1;

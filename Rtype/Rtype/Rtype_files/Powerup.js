@@ -29,7 +29,6 @@ function Powerup(descr) {
 			break;
 	}
 
-	console.log(this);
 }
 
 Powerup.prototype.remove = false;

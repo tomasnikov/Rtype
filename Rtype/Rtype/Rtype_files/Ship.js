@@ -25,6 +25,7 @@ function Ship(descr) {
     
     // Set normal drawing scale, and warp state off
     this._scale = 1;
+    this.multiplier = 1;
     this._isWarping = false;
     this.HP = this.fullLife;
     this.spriteSelection = 2
@@ -60,10 +61,6 @@ Ship.prototype.points = 0;
 Ship.prototype.isAlive = true;
 Ship.prototype.lastBullet = 0;
 Ship.prototype.powerupTime = 0;
-
-// HACKED-IN AUDIO (no preloading)
-Ship.prototype.warpSound = new Audio(
-    "sounds/shipWarp.ogg");
     
 Ship.prototype.update = function (du) {
     
@@ -137,12 +134,15 @@ Ship.prototype.setPowerup = function(type) {
 
     switch(type) {
         case POWERUP_SMALLER_SHIP:
-            this._scale *= 0.5;
-            for(var i = 0; i < g_sprites.ship.length; i++) {
-                g_sprites.ship[i].width *= 0.5;
-                g_sprites.ship[i].height *= 0.5;
+            if(!this.smallShip) {
+                this._scale *= 0.5;
+                for(var i = 0; i < g_sprites.ship.length; i++) {
+                    g_sprites.ship[i].width *= 0.5;
+                    g_sprites.ship[i].height *= 0.5;
+                }
+                this.smallShip = true; 
             }
-            this.smallShip = true;
+            
             break;
         case POWERUP_EXTRA_LIFE:
             this.HP++;
@@ -178,28 +178,12 @@ Ship.prototype.computeSubStep = function (du) {
     
     var thrust = this.computePosition();
 
-    // Apply thrust directionally, based on our rotation
-    //var accelX = +Math.sin(this.rotation) * thrust;
-    //var accelY = -Math.cos(this.rotation) * thrust;
-    
-    //accelY += this.computeGravity();
-
-    //this.applyAccel(accelX, accelY, du);
-
     this.cx = thrust.x;
     this.cy = thrust.y;
-    
-    //this.wrapPosition();
-    
+        
     if (thrust === 0 || g_allowMixedActions) {
         this.updateRotation(du);
     }
-};
-
-var NOMINAL_GRAVITY = 0.12;
-
-Ship.prototype.computeGravity = function () {
-    return g_useGravity ? NOMINAL_GRAVITY : 0;
 };
 
 var NOMINAL_THRUST = 3;
@@ -235,49 +219,6 @@ Ship.prototype.computePosition = function () {
         y: y
     }
     return thrust;
-};
-
-Ship.prototype.applyAccel = function (accelX, accelY, du) {
-    
-    // u = original velocity
-    var oldVelX = this.velX;
-    var oldVelY = this.velY;
-    
-    // v = u + at
-    this.velX += accelX * du;
-    this.velY += accelY * du; 
-
-    // v_ave = (u + v) / 2
-    var aveVelX = (oldVelX + this.velX) / 2;
-    var aveVelY = (oldVelY + this.velY) / 2;
-    
-    // Decide whether to use the average or not (average is best!)
-    var intervalVelX = g_useAveVel ? aveVelX : this.velX;
-    var intervalVelY = g_useAveVel ? aveVelY : this.velY;
-    
-    // s = s + v_ave * t
-    var nextX = this.cx + intervalVelX * du;
-    var nextY = this.cy + intervalVelY * du;
-    
-    // bounce
-    if (g_useGravity) {
-
-	var minY = g_sprites.ship.height / 2;
-	var maxY = g_canvas.height - minY;
-
-	// Ignore the bounce if the ship is already in
-	// the "border zone" (to avoid trapping them there)
-	if (this.cy > maxY || this.cy < minY) {
-	    // do nothing
-	} else if (nextY > maxY || nextY < minY) {
-            this.velY = oldVelY * -0.9;
-            intervalVelY = this.velY;
-        }
-    }
-    
-    // s = s + v_ave * t
-    this.cx += du * intervalVelX;
-    this.cy += du * intervalVelY;
 };
 
 Ship.prototype.maybeFireBullet = function () {
@@ -327,7 +268,6 @@ Ship.prototype.takeBulletHit = function () {
         if(this.HP > 0) {
             this.HP--;
             this.bufferAfterDeath();
-            //entityManager.resetEntities();
         }
         else {
             this.HP--;
@@ -374,26 +314,8 @@ Ship.prototype.halt = function () {
     this.velY = 0;
 };
 
-var NOMINAL_ROTATE_RATE = 0.1;
-
-Ship.prototype.updateRotation = function (du) {
-    if (keys[this.KEY_LEFT]) {
-        //this.rotation -= NOMINAL_ROTATE_RATE * du;
-    }
-    if (keys[this.KEY_RIGHT]) {
-        //this.rotation += NOMINAL_ROTATE_RATE * du;
-    }
-};
-
 Ship.prototype.render = function (ctx) {
-    //var origScale = this.sprite.scale;
-    // pass my scale into the sprite, for drawing
-    //this.sprite.scale = this._scale;
-    //this.sprite.drawCentredAt(
-	//ctx, this.cx, this.cy, this.rotation
-    //);
-    //this.sprite.scale = origScale;
-    //------------------+
+
     if(this.shield) {
         ctx.save();
         ctx.strokeStyle = "white";
@@ -403,13 +325,11 @@ Ship.prototype.render = function (ctx) {
 
     var width = g_sprites.ship[0].width;
     var height = g_sprites.ship[0].height;
-    //console.log(this.sprite[2])
-    //console.log(this.spriteSelection)
+
     this.sprite[Math.floor(this.spriteSelection)].drawCentredAt(
         ctx, this.cx - width/2, this.cy - height/2, 0
     );
 
-    //------------------
     for(var i = 0; i<this.HP; i++) {
         this.sprite[2].drawCentredAt(
             ctx, (i+1)*(this.getRadius()*2), this.getRadius(), 0
