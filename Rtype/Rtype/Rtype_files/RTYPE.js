@@ -206,6 +206,9 @@ function requestPreloads() {
         environment2 : "Sprites/environment2.png",
         bullet : "Sprites/Spaceship_art_pack_larger/Blue/bullet.png",
         space : "space.jpg",
+        space2 : "space2.jpg",
+        space3 : "space3.jpg",
+        space4 : "space4.jpg",
         logo : "Sprites/r-type-logo.png"
 
     };

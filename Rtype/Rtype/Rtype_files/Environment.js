@@ -49,6 +49,8 @@ function Environment(descr) {
     this.spawnEnemyTimer *= SECS_TO_NOMINALS;
     this.origEnemyTimer *= SECS_TO_NOMINALS;
 
+    this.maxScrolled = this.brickWidth*(this.layout.top[0].length-Math.ceil(g_canvas.width/this.brickWidth));
+
 };
 
 Environment.prototype = new Entity();
@@ -61,12 +63,10 @@ Environment.prototype.update = function (du) {
 
 
     spatialManager.unregister(this);
+    console.log(g_levelManager.level);
 
-    var maxScrolled = this.brickWidth*(this.layout.top[0].length-Math.ceil(g_canvas.width/this.brickWidth));
-
-    if(this.cx <= -maxScrolled && this.scrollSpeed) {
+    if(this.cx <= -this.maxScrolled && this.scrollSpeed) {
         this.scrollSpeed = 0;
-        console.log("generate boss");
         entityManager.generateBoss(g_levelManager.getBossDetails());
     }
     explosionManager.backSpeed = this.scrollSpeed;

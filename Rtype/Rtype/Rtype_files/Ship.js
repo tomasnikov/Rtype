@@ -30,6 +30,8 @@ function Ship(descr) {
     this.HP = this.fullLife;
     this.spriteSelection = 2
 
+    this.shield = true;
+
 };
 
 Ship.prototype = new Entity();

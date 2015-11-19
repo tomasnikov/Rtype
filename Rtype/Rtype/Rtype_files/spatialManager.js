@@ -148,13 +148,13 @@ computeNextEnemyMove: function(posX, posY, radius, origVelY, velY) {
         //Enemy is below ship and going down
         else if(distY>minDist && isGoingDown && shouldGoDown) {
             movement.velY = velY*-1;
-            movement.timeMoving = 0.2*secToNom;
+            movement.timeMoving = 0.4*secToNom;
             return movement;
         }
         //Enemy is above ship and going up
         else if(distY<-minDist&& !isGoingDown && shouldGoUp) {
             movement.velY = velY*-1;
-            movement.timeMoving = 0.2*secToNom;
+            movement.timeMoving = 0.4*secToNom;
             return movement;
         }
     }
@@ -163,7 +163,7 @@ computeNextEnemyMove: function(posX, posY, radius, origVelY, velY) {
     }
     else {
         movement.velY = velY*-1;
-        movement.timeMoving = 0.2*secToNom;
+        movement.timeMoving = 0.4*secToNom;
         return movement;
     }
     //return isGoingDown && shouldGoDown ? velY : velY*-1;

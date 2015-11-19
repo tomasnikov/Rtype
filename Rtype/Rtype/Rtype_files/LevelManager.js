@@ -129,9 +129,31 @@ function LevelManager() {
                 numEnemies: [1,6],
                 fullLife: [3,1],
                 velX: [-250, -250]
-            }
-        
-    ]
+            }   
+    ],
+
+    this.backGrounds = [
+        {
+            img: g_images['space'],
+            cxOffset: 0,
+            cyOffset: -300
+        },
+        {
+            img: g_images['space2'],
+            cxOffset: 200,
+            cyOffset: 0
+        },
+        {
+            img: g_images['space3'],
+            cxOffset: 0,
+            cyOffset: -600
+        },
+        {
+            img: g_images['space4'],
+            cxOffset: 0,
+            cyOffset: 0
+        }
+    ];
 }
 LevelManager.prototype.getEnemyDescr = function(num) {
     var obj = {};
@@ -153,6 +175,10 @@ LevelManager.prototype.getEnvironment = function(){
 }
 LevelManager.prototype.getEnvironmentSprite = function(){
 	return this.environmentSprites[this.level];
+}
+
+LevelManager.prototype.getBackground = function() {
+    return this.backGrounds[this.level];
 }
 
 LevelManager.prototype.getBossDetails = function() {

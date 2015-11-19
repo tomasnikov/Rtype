@@ -80,9 +80,6 @@ Enemy.prototype.update = function (du) {
         if(this._givePoints==this.points) {
             return this.points;
         }
-        if(this.isBoss) {
-            g_levelManager.increaseLevel();
-        }
         return entityManager.KILL_ME_NOW;
     }
 
