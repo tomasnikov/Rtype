@@ -47,14 +47,15 @@ function Environment(descr) {
     this.origScrollSpeed = this.scrollSpeed;
 
     this.spawnEnemyTimer *= SECS_TO_NOMINALS;
-    this.origEnemyTimer = this.spawnEnemyTimer;
+    this.origEnemyTimer *= SECS_TO_NOMINALS;
 
 };
 
 Environment.prototype = new Entity();
 
 Environment.prototype.type = "Environment";
-Environment.prototype.spawnEnemyTimer = 2;
+Environment.prototype.spawnEnemyTimer = 0;
+Environment.prototype.origEnemyTimer = 2;
 
 Environment.prototype.update = function (du) {
 
@@ -76,9 +77,9 @@ Environment.prototype.update = function (du) {
     
 
     if(this.spawnEnemyTimer <= 0) {
-        var rand = Math.floor(Math.random() * 2)
-        var enemyDescr = g_levelManager.getEnemyDescr()
-        entityManager._generateEnemies(enemyDescr.numEnemies[rand], enemyDescr.sprite[rand], enemyDescr.fullLife[rand]);
+        var rand = Math.floor(Math.random() * 2);
+        var enemyDescr = g_levelManager.getEnemyDescr(rand);
+        entityManager._generateEnemies(enemyDescr);
         this.spawnEnemyTimer = this.origEnemyTimer;
     }
 

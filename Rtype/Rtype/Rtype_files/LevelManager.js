@@ -62,6 +62,7 @@ function LevelManager() {
     		cy: g_canvas.height/2,
     		diff: 0,
     		fullLife: 15,
+            HP: 15,
     		shootTimer: 0.2,
     		shouldIterSprite: 30,
     		shouldIterSpriteOrig: 30
@@ -73,6 +74,7 @@ function LevelManager() {
     		cy: g_canvas.height/2,
             diff: 0,
     		fullLife: 20,
+            HP: 20,
     		shootTimer: 0.15,
     		shouldIterSprite: 30,
     		shouldIterSpriteOrig: 30
@@ -84,6 +86,7 @@ function LevelManager() {
     		cy: g_canvas.height/2,
             diff: 0,
     		fullLife: 25,
+            HP: 25,
     		shootTimer: 0.1,
     		shouldIterSprite: 30,
     		shouldIterSpriteOrig: 30
@@ -95,6 +98,7 @@ function LevelManager() {
     		cy: g_canvas.height/2,
             diff: 0,
     		fullLife: 30,
+            HP: 30,
     		shootTimer: 0.05,
     		shouldIterSprite: 30,
     		shouldIterSpriteOrig: 30
@@ -105,28 +109,37 @@ function LevelManager() {
             {
                 sprite: [g_sprites.enemy1, g_sprites.enemy4],
                 numEnemies: [4,4],
-                fullLife: [1,2]
+                fullLife: [1,2],
+                velX: [-210, -210]
             },
             {
                 sprite: [g_sprites.enemy1, g_sprites.enemy2],
                  numEnemies: [4,1],
-                 fullLife: [1,3]
+                 fullLife: [1,3],
+                 velX: [-220, -220]
             },
             {
                 sprite: [g_sprites.enemy4, g_sprites.enemy5],
                 numEnemies: [4,6],
-                fullLife: [2,1]
+                fullLife: [2,1],
+                velX: [-230, -230]
             },
     	    {
                 sprite: [g_sprites.enemy2, g_sprites.enemy5],
                 numEnemies: [1,6],
-                fullLife: [3,1]
+                fullLife: [3,1],
+                velX: [-250, -250]
             }
         
     ]
 }
-LevelManager.prototype.getEnemyDescr = function() {
-	return this.enemies[this.level];
+LevelManager.prototype.getEnemyDescr = function(num) {
+    var obj = {};
+    var descr = this.enemies[this.level];
+    for (var property in descr) {
+        obj[property] = descr[property][num];
+    }
+	return obj;
 }
 LevelManager.prototype.setLevel = function(newLevel){
 	this.level = newLevel;

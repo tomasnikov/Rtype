@@ -38,9 +38,11 @@ currentLevel: 1,
 
 // "PRIVATE" METHODS
 
-_generateEnemies : function(NUM_ENEMIES , sprite, fullLife) {
+_generateEnemies : function(descr) {
     var i;
     var isShipAlive = false;
+    if(!descr) descr = {};
+    var NUM_ENEMIES = descr.NUM_ENEMIES || 4;
     for(var j = 0; j<this._ships.length; j++) {
         if(this._ships[j].isAlive) {
             isShipAlive = true;
@@ -48,11 +50,8 @@ _generateEnemies : function(NUM_ENEMIES , sprite, fullLife) {
     }
     if(!g_isUpdatePaused && isShipAlive){
         for (i = 0; i < NUM_ENEMIES; ++i) {
-            this.generateEnemy({
-                diff: i,
-                sprite: sprite,
-                fullLife: fullLife
-            });
+            descr.diff = i;
+            this.generateEnemy(descr);
         } 
     }
     
@@ -75,7 +74,6 @@ deferredSetup : function () {
 },
 
 init: function() {
-    this._generateEnemies();
     this._generateEnvironment();
 },
 
@@ -92,7 +90,6 @@ fireBullet: function(cx, cy, velX, velY, rotation, power, firedFrom) {
 },
 
 fireBulletAtShip: function(cx, cy, velX, velY, rotation, firedFrom) {
-    //console.log(cx, cy, velX, velY, rotation);
     for(var i = 0; i<this._ships.length; i++) {
         var distX = cx - this._ships[i].cx;
         var distY = cy - this._ships[i].cy;
@@ -113,7 +110,6 @@ fireBulletAtShip: function(cx, cy, velX, velY, rotation, firedFrom) {
 },
 
 generateBoss: function(descr) {
-    console.log(descr);
     this._enemies.push(new Enemy(descr));
 },
 

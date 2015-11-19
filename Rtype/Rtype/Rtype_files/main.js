@@ -77,7 +77,6 @@ main.gameOver = function () {
     //g_doRenderMenu = true
     //g_updateMenu = true
     this.toggleMenu()
-    console.log("gameOver: quitting...");
 };
 main.toggleMenu = function(){
     g_updateMenu = !g_updateMenu;

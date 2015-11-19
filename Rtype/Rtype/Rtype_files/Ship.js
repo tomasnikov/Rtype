@@ -29,6 +29,7 @@ function Ship(descr) {
     this._isWarping = false;
     this.HP = this.fullLife;
     this.spriteSelection = 2
+
 };
 
 Ship.prototype = new Entity();
@@ -181,9 +182,6 @@ Ship.prototype.computeSubStep = function (du) {
     this.cx = thrust.x;
     this.cy = thrust.y;
         
-    if (thrust === 0 || g_allowMixedActions) {
-        this.updateRotation(du);
-    }
 };
 
 var NOMINAL_THRUST = 3;

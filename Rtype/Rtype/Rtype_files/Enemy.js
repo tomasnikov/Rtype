@@ -27,15 +27,12 @@ function Enemy(descr) {
     
     this.HP = this.fullLife;
 
-    this.points = 50;
+    this.points = 50*this.fullLife;
     this.spritecnt = 0;
-    
-
 
     if(this.isBoss) {
         this.shootTimer *= SECS_TO_NOMINALS;
         this.origShootTimer = this.shootTimer;
-        console.log(this);
     }
 };
 
@@ -61,7 +58,7 @@ Enemy.prototype.setPosition = function () {
 
 Enemy.prototype.setVelocity = function () {
 
-    this.velX = this.velX || -225/SECS_TO_NOMINALS;
+    this.velX = this.velX/SECS_TO_NOMINALS || -225/SECS_TO_NOMINALS;
     this.velY = this.velX*0.5;
     this.origVelY = this.velY;
 
@@ -82,6 +79,9 @@ Enemy.prototype.update = function (du) {
         this.explode(0.4);
         if(this._givePoints==this.points) {
             return this.points;
+        }
+        if(this.isBoss) {
+            g_levelManager.increaseLevel();
         }
         return entityManager.KILL_ME_NOW;
     }
