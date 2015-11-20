@@ -201,6 +201,7 @@ function requestPreloads() {
         enemy4   : "Sprites/r-typesheet8.gif",
         enemy5   : "Sprites/r-typesheet16.gif",
         explosion : "Sprites/r-typesheet44.gif",
+        enemyBullet : "Sprites/r-typesheet43.gif",
         boss :    "Sprites/r-typesheet9.gif",
         environment1 : "Sprites/environment1.png",
         environment2 : "Sprites/environment2.png",
@@ -249,6 +250,7 @@ function uploadEnemy4Spritesheet(){
         }
     }
 }
+
 function uploadEnemy5Spritesheet(){
     g_sprites.enemy5 = []
     // some magic numbers(because of how the spritesheet is set up):
@@ -259,8 +261,19 @@ function uploadEnemy5Spritesheet(){
         g_sprites.enemy5.push(new SpriteSheet(g_images.enemy5, 1, 270 + i* xDim, yDim, xDim, height));
     }
 }
+function uploadEnemyBullet(){
+    g_sprites.enemyBullet = []
+    var xDim = 135;
+    var yDim = 5;
+    var width = 9;
+    var height = 9;
+    var gap = 17;
+    for(var i = 0; i < 4; i++){
+        g_sprites.enemyBullet.push(new SpriteSheet(g_images.enemyBullet,1,xDim + (i*gap), yDim, width, height));
+    }
+}
 function uploadBossSpritesheet(){
-    g_sprites.boss = []
+    g_sprites.boss = [];
     var xDim = Math.floor(g_images.boss.width / 6) //width / nr pictures
     for(var i = 0; i < 3; i++){ // 5 because there are 5 "poses we need"
         g_sprites.boss.push(new SpriteSheet(g_images.boss, 1, i*xDim, 0, xDim, 58));
@@ -295,6 +308,7 @@ function preloadDone() {
     uploadEnemy4Spritesheet();
     uploadEnemy5Spritesheet();
     uploadExplosions();
+    uploadEnemyBullet();
     uploadBossSpritesheet();
     g_sprites.environment1 = new Sprite(g_images.environment1, 1);
     g_sprites.environment2 = new Sprite(g_images.environment2, 1);

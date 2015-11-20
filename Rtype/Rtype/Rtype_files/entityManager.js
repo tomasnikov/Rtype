@@ -104,7 +104,8 @@ fireBulletAtShip: function(cx, cy, velX, velY, rotation, firedFrom) {
             velY : relVelY,
             power : 1,
             rotation : rotation,
-            firedFrom : firedFrom
+            firedFrom : firedFrom,
+            isEnemyBullet : true
         }));
     }
 },

@@ -20,6 +20,9 @@ function Bullet(descr) {
 
     // Make a noise when I am created (i.e. fired)
     //this.fireSound.play();
+    if(this.isEnemyBullet){
+        this.sprite = g_sprites.enemyBullet
+    }
 
 }
 
@@ -39,8 +42,8 @@ Bullet.prototype.velX = 2;
 Bullet.prototype.velY = 1;
 Bullet.prototype.power = 1;
 Bullet.prototype.type = "Bullet";
-
-
+Bullet.prototype.isEnemyBullet = false;
+Bullet.prototype.spriteIter = 3.9
 Bullet.prototype.update = function (du) {
 
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
@@ -76,7 +79,14 @@ Bullet.prototype.update = function (du) {
     }
     
     spatialManager.register(this);
-
+    if(this.isEnemyBullet){
+        if(this.spriteIter-0.1 <= 0){
+            this.spriteIter = this.sprite.length-0.1;
+        }
+        else{
+            this.spriteIter -= 0.1;
+        }
+    }
 };
 
 Bullet.prototype.explode = function(time) {
@@ -112,13 +122,22 @@ Bullet.prototype.render = function (ctx) {
 
     var origScale = g_sprites.bullet.scale;
 
-
-    // pass my scale into the sprite, for drawing
-    g_sprites.bullet.scale = Math.max(0.2, this.power/20);
-    //g_sprites.bullet.scale = this.getRadius()/10;
-    g_sprites.bullet.drawCentredAt(
-        ctx, this.cx, this.cy, this.rotation
+    if(this.isEnemyBullet){
+        var width = this.sprite[0].width;
+        var height = this.sprite[0].height;
+        this.sprite[Math.floor(this.spriteIter)].drawCentredAt(
+        ctx, this.cx - width/2, this.cy - height/2, 0
     );
-    g_sprites.bullet.scale = origScale;
+    }
+    else
+    {
+        // pass my scale into the sprite, for drawing
+        g_sprites.bullet.scale = Math.max(0.2, this.power/20);
+        //g_sprites.bullet.scale = this.getRadius()/10;
+        g_sprites.bullet.drawCentredAt(
+            ctx, this.cx, this.cy, this.rotation
+        );
+        g_sprites.bullet.scale = origScale;
+    }
 
 };
