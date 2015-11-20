@@ -283,7 +283,8 @@ Ship.prototype.explode = function(time) {
         cx: this.cx,
         cy: this.cy,
         radius: this.getRadius(),
-        lifeTime: time
+        lifeTime: time,
+        sprite: g_sprites.explosion1
     });
 }
 

@@ -26,7 +26,7 @@ function Explosion(descr) {
     
     // I am not dead yet!
     this._isDeadNow = false;
-    this.sprite = g_sprites.explosion;
+    this.sprite = this.sprite || g_sprites.explosion2;
     this.spriteIter = 0;
 
 };
@@ -36,6 +36,7 @@ Explosion.prototype.color = "red";
 Explosion.prototype.spriteIter = 4;
 Explosion.prototype.spriteIterOrig = 4;
 Explosion.prototype.spriteItercnt = 0
+
 Explosion.prototype.update = function (du) {
 
     this.backSpeed = explosionManager.backSpeed;

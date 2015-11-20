@@ -290,12 +290,21 @@ function uploadShipSpritesheet(){
     console.log(g_sprites.ship)
 }
 function uploadExplosions(){
-    g_sprites.explosion = []
+    g_sprites.explosion1 = []
+    g_sprites.explosion2 = []
     var xDim = Math.floor(g_images.explosion.width / 10) //width / nr pictures
     var height = 60
     var yDim = 37
     for(var i = 0; i < 5; i++){ // 5 because there are 5 "poses we need"
-        g_sprites.explosion.push(new SpriteSheet(g_images.explosion, 1, i*xDim, yDim, xDim, height));
+        g_sprites.explosion1.push(new SpriteSheet(g_images.explosion, 1, i*xDim, yDim, xDim, height));
+    }
+    //second explosion in the same spritesheet
+    xDim = 128 
+    yDim = 0
+    var width = 33 
+    height = 33
+    for(var i = 0; i < 6; i++){
+        g_sprites.explosion2.push(new SpriteSheet(g_images.explosion,1,xDim+(i*width),yDim,width,height))
     }
 }
 function preloadDone() {
