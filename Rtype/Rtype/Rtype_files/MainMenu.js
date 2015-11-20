@@ -18,7 +18,7 @@ function MainMenu() {
 		width: 100
 	}
 	this.controlstext = {
-		text: "Controls",
+		text: "Instructions",
 		color:"white",
 		cx: g_canvas.width/2,
 		cy: 300,
@@ -131,11 +131,43 @@ MainMenu.prototype.renderControls = function(ctx){
 	ctx.fillStyle = "white";
 	ctx.font = "20px Lucida Console"
 	ctx.textAlign = "center";
+	ctx.fillText("Keys", g_canvas.width/2,360);
 	ctx.fillText("Spacebar: shoot", g_canvas.width/2,380);
 	ctx.fillText("Up: W", g_canvas.width/2,400);
 	ctx.fillText("Down: S", g_canvas.width/2,420);
 	ctx.fillText("Left: A", g_canvas.width/2,440);
 	ctx.fillText("Right: D", g_canvas.width/2,460);
+	//enmies
+	ctx.textAlign = "left"
+	    ctx.fillText("Enemies",10,360)
+
+	g_sprites.enemy1[0].drawCentredAt(
+        ctx, 10, 360, 0
+    );
+    ctx.fillText("HP: 1, Points: 50",60,385)
+    g_sprites.enemy5[0].drawCentredAt(
+        ctx, 10, 400, 0
+    );
+    ctx.fillText("HP: 1, Points: 50",60,410)
+	g_sprites.enemy4[0].drawCentredAt(
+        ctx, 10, 410, 0
+    );
+    ctx.fillText("HP: 2, Points: 100",60,435)
+    g_sprites.enemy2[0].drawCentredAt(
+        ctx, 10, 440, 0
+    );
+    ctx.fillText("HP: 3, Points: 150",60,460)
+    //powerups
+	ctx.textAlign = "left"
+	ctx.fillText("Powerups",g_canvas.width-160,360)
+	ctx.fillText("Smaller ship",g_canvas.width-160,380)
+	ctx.fillText("Extra life",g_canvas.width-160,405)
+	ctx.fillText("Shield",g_canvas.width-160,430)
+	ctx.fillText("Multi-shot",g_canvas.width-160,455)
+	g_sprites.powerup1.drawCentredAt(ctx,g_canvas.width-180,375,0)
+	g_sprites.powerup2.drawCentredAt(ctx,g_canvas.width-180,400,0)
+	g_sprites.powerup3.drawCentredAt(ctx,g_canvas.width-180,425,0)
+	g_sprites.powerup4.drawCentredAt(ctx,g_canvas.width-180,450,0)
 	ctx.restore();
 }
 MainMenu.prototype.update = function(du){

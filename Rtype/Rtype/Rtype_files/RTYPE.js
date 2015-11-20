@@ -210,8 +210,12 @@ function requestPreloads() {
         space2 : "space2.jpg",
         space3 : "space3.jpg",
         space4 : "space4.jpg",
-        logo : "Sprites/r-type-logo.png"
-
+        logo : "Sprites/r-type-logo.png",
+        powerup1 : "Sprites/powerup1.png",
+        powerup2 : "Sprites/powerup2.png",
+        powerup3 : "Sprites/powerup3.png",
+        powerup4 : "Sprites/powerup4.png",
+        
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -323,6 +327,10 @@ function preloadDone() {
     g_sprites.environment2 = new Sprite(g_images.environment2, 1);
     g_sprites.bullet = new Sprite(g_images.bullet, 1);
     g_sprites.logo = new Sprite(g_images.logo, 1)
+    g_sprites.powerup1 = new Sprite(g_images.powerup1, 0.75)
+    g_sprites.powerup2 = new Sprite(g_images.powerup2, 0.75)
+    g_sprites.powerup3 = new Sprite(g_images.powerup3, 0.75)
+    g_sprites.powerup4 = new Sprite(g_images.powerup4, 0.75)
     g_sprites.bullet.scale = 0.25;
     //entityManager.init();
     //createInitialShips();

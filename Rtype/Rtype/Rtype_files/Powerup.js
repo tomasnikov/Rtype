@@ -14,18 +14,24 @@ function Powerup(descr) {
 		case POWERUP_SMALLER_SHIP:
 			this.color = 'blue';
 			this.letter = 'S';
+			this.sprite = g_sprites.powerup1;
 			break;
 		case POWERUP_EXTRA_LIFE:
 			this.color = 'grey';
 			this.letter = 'P';
+			this.sprite = g_sprites.powerup2;
+
 			break;
 		case POWERUP_SHIELD:
 			this.color = 'red';
 			this.letter = 'O';
+			this.sprite = g_sprites.powerup3;
+
 			break;
 		case POWERUP_MULTI_SHOT:
 			this.color = '#00F4F8';
 			this.letter = 'M';
+			this.sprite = g_sprites.powerup4;
 			break;
 	}
 
@@ -55,8 +61,8 @@ Powerup.prototype.reset = function() {
 
 Powerup.prototype.render = function (ctx) {
 	// (cx, cy) is the centre; must offset it for drawing
-
-	util.fillBox(ctx, this.cx - this.halfWidth,
+	this.sprite.drawCentredAt(ctx,this.cx,this.cy,0)
+	/*util.fillBox(ctx, this.cx - this.halfWidth,
 				 this.cy - this.halfHeight,
 				 this.halfWidth * 2,
 				 this.halfHeight * 2,
@@ -66,6 +72,8 @@ Powerup.prototype.render = function (ctx) {
 	ctx.fillStyle = "yellow";
     ctx.fillText(this.letter, this.cx-this.halfWidth+2, this.cy+this.halfHeight-2);
     ctx.fillStyle = oldStyle;
+
+    */
 };
 
 Powerup.prototype.giveEffect = function () {
