@@ -153,11 +153,22 @@ Enemy.prototype.maybeFireBullet = function() {
 };
 
 Enemy.prototype.fireBullet = function() {
-    var launchDist = this.getRadius();
+    if(this.isBoss){
+        if(this.spritecnt == 2 || this.spritecnt == 0){
+            var launchDist = this.getRadius();
+            entityManager.fireBulletAtShip(
+                this.cx - launchDist, this.cy,
+                this.velX - this.launchVel, this.velY,
+            -Math.PI/2, "Enemy");
+        }
+    }
+    else{
+        var launchDist = this.getRadius();
         entityManager.fireBulletAtShip(
            this.cx - launchDist, this.cy,
            this.velX - this.launchVel, this.velY,
            -Math.PI/2, "Enemy");
+    }
 }
 
 Enemy.prototype.takeBulletHit = function (power, firedFrom) {
@@ -167,7 +178,12 @@ Enemy.prototype.takeBulletHit = function (power, firedFrom) {
         if(this.HP <= 0) {
             this.kill(this.points);
             if(this.isBoss) {
-                g_levelManager.increaseLevel();
+                if(g_levelManager.level == 3){
+                    main.toggleMenu();
+                }
+                else{
+                    g_levelManager.increaseLevel();
+                }
             }
         }
         var random = Math.random();

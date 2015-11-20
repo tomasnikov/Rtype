@@ -64,8 +64,8 @@ function LevelManager() {
     		fullLife: 15,
             HP: 15,
     		shootTimer: 0.2,
-    		shouldIterSprite: 30,
-    		shouldIterSpriteOrig: 30
+    		shouldIterSprite: 50,
+    		shouldIterSpriteOrig: 50
     	},
     	{
     		sprite: g_sprites.boss,
@@ -76,8 +76,8 @@ function LevelManager() {
     		fullLife: 20,
             HP: 20,
     		shootTimer: 0.15,
-    		shouldIterSprite: 30,
-    		shouldIterSpriteOrig: 30
+    		shouldIterSprite: 50,
+    		shouldIterSpriteOrig: 50
     	},
     	{
     		sprite: g_sprites.boss,
@@ -88,8 +88,8 @@ function LevelManager() {
     		fullLife: 25,
             HP: 25,
     		shootTimer: 0.1,
-    		shouldIterSprite: 30,
-    		shouldIterSpriteOrig: 30
+    		shouldIterSprite: 50,
+    		shouldIterSpriteOrig: 50
     	},
     	{
     		sprite: g_sprites.boss,
@@ -100,8 +100,8 @@ function LevelManager() {
     		fullLife: 30,
             HP: 30,
     		shootTimer: 0.05,
-    		shouldIterSprite: 30,
-    		shouldIterSpriteOrig: 30
+    		shouldIterSprite: 50,
+    		shouldIterSpriteOrig: 50
     	}
     ]
     this.enemies = [
