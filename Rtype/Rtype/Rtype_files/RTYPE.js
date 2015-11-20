@@ -205,6 +205,8 @@ function requestPreloads() {
         boss :    "Sprites/r-typesheet9.gif",
         environment1 : "Sprites/environment1.png",
         environment2 : "Sprites/environment2.png",
+        environment3 : "Sprites/environment3.png",
+        environment4 : "Sprites/environment4.png",
         bullet : "Sprites/Spaceship_art_pack_larger/Blue/bullet.png",
         space : "space.jpg",
         space2 : "space2.jpg",
@@ -325,6 +327,8 @@ function preloadDone() {
     uploadBossSpritesheet();
     g_sprites.environment1 = new Sprite(g_images.environment1, 1);
     g_sprites.environment2 = new Sprite(g_images.environment2, 1);
+    g_sprites.environment3 = new Sprite(g_images.environment3, 1);
+    g_sprites.environment4 = new Sprite(g_images.environment4, 1);
     g_sprites.bullet = new Sprite(g_images.bullet, 1);
     g_sprites.logo = new Sprite(g_images.logo, 1)
     g_sprites.powerup1 = new Sprite(g_images.powerup1, 0.75)
