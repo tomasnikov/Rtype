@@ -121,6 +121,7 @@ var KEY_2 = keyCode('2');
 var KEY_K = keyCode('K');
 
 var KEY_PLAYSOUND = keyCode('Y');
+var KEY_PLAYSONG = keyCode('N');
 
 function processDiagnostics() {
 
@@ -141,7 +142,15 @@ function processDiagnostics() {
     if (eatKey(KEY_PLAY)) g_doRenderMenu = !g_doRenderMenu;
 
     if(eatKey(KEY_PLAYSOUND)) g_playSound = !g_playSound;
-
+    if(eatKey(KEY_PLAYSONG)) {
+        if(g_song.paused) {
+            g_song.play();
+        }
+        else {
+            g_song.pause();
+        }
+        
+    }
     /*
     if (eatKey(KEY_1)) entityManager.generateShip({
         cx : g_mouseX,
@@ -344,6 +353,7 @@ function preloadDone() {
     //createInitialShips();
     g_levelManager = new LevelManager();
     g_menu = new MainMenu();
+    g_song.play();
     main.init();
 }
 
