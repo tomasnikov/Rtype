@@ -133,7 +133,7 @@ function processDiagnostics() {
 
     if (eatKey(KEY_HALT)) entityManager.haltShips();
 
-    if (eatKey(KEY_RESET)) entityManager.resetShips();
+    if (eatKey(KEY_RESET)) entityManager.resetEntities();
 
     if (eatKey(KEY_0)) entityManager.toggleEnemies();
     if (eatKey(KEY_PLAY)) g_doRenderMenu = !g_doRenderMenu;
