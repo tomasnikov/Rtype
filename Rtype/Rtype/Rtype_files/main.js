@@ -59,12 +59,6 @@ main._updateClocks = function (frameTime) {
 
 main._iterCore = function (dt) {
     
-    // Handle QUIT
-    if (requestedQuit()) {
-        this.gameOver();
-        return;
-    }
-    
     gatherInputs();
     update(dt);
     render(g_ctx);
@@ -81,12 +75,6 @@ main.gameOver = function () {
 main.toggleMenu = function(){
     g_updateMenu = !g_updateMenu;
     g_doRenderMenu = !g_doRenderMenu;
-}
-// Simple voluntary quit mechanism
-//
-var KEY_QUIT = 'Q'.charCodeAt(0);
-function requestedQuit() {
-    return keys[KEY_QUIT];
 }
 
 // Annoying shim for Firefox and Safari
