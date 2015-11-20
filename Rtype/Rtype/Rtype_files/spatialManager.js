@@ -109,23 +109,25 @@ computeNextEnemyMove: function(posX, posY, radius, origVelY, velY) {
         var collidesBottom0 = this.collisionWithEnvironment(possPos[3][0], possPos[3][1], radius, environment);
         var collidesTop1 = this.collisionWithEnvironment(possPos[4][0], possPos[4][1], radius, environment);
         var collidesBottom1 = this.collisionWithEnvironment(possPos[5][0], possPos[5][1], radius, environment);
-        var collidesTop2 = this.collisionWithEnvironment(possPos[6][0], possPos[6][1], radius, environment);
-        var collidesBottom2 = this.collisionWithEnvironment(possPos[7][0], possPos[7][1], radius, environment);
-        var collidesTopTop = this.collisionWithEnvironment(possPos[8][0], possPos[8][1], radius, environment);
-        var collidesBottomBottom = this.collisionWithEnvironment(possPos[9][0], possPos[9][1], radius, environment);
+        //var collidesTop2 = this.collisionWithEnvironment(possPos[6][0], possPos[6][1], radius, environment);
+        //var collidesBottom2 = this.collisionWithEnvironment(possPos[7][0], possPos[7][1], radius, environment);
+        //var collidesTopTop = this.collisionWithEnvironment(possPos[8][0], possPos[8][1], radius, environment);
+        //var collidesBottomBottom = this.collisionWithEnvironment(possPos[9][0], possPos[9][1], radius, environment);
 
         var shouldGoUp = !(
             collidesFront1 === "top" 
             || collidesFront2 === "top" 
             || collidesTop0 
             || collidesTop1 
-            || collidesTop2);
+            //|| collidesTop2
+            );
         var shouldGoDown = !(
             collidesFront1 === "bottom" 
             || collidesFront2 === "bottom" 
             || collidesBottom0 
             || collidesBottom1 
-            || collidesBottom2);
+            //|| collidesBottom2
+            );
     }
 
     var movement = {

@@ -27,12 +27,6 @@ function Bullet(descr) {
 }
 
 Bullet.prototype = new Entity();
-
-// HACKED-IN AUDIO (no preloading)
-Bullet.prototype.fireSound = new Audio(
-    "sounds/bulletFire.ogg");
-Bullet.prototype.zappedSound = new Audio(
-    "sounds/bulletZapped.ogg");
     
 // Initial, inheritable, default values
 Bullet.prototype.rotation = Math.PI;
@@ -44,6 +38,9 @@ Bullet.prototype.power = 1;
 Bullet.prototype.type = "Bullet";
 Bullet.prototype.isEnemyBullet = false;
 Bullet.prototype.spriteIter = 3.9
+
+Bullet.prototype.wallCollide = new Audio('sounds/wallCollide.wav');
+
 Bullet.prototype.update = function (du) {
 
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
@@ -53,7 +50,7 @@ Bullet.prototype.update = function (du) {
     }
     //console.log(this);
 
-    if (this.cx > g_canvas.width) return entityManager.KILL_ME_NOW;
+    if (this.cx > g_canvas.width || this.cx < 0) return entityManager.KILL_ME_NOW;
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;
@@ -72,6 +69,10 @@ Bullet.prototype.update = function (du) {
         else if(hitEntity.type != "Bullet" && hitEntity.type != "Enemy") {
             this.explode(0.5);
             this.power = 0;
+            if(g_playSound) {
+                this.wallCollide.play();
+            }
+            
         }
         if(this.power<=0) {
             return entityManager.KILL_ME_NOW;
@@ -106,7 +107,6 @@ Bullet.prototype.takeBulletHit = function () {
     //this.kill();
     
     // Make a noise when I am zapped by another bullet
-    //this.zappedSound.play();
 };
 
 Bullet.prototype.halt = function() {

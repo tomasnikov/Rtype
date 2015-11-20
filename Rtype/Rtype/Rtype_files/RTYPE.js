@@ -120,6 +120,8 @@ var KEY_2 = keyCode('2');
 
 var KEY_K = keyCode('K');
 
+var KEY_PLAYSOUND = keyCode('Y');
+
 function processDiagnostics() {
 
     if (eatKey(KEY_MIXED))
@@ -137,6 +139,8 @@ function processDiagnostics() {
 
     if (eatKey(KEY_0)) entityManager.toggleEnemies();
     if (eatKey(KEY_PLAY)) g_doRenderMenu = !g_doRenderMenu;
+
+    if(eatKey(KEY_PLAYSOUND)) g_playSound = !g_playSound;
 
     /*
     if (eatKey(KEY_1)) entityManager.generateShip({

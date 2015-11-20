@@ -45,6 +45,11 @@ Enemy.prototype.type = "Enemy";
 Enemy.prototype.fullLife = 1;
 Enemy.prototype.bulletChance = 0.002;
 
+Enemy.prototype.wallCollide = new Audio('sounds/wallCollide.wav');
+Enemy.prototype.shootSound = new Audio('sounds/enemyShoot.wav');
+Enemy.prototype.bossDeath = new Audio('sounds/vaderNo.wav');
+Enemy.prototype.death = new Audio('sounds/enemyDeath.wav');
+
 Enemy.prototype.setPosition = function () {
     var radius = this.getRadius();
     this.cx = this.cx || g_canvas.width-radius + this.diff;
@@ -71,10 +76,11 @@ Enemy.prototype.update = function (du) {
     spatialManager.unregister(this);
 
     var collided = this.isColliding();
-    if(collided && collided.firedFrom != "Enemy") {
+    if(collided && collided.firedFrom != "Enemy" && collided.firedFrom != 'Ship') {
         if(this.boss) {
             console.log("collided");
         }
+        
         this.kill();
     }
 
@@ -163,6 +169,9 @@ Enemy.prototype.fireBullet = function() {
         }
     }
     else{
+        if(g_playSound) {
+            this.shootSound.play();
+        }
         var launchDist = this.getRadius();
         entityManager.fireBulletAtShip(
            this.cx - launchDist, this.cy,
@@ -183,8 +192,17 @@ Enemy.prototype.takeBulletHit = function (power, firedFrom) {
                     main.toggleMenu();
                 }
                 else{
-                    g_levelManager.increaseLevel();
+                    if(g_playSound) {
+                      this.bossDeath.play();  
+                    }
+                    setTimeout(function() {
+                        g_levelManager.increaseLevel();
+                    }, 3000);
+                    
                 }
+            }
+            else if(g_playSound) {
+                this.death.play();
             }
         }
         var random = Math.random();

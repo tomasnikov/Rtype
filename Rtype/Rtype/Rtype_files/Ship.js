@@ -64,6 +64,10 @@ Ship.prototype.points = 0;
 Ship.prototype.isAlive = true;
 Ship.prototype.lastBullet = 0;
 Ship.prototype.powerupTime = 0;
+
+Ship.prototype.shootSound = new Audio('sounds/shoot.wav');
+Ship.prototype.powerupSound = new Audio('sounds/powerup.wav');
+Ship.prototype.deathSound = new Audio('sounds/shipDeath.wav');
     
 Ship.prototype.update = function (du) {
     
@@ -89,6 +93,9 @@ Ship.prototype.update = function (du) {
     }
 
     if(this.isColliding() && this.isAlive && !this.shield) {
+        if(g_playSound) {
+          this.deathSound.play();  
+        }
         if(this.HP > 0) {
         this.HP--;
         //entityManager.resetEntities();
@@ -108,6 +115,10 @@ Ship.prototype.update = function (du) {
         var collidesWithPowerup = powerupManager.collidesWithPowerup(this.cx, this.cy, this.getRadius());
         if(collidesWithPowerup) {
             this.setPowerup(collidesWithPowerup.type);
+            if(g_playSound) {
+                this.powerupSound.play();
+            }
+            
         } 
     }
 
@@ -240,6 +251,10 @@ Ship.prototype.maybeFireBullet = function () {
         this.power = 0;
 
         this.lastBullet = 0.3*SECS_TO_NOMINALS;
+        if(g_playSound) {
+          this.shootSound.play();  
+        }
+        
     }
     
 };
@@ -265,6 +280,9 @@ Ship.prototype.getRadius = function () {
 
 Ship.prototype.takeBulletHit = function () {
     if(!this.shield) {
+        if(g_playSound) {
+          this.deathSound.play();  
+        }
         if(this.HP > 0) {
             this.HP--;
             this.bufferAfterDeath();
