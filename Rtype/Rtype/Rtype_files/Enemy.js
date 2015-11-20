@@ -179,6 +179,7 @@ Enemy.prototype.takeBulletHit = function (power, firedFrom) {
             this.kill(this.points);
             if(this.isBoss) {
                 if(g_levelManager.level == 3){
+                    g_menu.message = "Congratulations!"
                     main.toggleMenu();
                 }
                 else{

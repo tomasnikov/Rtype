@@ -1,4 +1,4 @@
-// GENERIC UPDATE LOGIC
+    // GENERIC UPDATE LOGIC
 
 // The "nominal interval" is the one that all of our time-based units are
 // calibrated to e.g. a velocity unit is "pixels per nominal interval"
@@ -47,6 +47,7 @@ function update(dt) {
     g_prevUpdateDu = du;
     
     g_isUpdateOdd = !g_isUpdateOdd;
+    console.log(g_menu.message)
 }
 
 // Togglable Pause Mode

@@ -28,6 +28,7 @@ function MainMenu() {
 	this.showLevelSelector = false
 	this.showControls = false
 	this.dislplaySelection = false
+	this.message = ""
 	this.levelSelector = []
 	var gap = 20;
 	this.levelSelector[0] = {
@@ -191,6 +192,9 @@ MainMenu.prototype.render = function(ctx){
 		if(this.showControls){
 			this.renderControls(ctx);
 		}
+		ctx.fillStyle = "white"
+		ctx.fillText(this.message, g_canvas.width /2,530);
+
 	}
 	ctx.restore();
 }

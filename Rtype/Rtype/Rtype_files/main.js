@@ -70,6 +70,7 @@ main.gameOver = function () {
     //this._isGameOver = true;
     //g_doRenderMenu = true
     //g_updateMenu = true
+    g_menu.message = "Game Over"
     this.toggleMenu()
 };
 main.toggleMenu = function(){
