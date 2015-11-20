@@ -118,8 +118,6 @@ Environment.prototype.reset = function() {
 };
 
 Environment.prototype.render = function (ctx) {
-    ctx.save();
-    ctx.fillStyle = "blue";
     var width = this.sprite.width;
     var height = this.sprite.height;
     for(var i = 0; i < this.layout.top.length; i++) {
@@ -138,6 +136,5 @@ Environment.prototype.render = function (ctx) {
         }
     } 
 
-    ctx.restore();
-    
+    util.fillBox(ctx, 0, g_canvas.height-this.brickHeight/2, g_canvas.width, this.brickHeight/2, "black");    
 };

@@ -47,7 +47,6 @@ function update(dt) {
     g_prevUpdateDu = du;
     
     g_isUpdateOdd = !g_isUpdateOdd;
-    console.log(g_menu.message)
 }
 
 // Togglable Pause Mode

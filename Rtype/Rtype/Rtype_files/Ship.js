@@ -146,20 +146,21 @@ Ship.prototype.setPowerup = function(type) {
                 }
                 this.smallShip = true; 
             }
-            
+            this.powerupTime = 3*SECS_TO_NOMINALS;
             break;
         case POWERUP_EXTRA_LIFE:
             this.HP++;
             break;
         case POWERUP_SHIELD:
             this.shield = true;
+            this.powerupTime = 3*SECS_TO_NOMINALS;
             break;
         case POWERUP_MULTI_SHOT:
             this.multipleShots = true;
+            this.powerupTime = 3*SECS_TO_NOMINALS;
             break;
     }
 
-    this.powerupTime = 3*SECS_TO_NOMINALS;
 };
 
 Ship.prototype.resetPowerups = function() {
@@ -225,7 +226,6 @@ Ship.prototype.computePosition = function () {
 Ship.prototype.maybeFireBullet = function () {
     if (keys[this.KEY_FIRE]) {
         this.power = this.power<10 ?  this.power + 0.1 : 10;
-        document.getElementById("power").value = this.power;
     }
     else if(this.power>0) {
         this.power = Math.ceil(this.power);
@@ -238,7 +238,6 @@ Ship.prototype.maybeFireBullet = function () {
         }
 
         this.power = 0;
-        document.getElementById("power").value = this.power;
 
         this.lastBullet = 0.3*SECS_TO_NOMINALS;
     }
@@ -310,7 +309,6 @@ Ship.prototype.reset = function () {
         this.HP = 3
         this.points = 0
     }
-    document.getElementById("power").value = this.power;
 };
 
 Ship.prototype.halt = function () {
@@ -336,14 +334,37 @@ Ship.prototype.render = function (ctx) {
 
     for(var i = 0; i<this.HP; i++) {
         this.sprite[2].drawCentredAt(
-            ctx, (i+1)*(this.getRadius()*2), this.getRadius(), 0
+            ctx, g_canvas.width - (i+1)*(this.getRadius()*2.5), g_canvas.height - this.getRadius()*1.5, 0
         );
     }
     
     ctx.save();
-    ctx.font = "30px Arial black";
-    ctx.fillStyle = "black";
-    ctx.fillText("Points: " + this.points, 120, g_canvas.height - 30);
+    ctx.font = "16px Lucida Console";
+    ctx.fillStyle = "white";
+    ctx.fillText("Level: " + (g_levelManager.level +1), 10, g_canvas.height-10);
+    ctx.fillText("Points: " + this.points, 100, g_canvas.height - 10);
+    ctx.fillText("Power: ", g_canvas.width/2 - 200, g_canvas.height-10);
+    if(this.powerupTime>0) {
+        ctx.fillText("Power up timer: ", g_canvas.width/2, g_canvas.height-10);
+    } 
     ctx.restore();
+
+    //Draw power
+    ctx.save();
+    ctx.strokeStyle = "white";
+    ctx.beginPath();
+    ctx.rect(g_canvas.width/2 - 130, g_canvas.height-20, 100, 10);
+    ctx.stroke();
+    util.fillBox(ctx, g_canvas.width/2 - 130, g_canvas.height-20, this.power*10, 10, "white");
+
+    //Draw powerup timer
+    if(this.powerupTime>0) {
+        ctx.beginPath();
+        ctx.rect(g_canvas.width/2 + 150, g_canvas.height-20, 100, 10);
+        ctx.stroke();
+        ctx.restore();
+        util.fillBox(ctx, g_canvas.width/2 + 150, g_canvas.height-20, (this.powerupTime/18)*10, 10, "white");
+    }
+    
     
 };
